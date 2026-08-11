@@ -1,17 +1,21 @@
-## Modelo de monetización
+## Modelo de cobro
 
-Vamos a vender la aplicación a un **precio fijo** y, adicionalmente, se cobrará un **mantenimiento anual**, que incluirá servicios como el hosting y otros costos necesarios para mantener la aplicación funcionando.
+Vamos a vender la aplicación a un **precio fijo** y, adicionalmente, se cobrará un **mantenimiento anual**, que incluirá servicios como el **hosting** y otros gastos relacionados con el funcionamiento y mantenimiento de la aplicación.
 
 ### Aplicaciones similares
 
-Las aplicaciones que consideramos como referencia son:
+Las aplicaciones que tomamos como referencia son:
 
-- **Nike Training Club:** por los videos de ejercicio que ofrece dentro de la aplicación. Nike utiliza un modelo de **suscripción**, donde los usuarios pagan para acceder al contenido.
-- **Mind&Body:** por el sistema de cobro y reserva de clases en gimnasios. Mind&Body cobra directamente a los **gimnasios** por la gestión de sus clientes y pagos.
+* **Nike Training Club:** por los videos de ejercicios que se encuentran dentro de la aplicación.
+* **Mind&Body:** por el sistema de cobro y reserva de clases en gimnasios.
 
-### Modelo que utilizaremos
+### Modelos de cobro de la competencia
 
-Nuestro modelo será diferente, ya que **no utilizaremos un modelo basado en valor**. Esto se debe a que no podemos controlar ni medir con precisión cuánto valor o beneficio económico genera nuestra aplicación para cada cliente.
+* **Nike Training Club** cobra a los usuarios mediante **suscripciones** para acceder a los videos y contenido de ejercicio.
+* **Mind&Body** cobra directamente a los **gimnasios** por el manejo de sus clientes, reservas y pagos.
 
-Por lo tanto, consideramos más adecuado manejar un **precio fijo por la aplicación**, acompañado de un **cobro anual de mantenimiento** que cubra gastos como el hosting y otros servicios necesarios.
--
+### Modelo que no utilizaremos
+
+Definitivamente, **no utilizaremos un modelo de cobro por valor**, ya que no podemos controlar ni determinar con exactitud cuánto valor o beneficio económico realmente se le genera al cliente.
+
+Por esta razón, consideramos que un **precio fijo por la aplicación + un mantenimiento anual** es un modelo más adecuado para nuestro proyecto.
