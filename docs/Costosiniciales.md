@@ -19,3 +19,5 @@ Las aplicaciones que tomamos como referencia son:
 Definitivamente, **no utilizaremos un modelo de cobro por valor**, ya que no podemos controlar ni determinar con exactitud cuánto valor o beneficio económico realmente se le genera al cliente.
 
 Por esta razón, consideramos que un **precio fijo por la aplicación + un mantenimiento anual** es un modelo más adecuado para nuestro proyecto.
+
+-
