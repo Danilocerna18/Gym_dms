@@ -14,3 +14,4 @@ Las aplicaciones que consideramos como referencia son:
 Nuestro modelo será diferente, ya que **no utilizaremos un modelo basado en valor**. Esto se debe a que no podemos controlar ni medir con precisión cuánto valor o beneficio económico genera nuestra aplicación para cada cliente.
 
 Por lo tanto, consideramos más adecuado manejar un **precio fijo por la aplicación**, acompañado de un **cobro anual de mantenimiento** que cubra gastos como el hosting y otros servicios necesarios.
+-
