@@ -1,1 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-iron-950: #16181C;
+  --color-iron-700: #3A3F47;
+  --color-chalk-50: #F3F1EC;
+  --color-chalk-200: #E4E1D8;
+  --color-signal-red: #E13438;
+  --color-steel-500: #3E6E8E;
+  --color-track-green: #2F9E52;
+}
+
 /* You can add global styles to this file, and also import other style files */
