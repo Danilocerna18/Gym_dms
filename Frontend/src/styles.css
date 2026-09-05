@@ -128,6 +128,13 @@ body {
   padding-bottom: 80px;
 }
 
+
+.data-card.alert::before {
+  background-color: theme('colors.steel-500');
+  border-top-left-radius: theme('borderRadius.lg');
+  border-bottom-left-radius: theme('borderRadius.lg');
+}
+
 @media (min-width: 768px) {
   .app-container {
     flex-direction: row;
@@ -137,5 +144,7 @@ body {
     padding-bottom: theme('spacing.margin-desktop');
   }
 }
+
+
 
 /* You can add global styles to this file, and also import other style files */

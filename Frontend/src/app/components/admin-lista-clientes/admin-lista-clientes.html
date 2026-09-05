@@ -1,1 +1,231 @@
-<p>admin-lista-clientes works!</p>
+<div class="bg-chalk-50 text-iron-950 font-body-md min-h-screen pb-24 md:pb-0">
+  <!-- TopAppBar Desktop -->
+  <header class="w-full top-0 sticky bg-surface-container-lowest border-b border-chalk-200 shadow-sm z-40 hidden md:block">
+    <div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-7xl mx-auto">
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-outlined text-signal-red text-3xl">fitness_center</span>
+        <h1 class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</h1>
+      </div>
+      <nav class="hidden md:flex gap-8">
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+        </a>
+        <a class="font-utility-mono text-utility-mono text-signal-red flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">group</span> Clientes
+        </a>
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">fitness_center</span> Máquinas
+        </a>
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">notifications</span> Alertas
+        </a>
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">campaign</span> Anuncios
+        </a>
+      </nav>
+      <div class="w-10 h-10 rounded-full bg-signal-red overflow-hidden inner-glow border border-chalk-200 flex items-center justify-center">
+        <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">AD</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Header -->
+  <header class="w-full top-0 sticky bg-surface-container-lowest border-b border-chalk-200 shadow-sm z-40 md:hidden flex justify-between items-center px-margin-mobile py-4">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-signal-red text-2xl">fitness_center</span>
+      <h1 class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</h1>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-signal-red overflow-hidden inner-glow border border-chalk-200 flex items-center justify-center">
+      <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold text-sm">AD</span>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop py-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+      <div>
+        <h2 class="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl font-bold text-iron-950 mb-2 uppercase">Gestión de Miembros</h2>
+        <p class="font-body-md text-body-md text-iron-700">Administra el acceso y visualiza la actividad en tiempo real.</p>
+      </div>
+      <div class="flex gap-4 w-full md:w-auto">
+        <div class="relative w-full md:w-64">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-iron-700 text-xl">search</span>
+          <input class="w-full bg-chalk-200 text-iron-700 font-body-md text-body-md rounded border border-chalk-200 focus:border-signal-red focus:ring-1 focus:ring-signal-red pl-10 pr-4 py-2 transition-colors placeholder-iron-700/70" placeholder="Buscar miembro..." type="text">
+        </div>
+        <button class="bg-signal-red text-white font-utility-mono text-utility-mono px-6 py-2 rounded font-bold hover:bg-signal-red/90 transition-colors whitespace-nowrap flex items-center gap-2 shadow-sm">
+          <span class="material-symbols-outlined text-lg">person_add</span> Nuevo
+        </button>
+      </div>
+    </div>
+
+    <!-- Bento Grid Layout for Dashboard Metrics -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-8">
+      <div class="bg-surface-container-lowest inner-glow rounded-lg p-6 border border-chalk-200 data-card alert">
+        <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider block mb-2">Miembros Activos</span>
+        <div class="flex items-end gap-3">
+          <span class="font-display-lg text-display-lg font-extrabold text-iron-950 uppercase">1,248</span>
+          <span class="font-utility-mono text-utility-mono text-track-green bg-track-green/10 px-2 py-1 rounded-full mb-1 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[10px]">trending_up</span> +12%
+          </span>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest inner-glow rounded-lg p-6 border border-chalk-200 data-card alert">
+        <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider block mb-2">Accesos Hoy</span>
+        <div class="flex items-end gap-3">
+          <span class="font-display-lg text-display-lg font-extrabold text-iron-950 uppercase">342</span>
+          <span class="font-utility-mono text-utility-mono text-iron-700 mb-1">Peak: 18:00</span>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest inner-glow rounded-lg p-6 border border-chalk-200 data-card alert">
+        <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider block mb-2">Membresías por Vencer</span>
+        <div class="flex items-end gap-3">
+          <span class="font-display-lg text-display-lg font-extrabold text-steel-500 uppercase">24</span>
+          <button class="font-utility-mono text-utility-mono text-steel-500 hover:underline mb-1 ml-auto">Revisar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Member List Container -->
+    <div class="bg-surface-container-lowest inner-glow rounded-lg border border-chalk-200 overflow-hidden">
+      <!-- Table Header (Web) -->
+      <div class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-chalk-200 bg-chalk-50">
+        <div class="col-span-4 font-utility-mono text-utility-mono text-iron-700 uppercase">Miembro</div>
+        <div class="col-span-2 font-utility-mono text-utility-mono text-iron-700 uppercase">Estado</div>
+        <div class="col-span-3 font-utility-mono text-utility-mono text-iron-700 uppercase">Último Acceso</div>
+        <div class="col-span-3 font-utility-mono text-utility-mono text-iron-700 uppercase text-right">Acciones QR</div>
+      </div>
+
+      <div class="flex flex-col">
+        <!-- Item 1 -->
+        <div class="group border-b border-chalk-200 last:border-0 hover:bg-chalk-50 transition-colors">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center px-gutter md:px-6 py-4">
+            <div class="col-span-1 md:col-span-4 flex items-center gap-4 cursor-pointer" (click)="verQr('Carlos Mendoza', 'GYM-8492')">
+              <div class="w-12 h-12 rounded bg-steel-500 inner-glow flex items-center justify-center relative border border-chalk-200">
+                <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">CM</span>
+                <div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-1 border border-chalk-200">
+                  <span class="material-symbols-outlined text-signal-red text-[14px]">qr_code_2</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-body-md text-body-md font-bold text-iron-950 group-hover:text-signal-red transition-colors">Carlos Mendoza</h3>
+                <p class="font-utility-mono text-utility-mono text-iron-700">ID: GYM-8492</p>
+              </div>
+            </div>
+            <div class="col-span-1 md:col-span-2 hidden md:flex items-center">
+              <span class="font-utility-mono text-utility-mono px-3 py-1 rounded-full bg-track-green/10 text-track-green border border-track-green/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-track-green"></span> Activo
+              </span>
+            </div>
+            <div class="col-span-1 md:col-span-3 flex items-center justify-between md:justify-start gap-4">
+              <div class="md:hidden font-utility-mono text-utility-mono text-iron-700">Último Acceso:</div>
+              <div class="flex flex-col">
+                <div class="flex items-center gap-2 text-iron-950 font-utility-mono text-utility-mono">
+                  <span class="material-symbols-outlined text-track-green text-[16px]">login</span> Hoy, 07:15 AM
+                </div>
+                <div class="flex items-center gap-2 text-iron-700 font-utility-mono text-utility-mono mt-1">
+                  <span class="material-symbols-outlined text-[16px]">logout</span> Hoy, 08:45 AM
+                </div>
+              </div>
+            </div>
+            <div class="col-span-1 md:col-span-3 flex items-center justify-end gap-3 mt-4 md:mt-0 border-t border-chalk-200 md:border-0 pt-4 md:pt-0">
+              <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-transparent border border-chalk-200 rounded text-iron-950 hover:border-signal-red hover:text-signal-red font-utility-mono text-utility-mono transition-all" (click)="verQr('Carlos Mendoza', 'GYM-8492')">
+                <span class="material-symbols-outlined text-[18px]">qr_code</span> Ver QR
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="group border-b border-chalk-200 last:border-0 hover:bg-chalk-50 transition-colors">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center px-gutter md:px-6 py-4">
+            <div class="col-span-1 md:col-span-4 flex items-center gap-4 cursor-pointer" (click)="verQr('Ana Silva', 'GYM-9103')">
+              <div class="w-12 h-12 rounded bg-steel-500 inner-glow flex items-center justify-center relative border border-chalk-200">
+                <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">AS</span>
+                <div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-1 border border-chalk-200">
+                  <span class="material-symbols-outlined text-signal-red text-[14px]">qr_code_2</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-body-md text-body-md font-bold text-iron-950 group-hover:text-signal-red transition-colors">Ana Silva</h3>
+                <p class="font-utility-mono text-utility-mono text-iron-700">ID: GYM-9103</p>
+              </div>
+            </div>
+            <div class="col-span-1 md:col-span-2 hidden md:flex items-center">
+              <span class="font-utility-mono text-utility-mono px-3 py-1 rounded-full bg-steel-500/10 text-steel-500 border border-steel-500/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-steel-500"></span> Por Vencer
+              </span>
+            </div>
+            <div class="col-span-1 md:col-span-3 flex items-center justify-between md:justify-start gap-4">
+              <div class="md:hidden font-utility-mono text-utility-mono text-iron-700">Último Acceso:</div>
+              <div class="flex flex-col">
+                <div class="flex items-center gap-2 text-iron-950 font-utility-mono text-utility-mono">
+                  <span class="material-symbols-outlined text-track-green text-[16px]">login</span> Ayer, 18:30 PM
+                </div>
+                <div class="flex items-center gap-2 text-iron-700 font-utility-mono text-utility-mono mt-1">
+                  <span class="material-symbols-outlined text-[16px]">logout</span> Ayer, 20:15 PM
+                </div>
+              </div>
+            </div>
+            <div class="col-span-1 md:col-span-3 flex items-center justify-end gap-3 mt-4 md:mt-0 border-t border-chalk-200 md:border-0 pt-4 md:pt-0">
+              <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-transparent border border-chalk-200 rounded text-iron-950 hover:border-signal-red hover:text-signal-red font-utility-mono text-utility-mono transition-all" (click)="verQr('Ana Silva', 'GYM-9103')">
+                <span class="material-symbols-outlined text-[18px]">qr_code</span> Ver QR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- BottomNavBar (Mobile Only) -->
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface-container-lowest border-t border-chalk-200 shadow-lg md:hidden z-50">
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">dashboard</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Dashboard</span>
+    </a>
+    <a class="flex flex-col items-center justify-center bg-signal-red/10 text-signal-red rounded-full px-3 py-1 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1" style="font-variation-settings: 'FILL' 1;">group</span><span class="font-utility-mono text-[10px] font-bold uppercase tracking-wider">Clientes</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">fitness_center</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Máquinas</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">notifications</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Alertas</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">campaign</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Anuncios</span>
+    </a>
+  </nav>
+
+  <!-- QR Modal -->
+  <div *ngIf="qrModalAbierto()" class="fixed inset-0 bg-iron-950/50 backdrop-blur-sm z-[100] flex items-center justify-center p-gutter">
+    <div class="bg-surface-container-lowest inner-glow rounded-xl w-full max-w-sm sharp-shadow overflow-hidden border border-chalk-200">
+      <div class="p-4 border-b border-chalk-200 flex justify-between items-center bg-chalk-50">
+        <h3 class="font-headline-md text-headline-md font-bold text-iron-950 uppercase">Acceso QR</h3>
+        <button class="text-iron-700 hover:text-signal-red transition-colors" (click)="cerrarQr()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="p-6 flex flex-col items-center" *ngIf="miembroSeleccionado() as miembro">
+        <div class="mb-4 text-center">
+          <p class="font-body-md text-body-md font-bold text-iron-950">{{ miembro.nombre }}</p>
+          <p class="font-utility-mono text-utility-mono text-iron-700">ID: {{ miembro.id }}</p>
+        </div>
+        <div class="bg-white p-4 rounded-lg mb-6 w-48 h-48 flex items-center justify-center border border-chalk-200">
+          <span class="material-symbols-outlined text-[120px] text-iron-950">qr_code_2</span>
+        </div>
+        <p class="font-body-sm text-body-sm text-iron-700 text-center mb-6 max-w-xs">
+          Este código cambia dinámicamente cada 30 segundos por seguridad.
+        </p>
+        <div class="w-full flex flex-col gap-3">
+          <button class="w-full bg-signal-red text-white font-utility-mono text-utility-mono px-6 py-3 rounded font-bold hover:bg-signal-red/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+            <span class="material-symbols-outlined">mail</span> Enviar por Email
+          </button>
+          <button class="w-full bg-transparent text-signal-red font-utility-mono text-utility-mono px-6 py-3 rounded font-bold border border-signal-red hover:bg-signal-red/10 transition-colors flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">share</span> Compartir Enlace
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

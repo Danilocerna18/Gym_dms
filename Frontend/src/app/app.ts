@@ -1,9 +1,19 @@
 import { Component } from '@angular/core';
-import { AdminPanel } from './components/admin-panel/admin-panel';
+//import { AdminPanel } from './components/admin-panel/admin-panel';
+
+//@Component({
+ // selector: 'app-root',
+ // imports: [AdminPanel],
+ // templateUrl: './app.html',
+ // styleUrl: './app.css'
+//})
+
+import { AdminListaClientes } from './components/admin-lista-clientes/admin-lista-clientes';
 
 @Component({
   selector: 'app-root',
-  imports: [AdminPanel],
+  standalone: true,
+  imports: [AdminListaClientes], // antes tenías AdminPanel aquí
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
