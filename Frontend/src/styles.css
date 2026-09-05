@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+   /* Colores */
   --color-iron-950: #16181C;
   --color-iron-700: #3A3F47;
   --color-chalk-50: #F3F1EC;
@@ -8,6 +9,133 @@
   --color-signal-red: #E13438;
   --color-steel-500: #3E6E8E;
   --color-track-green: #2F9E52;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container: #f0eee9;
+  --color-surface-container-highest: #e4e2dd;
+
+  /* Tipografía */
+  --font-headline-md: "Oswald", sans-serif;
+  --font-body-md: "Inter", sans-serif;
+  --font-body-sm: "Inter", sans-serif;
+  --font-display-xl: "Oswald", sans-serif;
+  --font-display-xl-mobile: "Oswald", sans-serif;
+  --font-utility-mono: "IBM Plex Mono", monospace;
+  --font-display-lg: "Oswald", sans-serif;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 28px;
+  --text-headline-md--font-weight: 600;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+  --text-body-sm--font-weight: 400;
+
+  --text-display-xl: 40px;
+  --text-display-xl--line-height: 44px;
+  --text-display-xl--letter-spacing: 0.02em;
+  --text-display-xl--font-weight: 700;
+
+  --text-display-xl-mobile: 32px;
+  --text-display-xl-mobile--line-height: 36px;
+  --text-display-xl-mobile--font-weight: 700;
+
+  --text-utility-mono: 13px;
+  --text-utility-mono--line-height: 18px;
+  --text-utility-mono--letter-spacing: 0.05em;
+  --text-utility-mono--font-weight: 500;
+
+  --text-display-lg: 28px;
+  --text-display-lg--line-height: 32px;
+  --text-display-lg--font-weight: 700;
+
+  /* Espaciado */
+  --spacing-gutter: 16px;
+  --spacing-unit: 4px;
+  --spacing-margin-desktop: 40px;
+  --spacing-margin-mobile: 20px;
+  --spacing-touch-target-min: 48px;
+}
+
+/* Iconos Material Symbols — sin esto se ven como texto plano, no como íconos */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Clases genéricas de tarjeta (se reutilizan en Gestión de Miembros y Nuevo Cliente) */
+.inner-glow {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.data-card {
+  border: 1px solid theme('colors.chalk-200');
+  position: relative;
+}
+.data-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+.data-card.performance::before {
+  background-color: theme('colors.steel-500');
+}
+.data-card.finance::before {
+  background-color: theme('colors.track-green');
+}
+
+.sharp-shadow {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Layout general de pantallas admin */
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: theme('colors.chalk-50');
+  color: theme('colors.iron-950');
+}
+
+.app-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: theme('spacing.margin-mobile');
+  padding-bottom: 80px;
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    flex-direction: row;
+  }
+  .main-content {
+    padding: theme('spacing.margin-desktop');
+    padding-bottom: theme('spacing.margin-desktop');
+  }
 }
 
 /* You can add global styles to this file, and also import other style files */

@@ -1,12 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { AdminPanel } from './components/admin-panel/admin-panel';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [AdminPanel],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('cliente');
-}
+export class App { }

@@ -1,1 +1,207 @@
-<p>admin-panel works!</p>
+<div class="bg-chalk-50 text-iron-950">
+  <!-- TopAppBar -->
+  <header class="w-full top-0 sticky bg-surface-container-lowest border-b border-chalk-200 shadow-sm z-50">
+    <div class="flex justify-between items-center px-margin-desktop py-unit w-full h-16">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-signal-red">fitness_center</span>
+        <span class="font-headline-md text-headline-md font-extrabold text-signal-red tracking-tighter uppercase">GymSync</span>
+      </div>
+      <!-- Desktop Navigation Links (Hidden on Mobile) -->
+      <nav class="hidden md:flex gap-6 items-center">
+        <a class="text-signal-red font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full" href="#">
+          <span class="material-symbols-outlined text-[18px]">dashboard</span>
+          Dashboard
+        </a>
+        <a class="text-iron-700 font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full" href="#">
+          <span class="material-symbols-outlined text-[18px]">group</span>
+          Clientes
+        </a>
+        <a class="text-iron-700 font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full" href="#">
+          <span class="material-symbols-outlined text-[18px]">fitness_center</span>
+          Máquinas
+        </a>
+        <a class="text-iron-700 font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full" href="#">
+          <span class="material-symbols-outlined text-[18px]">notifications</span>
+          Alertas
+        </a>
+        <a class="text-iron-700 font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full" href="#">
+          <span class="material-symbols-outlined text-[18px]">campaign</span>
+          Anuncios
+        </a>
+      </nav>
+      <div class="w-8 h-8 rounded-full overflow-hidden inner-glow bg-signal-red flex items-center justify-center border border-chalk-200">
+  <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">GYM</span>
+</div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Main Canvas -->
+    <main class="main-content">
+      <div class="max-w-7xl mx-auto space-y-8">
+        <!-- Page Header -->
+        <div>
+          <h1 class="font-display-xl-mobile text-display-xl-mobile md:font-display-xl md:text-display-xl text-iron-950 uppercase">Resumen General</h1>
+          <p class="font-body-md text-body-md text-iron-700 mt-unit">Rendimiento actual del gimnasio y alertas activas.</p>
+        </div>
+
+        <!-- Metrics Grid (Bento Style) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+          <!-- Total Members -->
+          <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start">
+              <h2 class="font-utility-mono text-utility-mono text-steel-500 uppercase tracking-wider">Total de Miembros</h2>
+              <span class="material-symbols-outlined text-steel-500">group</span>
+            </div>
+            <div>
+              <p class="font-display-lg text-display-lg text-iron-950">245</p>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="material-symbols-outlined text-track-green text-[16px]">arrow_upward</span>
+                <span class="font-utility-mono text-utility-mono text-track-green">+12 este mes</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Members with Circular Indicator -->
+          <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex justify-between h-40">
+            <div class="flex flex-col justify-between">
+              <h2 class="font-utility-mono text-utility-mono text-steel-500 uppercase tracking-wider">Activos Hoy</h2>
+              <div>
+                <p class="font-display-lg text-display-lg text-iron-950">210</p>
+                <p class="font-utility-mono text-utility-mono text-iron-700 mt-1">85% de Capacidad</p>
+              </div>
+            </div>
+            <div class="w-24 h-24 self-center relative flex items-center justify-center">
+              <svg class="circular-chart text-steel-500" viewBox="0 0 36 36">
+                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                <path class="circle primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dasharray="85, 100"></path>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="material-symbols-outlined text-steel-500">how_to_reg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Monthly Revenue -->
+          <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card finance flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start">
+              <h2 class="font-utility-mono text-utility-mono text-track-green uppercase tracking-wider">Ingresos Mensuales</h2>
+              <span class="material-symbols-outlined text-track-green">payments</span>
+            </div>
+            <div>
+              <p class="font-display-lg text-display-lg text-iron-950">$18.4k</p>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="material-symbols-outlined text-track-green text-[16px]">trending_up</span>
+                <span class="font-utility-mono text-utility-mono text-track-green">+5.2% vs mes pasado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Section: Recent Alerts -->
+        <div>
+          <h2 class="font-headline-md text-headline-md text-iron-950 mb-4 flex items-center gap-2 uppercase">
+            <span class="material-symbols-outlined text-signal-red">warning</span>
+            Alertas Recientes
+          </h2>
+          <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg overflow-hidden border border-chalk-200">
+            <div class="divide-y divide-chalk-200">
+              <!-- Alert Item 1 -->
+              <div class="p-4 flex items-center justify-between hover:bg-chalk-50 transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-signal-red">
+                    <span class="material-symbols-outlined">credit_card_off</span>
+                  </div>
+                  <div>
+                    <p class="font-body-md text-body-md text-iron-950 font-semibold">Sofia Bilbao</p>
+                    <p class="font-utility-mono text-utility-mono text-iron-700">Pago Vencido - Plan Mensual</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="px-2 py-1 rounded bg-signal-red/10 text-signal-red font-utility-mono text-utility-mono border border-signal-red/20 uppercase">Vencido</span>
+                  <button class="px-3 py-1 bg-transparent border border-steel-500 text-steel-500 font-utility-mono text-utility-mono rounded hover:bg-surface-container transition-colors uppercase">Recordar</button>
+                </div>
+              </div>
+              <!-- Alert Item 2 -->
+              <div class="p-4 flex items-center justify-between hover:bg-chalk-50 transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-signal-red">
+                    <span class="material-symbols-outlined">credit_card_off</span>
+                  </div>
+                  <div>
+                    <p class="font-body-md text-body-md text-iron-950 font-semibold">Lucca Bilbao</p>
+                    <p class="font-utility-mono text-utility-mono text-iron-700">Pago Fallido - Plan Anual</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="px-2 py-1 rounded bg-signal-red/10 text-signal-red font-utility-mono text-utility-mono border border-signal-red/20 uppercase">Fallido</span>
+                  <button class="px-3 py-1 bg-transparent border border-steel-500 text-steel-500 font-utility-mono text-utility-mono rounded hover:bg-surface-container transition-colors uppercase">Recordar</button>
+                </div>
+              </div>
+              <!-- Alert Item 3 -->
+              <div class="p-4 flex items-center justify-between hover:bg-chalk-50 transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-iron-700">
+                    <span class="material-symbols-outlined">event_busy</span>
+                  </div>
+                  <div>
+                    <p class="font-body-md text-body-md text-iron-950 font-semibold">Cristina Bilbao</p>
+                    <p class="font-utility-mono text-utility-mono text-iron-700">Membresía Anual Caduca en 3 Días</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="px-2 py-1 rounded bg-surface-container text-iron-700 font-utility-mono text-utility-mono uppercase border border-chalk-200">Por Caducar</span>
+                  <button class="px-3 py-1 bg-transparent border border-steel-500 text-steel-500 font-utility-mono text-utility-mono rounded hover:bg-surface-container transition-colors uppercase">Contactar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          <button class="bg-surface-container-lowest sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-chalk-50 transition-all border border-chalk-200 hover:border-steel-500 group">
+            <span class="material-symbols-outlined text-iron-700 group-hover:text-steel-500 transition-colors text-[32px]">person_add</span>
+            <span class="font-utility-mono text-utility-mono text-iron-950 uppercase">Nuevo Miembro</span>
+          </button>
+          <button class="bg-surface-container-lowest sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-chalk-50 transition-all border border-chalk-200 hover:border-steel-500 group">
+            <span class="material-symbols-outlined text-iron-700 group-hover:text-steel-500 transition-colors text-[32px]">campaign</span>
+            <span class="font-utility-mono text-utility-mono text-iron-950 uppercase">Enviar Anuncio</span>
+          </button>
+          <button class="bg-surface-container-lowest sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-chalk-50 transition-all border border-chalk-200 hover:border-steel-500 group">
+            <span class="material-symbols-outlined text-iron-700 group-hover:text-steel-500 transition-colors text-[32px]">receipt_long</span>
+            <span class="font-utility-mono text-utility-mono text-iron-950 uppercase">Facturación</span>
+          </button>
+          <button class="bg-surface-container-lowest sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-chalk-50 transition-all border border-chalk-200 hover:border-steel-500 group">
+            <span class="material-symbols-outlined text-iron-700 group-hover:text-steel-500 transition-colors text-[32px]">settings</span>
+            <span class="font-utility-mono text-utility-mono text-iron-950 uppercase">Ajustes</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- BottomNavBar (Mobile Only) -->
+  <nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface-container-lowest border-t border-chalk-200 z-50 shadow-lg">
+    <a class="flex flex-col items-center justify-center bg-chalk-200 text-iron-950 rounded-lg px-3 py-1 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-signal-red" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px] font-semibold">Dashboard</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined">group</span>
+      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Clientes</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined">fitness_center</span>
+      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Máquinas</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined">notifications</span>
+      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Alertas</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200 rounded-lg" href="#">
+      <span class="material-symbols-outlined">campaign</span>
+      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Anuncios</span>
+    </a>
+  </nav>
+</div>
