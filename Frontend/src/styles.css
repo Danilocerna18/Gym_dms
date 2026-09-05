@@ -12,6 +12,13 @@
   --color-surface-container-lowest: #ffffff;
   --color-surface-container: #f0eee9;
   --color-surface-container-highest: #e4e2dd;
+  --color-iron-900: #202328;
+  --color-iron-500: #646B77;
+  --color-iron-300: #9BA1AB;
+  --color-chalk-100: #EBE8E0;
+  --color-chalk-300: #D6D1C4;
+  --color-signal-red-hover: #C82B2F;
+  --radius-custom: 12px;
 
   /* Tipografía */
   --font-headline-md: "Oswald", sans-serif;
@@ -21,6 +28,9 @@
   --font-display-xl-mobile: "Oswald", sans-serif;
   --font-utility-mono: "IBM Plex Mono", monospace;
   --font-display-lg: "Oswald", sans-serif;
+  --font-display: "Oswald", sans-serif;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
 
   --text-headline-md: 24px;
   --text-headline-md--line-height: 28px;
@@ -143,6 +153,9 @@ body {
     padding: theme('spacing.margin-desktop');
     padding-bottom: theme('spacing.margin-desktop');
   }
+
+
+
 }
 
 

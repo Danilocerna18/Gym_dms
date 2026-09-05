@@ -1,1 +1,283 @@
-<p>admin-formulario-cliente works!</p>
+<div class="bg-chalk-50 text-iron-950 font-body-md min-h-screen pb-24 md:pb-0">
+  <!-- Header Desktop es igual al de Gestión de Miembros-->
+  <header class="w-full top-0 sticky bg-surface-container-lowest border-b border-chalk-200 shadow-sm z-40 hidden md:block">
+    <div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-7xl mx-auto">
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-outlined text-signal-red text-3xl">fitness_center</span>
+        <h1 class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</h1>
+      </div>
+      <nav class="hidden md:flex gap-8">
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+        </a>
+        <a class="font-utility-mono text-utility-mono text-signal-red flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">group</span> Clientes
+        </a>
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">fitness_center</span> Máquinas
+        </a>
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">notifications</span> Alertas
+        </a>
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">campaign</span> Anuncios
+        </a>
+      </nav>
+      <div class="w-10 h-10 rounded-full bg-signal-red overflow-hidden inner-glow border border-chalk-200 flex items-center justify-center">
+        <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">AD</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Header Mobile -->
+  <header class="w-full top-0 sticky bg-surface-container-lowest border-b border-chalk-200 shadow-sm z-40 md:hidden flex justify-between items-center px-margin-mobile py-4">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-signal-red text-2xl">fitness_center</span>
+      <h1 class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</h1>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-signal-red overflow-hidden inner-glow border border-chalk-200 flex items-center justify-center">
+      <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold text-sm">AD</span>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-10 flex flex-col justify-center items-center">
+
+    <!-- Volver / ID -->
+    <div class="w-full max-w-xl mb-4 flex items-center justify-between">
+      <a href="#" class="inline-flex items-center gap-1.5 text-xs font-medium text-iron-700 hover:text-iron-950 transition-colors group">
+        <span class="material-symbols-outlined text-base group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+        Volver a Gestión de Clientes
+      </a>
+      <span class="text-xs font-mono text-steel-500 bg-white px-2.5 py-1 rounded-custom border border-chalk-200">
+        ID: <span class="text-iron-950 font-semibold">CLI-2026-AUTO</span>
+      </span>
+    </div>
+
+    <!-- TARJETA DEL FORMULARIO -->
+    <div class="w-full max-w-xl bg-white rounded-custom border border-chalk-200 shadow-xl shadow-iron-950/5 overflow-hidden">
+
+      <!-- Encabezado con Toggle Nuevo / Editar -->
+      <div class="px-8 pt-7 pb-6 border-b border-chalk-200 bg-gradient-to-b from-white to-chalk-50/40">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-block w-2 h-2 rounded-full bg-signal-red"></span>
+              <span class="text-xs font-mono uppercase tracking-wider text-iron-500 font-medium">Módulo de Afiliación</span>
+            </div>
+            <h1 class="font-display font-bold text-3xl tracking-wide uppercase text-iron-950">
+              {{ modo() === 'nuevo' ? 'Nuevo Cliente' : 'Editar Cliente' }}
+            </h1>
+            <p class="text-xs text-iron-700 mt-1">
+              Registra un socio y asigna su pase de acceso inmediato al gimnasio.
+            </p>
+          </div>
+
+          <div class="inline-flex p-1 bg-chalk-100 rounded-custom border border-chalk-200 text-xs font-medium">
+            <button
+              type="button"
+              (click)="cambiarModo('nuevo')"
+              [class.bg-white]="modo() === 'nuevo'"
+              [class.text-iron-950]="modo() === 'nuevo'"
+              [class.font-semibold]="modo() === 'nuevo'"
+              [class.shadow-xs]="modo() === 'nuevo'"
+              [class.text-iron-700]="modo() !== 'nuevo'"
+              class="px-2.5 py-1 rounded-md transition-all">
+              Nuevo
+            </button>
+            <button
+              type="button"
+              (click)="cambiarModo('editar')"
+              [class.bg-white]="modo() === 'editar'"
+              [class.text-iron-950]="modo() === 'editar'"
+              [class.font-semibold]="modo() === 'editar'"
+              [class.shadow-xs]="modo() === 'editar'"
+              [class.text-iron-700]="modo() !== 'editar'"
+              class="px-2.5 py-1 rounded-md transition-all">
+              Editar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <form class="p-8 space-y-6" (submit)="$event.preventDefault()">
+
+        <!-- Nombre Completo -->
+        <div>
+          <label for="full-name" class="block text-xs font-bold uppercase tracking-wider text-iron-950 mb-2">
+            Nombre Completo <span class="text-signal-red">*</span>
+          </label>
+          <div class="relative">
+            <input type="text" id="full-name" name="fullName" placeholder="Ej. Lucca Bilbao"
+              class="w-full h-12 px-4 rounded-custom bg-white border border-chalk-300 text-iron-950 text-sm font-medium placeholder:text-iron-300 focus:outline-none focus:border-iron-950 focus:ring-1 focus:ring-iron-950 transition-colors"
+              required>
+            <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-iron-300 pointer-events-none text-xl">
+              badge
+            </span>
+          </div>
+        </div>
+
+        <!-- Correo Electrónico -->
+        <div>
+          <label for="email" class="block text-xs font-bold uppercase tracking-wider text-iron-950 mb-2">
+            Correo Electrónico <span class="text-signal-red">*</span>
+          </label>
+          <div class="relative">
+            <input type="email" id="email" name="email" placeholder="cliente@ejemplo.com"
+              class="w-full h-12 px-4 rounded-custom bg-white border border-chalk-300 text-iron-950 text-sm font-medium placeholder:text-iron-300 focus:outline-none focus:border-iron-950 focus:ring-1 focus:ring-iron-950 transition-colors"
+              required>
+            <span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-iron-300 pointer-events-none text-xl">
+              mail
+            </span>
+          </div>
+          <p class="text-[11px] text-iron-500 mt-1.5 font-sans">
+            Se enviará automáticamente el código QR de acceso y las credenciales a este correo.
+          </p>
+        </div>
+
+        <!-- Plan de Membresía -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-iron-950 mb-2">
+            Plan de Membresía <span class="text-signal-red">*</span>
+          </label>
+
+          <div class="grid grid-cols-2 gap-3">
+            <!-- Mensual -->
+            <label
+              (click)="seleccionarPlan('mensual')"
+              [class.border-iron-950]="planSeleccionado() === 'mensual'"
+              [class.border-2]="planSeleccionado() === 'mensual'"
+              [class.border]="planSeleccionado() !== 'mensual'"
+              [class.border-chalk-300]="planSeleccionado() !== 'mensual'"
+              class="relative flex flex-col p-4 rounded-custom bg-white cursor-pointer hover:bg-chalk-50/50 transition-colors group">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-display font-bold text-lg tracking-wide uppercase" [class.text-iron-950]="planSeleccionado() === 'mensual'" [class.text-iron-700]="planSeleccionado() !== 'mensual'">
+                  Mensual
+                </span>
+                <span
+                  class="w-4 h-4 rounded-full border-2 flex items-center justify-center"
+                  [class.border-iron-950]="planSeleccionado() === 'mensual'"
+                  [class.bg-iron-950]="planSeleccionado() === 'mensual'"
+                  [class.border-chalk-300]="planSeleccionado() !== 'mensual'"
+                  [class.bg-white]="planSeleccionado() !== 'mensual'">
+                  <span *ngIf="planSeleccionado() === 'mensual'" class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                </span>
+              </div>
+              <span class="text-xs text-iron-700 font-sans">Renovación cada 30 días</span>
+              <span class="text-xs font-mono font-medium text-steel-500 mt-2 pt-2 border-t border-chalk-200">Q250.00 / mes</span>
+            </label>
+
+            <!-- Anual -->
+            <label
+              (click)="seleccionarPlan('anual')"
+              [class.border-iron-950]="planSeleccionado() === 'anual'"
+              [class.border-2]="planSeleccionado() === 'anual'"
+              [class.border]="planSeleccionado() !== 'anual'"
+              [class.border-chalk-300]="planSeleccionado() !== 'anual'"
+              class="relative flex flex-col p-4 rounded-custom bg-white cursor-pointer hover:bg-chalk-50/50 transition-colors group">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-display font-bold text-lg tracking-wide uppercase" [class.text-iron-950]="planSeleccionado() === 'anual'" [class.text-iron-700]="planSeleccionado() !== 'anual'">
+                  Anual
+                </span>
+                <span
+                  class="w-4 h-4 rounded-full border-2 flex items-center justify-center"
+                  [class.border-iron-950]="planSeleccionado() === 'anual'"
+                  [class.bg-iron-950]="planSeleccionado() === 'anual'"
+                  [class.border-chalk-300]="planSeleccionado() !== 'anual'"
+                  [class.bg-white]="planSeleccionado() !== 'anual'">
+                  <span *ngIf="planSeleccionado() === 'anual'" class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                </span>
+              </div>
+              <span class="text-xs text-iron-500 font-sans">Acceso completo 365 días</span>
+              <span class="text-xs font-mono font-medium text-steel-500 mt-2 pt-2 border-t border-chalk-200">Q2,400.00 / año</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Fecha de Vencimiento Estimada (calculada) -->
+        <div class="rounded-custom bg-chalk-100/80 border border-chalk-200 p-4">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-iron-700 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-steel-500">schedule</span>
+              Fecha de Vencimiento Estimada
+            </span>
+            <span class="inline-flex items-center gap-1 text-[10px] font-mono uppercase bg-white text-steel-500 px-2 py-0.5 rounded border border-chalk-200">
+              <span class="w-1.5 h-1.5 rounded-full bg-track-green"></span>
+              Cálculo Automático
+            </span>
+          </div>
+
+          <div class="flex items-center gap-3 mt-2">
+            <div class="w-10 h-10 rounded-custom bg-white border border-chalk-200 flex items-center justify-center text-steel-500 shrink-0 shadow-xs">
+              <span class="material-symbols-outlined text-xl">event</span>
+            </div>
+            <div>
+              <p class="font-mono font-semibold text-sm text-iron-950 tracking-tight">{{ fechaVencimiento() }}</p>
+              <p class="text-[11px] text-iron-500 font-sans mt-0.5">
+                Vigencia calculada a partir de hoy ({{ planSeleccionado() === 'mensual' ? '30 días' : '365 días' }} de ciclo).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="pt-4 border-t border-chalk-200 flex flex-col gap-3">
+          <div class="flex items-center justify-end gap-3">
+            <button type="button" class="h-12 px-6 rounded-custom border border-chalk-300 bg-white hover:bg-chalk-100 text-iron-700 text-xs font-bold uppercase tracking-wider transition-colors active:scale-95">
+              Cancelar
+            </button>
+
+            <button type="submit" class="h-12 px-7 rounded-custom bg-signal-red hover:bg-signal-red-hover text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm shadow-signal-red/20 active:scale-95">
+              <span class="material-symbols-outlined text-lg">check</span>
+              Guardar Cliente
+            </button>
+          </div>
+
+          <!-- Zona de baja (solo en modo editar) -->
+          <div *ngIf="modo() === 'editar'" class="pt-3 border-t border-dashed border-chalk-200 flex items-center justify-between">
+            <div class="flex items-center gap-1.5 text-xs text-iron-500">
+              <span class="material-symbols-outlined text-base text-iron-300">info</span>
+              <span>Zona de baja del miembro</span>
+            </div>
+
+            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-custom border border-chalk-300 text-iron-700 hover:text-iron-950 hover:bg-chalk-100 hover:border-chalk-400 text-xs font-medium transition-colors">
+              <span class="material-symbols-outlined text-base text-iron-500">person_remove</span>
+              Dar de baja cliente
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Pie de la tarjeta -->
+      <div class="px-8 py-3.5 bg-chalk-50 border-t border-chalk-200 flex items-center justify-between text-[11px] text-iron-500 font-mono">
+        <span class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-xs text-track-green">verified</span>
+          Generación instantánea de QR
+        </span>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- BottomNavBar Mobile -->
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface-container-lowest border-t border-chalk-200 shadow-lg md:hidden z-50">
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">dashboard</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Dashboard</span>
+    </a>
+    <a class="flex flex-col items-center justify-center bg-signal-red/10 text-signal-red rounded-full px-3 py-1 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1" style="font-variation-settings: 'FILL' 1;">group</span><span class="font-utility-mono text-[10px] font-bold uppercase tracking-wider">Clientes</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">fitness_center</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Máquinas</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">notifications</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Alertas</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">campaign</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Anuncios</span>
+    </a>
+  </nav>
+</div>
