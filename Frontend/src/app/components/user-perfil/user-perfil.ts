@@ -1,12 +1,12 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-cliente-perfil',
-  templateUrl: './cliente-perfil.component.html',
-  styleUrls: ['./cliente-perfil.component.css'],
-  encapsulation: ViewEncapsulation.None,
-  host: {
-    class: 'bg-chalk-50 text-iron-950 font-body-md min-h-screen flex flex-col md:flex-row pb-24 md:pb-0 block'
-  }
+  selector: 'app-user-perfil',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './user-perfil.html',
+  styleUrl: './user-perfil.css'
 })
-export class ClientePerfilComponent {}
+export class UserPerfil {}

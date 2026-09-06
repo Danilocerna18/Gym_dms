@@ -1,78 +1,79 @@
-<div class="bg-chalk-50 text-iron-950 font-body-md min-h-screen w-full overflow-x-hidden flex flex-col items-center relative">
+<div class="bg-gray-100 text-gray-900 min-h-screen w-full flex flex-col items-center relative">
+  
   <!-- TopAppBar -->
-  <header class="w-full z-50 bg-chalk-50 border-b border-chalk-200">
-    <div class="flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 w-full max-w-screen-xl mx-auto">
-      <button class="text-iron-700 hover:text-signal-red transition-colors active:scale-95 duration-150 p-2 -ml-2">
+  <header class="w-full z-50 bg-white border-b border-gray-200">
+    <div class="flex items-center justify-between px-4 h-16 w-full max-w-screen-xl mx-auto">
+      <button class="text-gray-700 hover:text-red-600 transition-colors active:scale-95 duration-150 p-2 -ml-2">
         <span class="material-symbols-outlined text-[24px]">menu</span>
       </button>
-      <h1 class="font-headline-md text-headline-md text-iron-950 tracking-wide uppercase">GymSync</h1>
-      <div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-chalk-200 flex-shrink-0">
+      <h1 class="font-bold text-lg text-gray-900 tracking-wide uppercase">GymSync</h1>
+      <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border border-gray-300 flex-shrink-0">
         <img alt="Perfil de miembro" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk6K6TD31kcGuhaVIGqJNj05uMNIKRpqx_QUtwbvs129oYdrl5zA4tt26xlJM0Tr6koEy4l9rnas1yXyG_R03xIyiKoNLk8mORDeU3udg3whifazgTRKmik4QKjYwdzzgux_e7P-CAVP8cx7wY4JLHaQHcLaUaGSeF5U7l6jCVQEm4XI9djpvKGKoZxawV8LZIA4DLakBmnLYHO1mqlA2_f6v2BmTa70Ey1GeH2fiHGDsVnafuJ6AfAg"/>
       </div>
     </div>
   </header>
 
   <!-- Contenido Principal -->
-  <main class="w-full max-w-md px-margin-mobile flex flex-col items-center justify-start z-10 pt-8 pb-24 flex-1">
+  <main class="w-full max-w-md px-4 flex flex-col items-center justify-start z-10 pt-8 pb-28 flex-1">
     <!-- Texto de bienvenida -->
     <div class="text-center mb-8 space-y-2">
-      <h2 class="font-display-xl-mobile text-display-xl-mobile text-iron-950 uppercase">¡Bienvenido a GymSync, Sofia!</h2>
-      <p class="font-body-md text-body-md text-iron-700">Tu cuenta está lista. Hora de entrenar. Sigue las instrucciones a continuación.</p>
+      <h2 class="text-2xl font-black text-gray-900 uppercase">¡Bienvenido a GymSync, Sofia!</h2>
+      <p class="text-sm text-gray-600">Tu cuenta está lista. Hora de entrenar. Sigue las instrucciones a continuación.</p>
     </div>
 
     <!-- Anillo de Aforo -->
     <div class="relative w-48 h-48 mb-8 flex items-center justify-center">
       <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
-        <circle class="text-chalk-200 stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-width="8"></circle>
-        <circle class="text-track-green stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-dasharray="282.7" stroke-dashoffset="163.9" stroke-linecap="round" stroke-width="8"></circle>
+        <circle class="text-gray-300 stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-width="8"></circle>
+        <circle class="text-emerald-500 stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-dasharray="282.7" stroke-dashoffset="163.9" stroke-linecap="round" stroke-width="8"></circle>
       </svg>
       <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-        <span class="font-display-xl text-display-xl text-iron-950">42<span class="text-headline-md text-iron-700">/100</span></span>
-        <span class="font-utility-mono text-utility-mono text-iron-700 uppercase mt-1">Aforo Actual</span>
+        <span class="text-3xl font-extrabold text-gray-900">42<span class="text-base font-normal text-gray-600">/100</span></span>
+        <span class="text-xs font-mono text-gray-500 uppercase mt-1">Aforo Actual</span>
       </div>
     </div>
 
     <!-- Botones de Acción -->
     <div class="flex flex-col gap-4 w-full">
-      <button class="w-full bg-signal-red hover:bg-primary text-on-primary rounded-btn p-4 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+      <button routerLink="/user-escaner" class="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl p-4 flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md">
         <span class="material-symbols-outlined text-[24px]">qr_code_scanner</span>
-        <span class="font-headline-md text-headline-md uppercase tracking-wider">Escanear QR</span>
+        <span class="font-bold uppercase tracking-wider">Escanear QR</span>
       </button>
 
-      <a class="w-full bg-surface-container-high border border-chalk-200 hover:border-iron-700 text-iron-950 rounded-btn p-4 flex items-center justify-between transition-all active:scale-[0.98]" href="#">
+      <a class="w-full bg-white border border-gray-200 hover:border-gray-400 text-gray-900 rounded-xl p-4 flex items-center justify-between transition-all active:scale-[0.98] shadow-sm" href="#">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-iron-950 text-chalk-50 rounded-full flex items-center justify-center">
+          <div class="w-10 h-10 bg-gray-900 text-white rounded-full flex items-center justify-center">
             <span class="material-symbols-outlined text-[20px]">flag</span>
           </div>
           <div class="text-left">
-            <h3 class="font-headline-md text-[18px] leading-[22px] uppercase tracking-wide">Configurar objetivos</h3>
-            <p class="font-body-sm text-body-sm text-iron-700">Ajusta tu plan de entrenamiento</p>
+            <h3 class="font-bold text-base leading-tight uppercase tracking-wide">Configurar objetivos</h3>
+            <p class="text-xs text-gray-500">Ajusta tu plan de entrenamiento</p>
           </div>
         </div>
-        <span class="material-symbols-outlined text-[24px] text-iron-700">arrow_forward_ios</span>
+        <span class="material-symbols-outlined text-[20px] text-gray-500">chevron_right</span>
       </a>
     </div>
   </main>
 
   <!-- Navegación Inferior Móvil -->
-  <nav class="fixed bottom-0 w-full bg-chalk-50 border-t border-chalk-200 z-50 px-margin-mobile pb-safe pt-2">
+  <nav class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-50 px-4 pb-4 pt-2">
     <div class="flex justify-between items-center max-w-md mx-auto">
-      <a class="flex flex-col items-center justify-center p-2 text-signal-red" href="#">
+      <a routerLink="/user-home" class="flex flex-col items-center justify-center p-2 text-red-600 cursor-pointer">
         <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1">home</span>
-        <span class="font-utility-mono text-[10px] mt-1 tracking-wider uppercase">Inicio</span>
+        <span class="text-[10px] font-bold mt-1 tracking-wider uppercase">Inicio</span>
       </a>
-      <a class="flex flex-col items-center justify-center p-2 text-iron-700 hover:text-iron-950 transition-colors" href="#">
+      <a class="flex flex-col items-center justify-center p-2 text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
         <span class="material-symbols-outlined text-[24px]">groups</span>
-        <span class="font-utility-mono text-[10px] mt-1 tracking-wider uppercase">Miembros</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Miembros</span>
       </a>
-      <a class="flex flex-col items-center justify-center p-2 text-iron-700 hover:text-iron-950 transition-colors" href="#">
+      <a routerLink="/user-escaner" class="flex flex-col items-center justify-center p-2 text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
         <span class="material-symbols-outlined text-[24px]">play_circle</span>
-        <span class="font-utility-mono text-[10px] mt-1 tracking-wider uppercase">Videos</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Videos</span>
       </a>
-      <a class="flex flex-col items-center justify-center p-2 text-iron-700 hover:text-iron-950 transition-colors" href="#">
+      <a routerLink="/user-perfil" class="flex flex-col items-center justify-center p-2 text-gray-500 hover:text-gray-900 transition-colors cursor-pointer">
         <span class="material-symbols-outlined text-[24px]">person</span>
-        <span class="font-utility-mono text-[10px] mt-1 tracking-wider uppercase">Perfil</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Perfil</span>
       </a>
     </div>
   </nav>
-</div>
+</div>s

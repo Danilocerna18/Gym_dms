@@ -1,190 +1,68 @@
-<div class="bg-chalk-50 text-iron-950 font-body-md min-h-screen flex flex-col md:flex-row pb-24 md:pb-0">
-
-  <!-- Header Móvil -->
-  <header class="md:hidden w-full top-0 sticky bg-chalk-50 border-b border-chalk-200 shadow-sm z-40 flex justify-between items-center px-gutter py-unit">
-    <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-iron-950 text-2xl">fitness_center</span>
-      <span class="font-display-lg text-display-lg font-bold text-iron-950 tracking-tighter">GymSync</span>
-    </div>
-    <div class="h-8 w-8 rounded-full overflow-hidden bg-surface-container border border-chalk-200">
-      <img alt="GymSync Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCauVj8n2iNU3FJUJ2oAOnUArEiYqVBL1t9OzHCsZH-hW3vFC3iuVTGOb0QDsGObFEJbY_I4auM8qwPVeEyrkugmo4ImIrv--tLc4-2mgI_EehWrSKI0pMpF9iKJdf9yM_gIM8YVwCxHQ2Ky7TAVY3mLVjDh_ZcSi9h3CP-u0U6nLM-i3pBJ30S-MSmIOg_EKAy8f1uOYS1H394HsAVNeJlpfdu1kpajpk7-K_6kYwZWaoMa88TdmeS3w"/>
-    </div>
+<div class="min-h-screen bg-neutral-900 text-white flex flex-col justify-between items-center p-6 relative overflow-hidden font-sans">
+  
+  <!-- Encabezado del Escáner -->
+  <header class="w-full max-w-md flex justify-between items-center z-10 pt-4">
+    <a routerLink="/user-home" class="p-2 bg-neutral-800 rounded-full text-white hover:bg-neutral-700 transition-colors flex items-center justify-center">
+      <span class="material-symbols-outlined text-[24px]">close</span>
+    </a>
+    <h1 class="font-bold text-lg tracking-wider uppercase text-neutral-200">GYMSYNC</h1>
+    <div class="w-10"></div>
   </header>
 
-  <!-- Sidebar Desktop -->
-  <aside class="hidden md:flex flex-col w-[240px] bg-chalk-50 border-r border-chalk-200 fixed h-full z-40 p-margin-desktop top-0 left-0 justify-between">
-    <div class="flex flex-col gap-8">
-      <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-iron-950 text-3xl">fitness_center</span>
-        <span class="font-display-lg text-display-lg font-bold text-iron-950 tracking-tighter">GymSync</span>
-      </div>
+  <!-- Contenido Central / Cuadro del Escáner -->
+  <main class="w-full max-w-md flex flex-col items-center my-auto z-10">
+    <p class="text-sm text-neutral-400 text-center mb-8 px-4">
+      Apunta con la cámara al código QR de la máquina para cargar el tutorial
+    </p>
 
-      <nav class="flex flex-col gap-2">
-        <a class="flex items-center gap-3 p-3 rounded-lg text-iron-700 hover:bg-surface-container transition-colors font-body-sm text-body-sm" href="#">
-          <span class="material-symbols-outlined">dashboard</span> Inicio
-        </a>
-        <a class="flex items-center gap-3 p-3 rounded-lg text-iron-700 hover:bg-surface-container transition-colors font-body-sm text-body-sm" href="#">
-          <span class="material-symbols-outlined">group</span> Miembros
-        </a>
-        <a class="flex items-center gap-3 p-3 rounded-lg text-iron-700 hover:bg-surface-container transition-colors font-body-sm text-body-sm" href="#">
-          <span class="material-symbols-outlined">play_circle</span> Videos
-        </a>
-        <a class="flex items-center gap-3 p-3 rounded-lg bg-surface-container text-iron-950 transition-colors font-body-sm text-body-sm" href="#">
-          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span> Perfil
-        </a>
-      </nav>
+    <!-- Recuadro del Escáner Simulado -->
+    <div class="relative w-72 h-72 border-2 border-red-600 rounded-2xl flex items-center justify-center shadow-[0_0_50px_rgba(220,38,38,0.35)] bg-neutral-950/40 backdrop-blur-xs">
+      <!-- Esquinas del visor -->
+      <div class="absolute -top-1 -left-1 w-8 h-8 border-t-4 border-l-4 border-red-500 rounded-tl-xl"></div>
+      <div class="absolute -top-1 -right-1 w-8 h-8 border-t-4 border-r-4 border-red-500 rounded-tr-xl"></div>
+      <div class="absolute -bottom-1 -left-1 w-8 h-8 border-b-4 border-l-4 border-red-500 rounded-bl-xl"></div>
+      <div class="absolute -bottom-1 -right-1 w-8 h-8 border-b-4 border-r-4 border-red-500 rounded-br-xl"></div>
+      
+      <!-- Icono central -->
+      <span class="material-symbols-outlined text-neutral-700 text-6xl">qr_code_2</span>
+
+      <!-- Línea láser de animación -->
+      <div class="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_12px_#ef4444] animate-bounce my-auto"></div>
     </div>
 
-    <div class="flex items-center gap-3 mt-auto p-3 bg-surface-container rounded-lg inner-glow">
-      <img alt="GymSync Logo" class="h-10 w-10 rounded-full object-cover bg-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCauVj8n2iNU3FJUJ2oAOnUArEiYqVBL1t9OzHCsZH-hW3vFC3iuVTGOb0QDsGObFEJbY_I4auM8qwPVeEyrkugmo4ImIrv--tLc4-2mgI_EehWrSKI0pMpF9iKJdf9yM_gIM8YVwCxHQ2Ky7TAVY3mLVjDh_ZcSi9h3CP-u0U6nLM-i3pBJ30S-MSmIOg_EKAy8f1uOYS1H394HsAVNeJlpfdu1kpajpk7-K_6kYwZWaoMa88TdmeS3w"/>
-      <div>
-        <div class="font-body-sm text-body-sm text-iron-950">GymSync Admin</div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Contenido Principal -->
-  <main class="flex-1 md:ml-[240px] w-full max-w-5xl mx-auto p-gutter md:p-margin-desktop flex flex-col gap-8 relative overflow-x-hidden pt-6">
-    <section class="flex flex-col gap-4 md:flex-row md:items-end justify-between w-full">
-      <div class="flex items-center gap-gutter">
-        <div class="relative w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-chalk-200 bg-surface-container inner-glow">
-          <img class="w-full h-full object-cover" alt="Sofia Bilbao" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZPAI_9CtnGLCrt80DdfCS7QK2635l-9s41SmUaq_riofWRWDfF25xiD2iTViHUnMhJasOLkEiZes-SRWh4_ryD0L9IATVWkHBcWGr1PkJ_kBkUMPvIRyjAyyzBIwmUpaGJJ4tCXDkx4O6qNz0KGoQaeUn4K7UUGCR1CxxtAuvoM9HuG-8rjt2XCMDl-UUOwc2OzQjd4yxDuEDEZlaOqeCuyn5gvOnVppSxaNqbfWFMoYNCq7459ftPg"/>
-        </div>
-        <div class="flex flex-col">
-          <h1 class="font-display-xl text-display-xl-mobile md:text-display-xl text-iron-950 tracking-tighter">Sofia Bilbao</h1>
-          <div class="flex items-center gap-3 mt-2">
-            <span class="inline-flex items-center px-3 py-1 rounded-full bg-track-green/10 text-track-green font-utility-mono text-utility-mono border border-track-green/20 backdrop-blur-sm">
-              <span class="w-2 h-2 rounded-full bg-track-green mr-2"></span> Activa
-            </span>
-            <span class="text-iron-700 font-utility-mono text-utility-mono flex items-center gap-1">
-              <span class="material-symbols-outlined text-[16px]">calendar_month</span> Venc: 12 Nov 2024
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="flex gap-3 mt-4 md:mt-0">
-        <button class="px-6 py-2 rounded-md border-2 border-signal-red text-signal-red font-body-sm text-body-sm hover:bg-surface-container transition-colors flex items-center gap-2">
-          <span class="material-symbols-outlined text-[18px]">edit</span> Editar
-        </button>
-      </div>
-    </section>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-4">
-      <!-- Mi Progreso -->
-      <section class="md:col-span-2 bg-white rounded-xl border border-chalk-200 sharp-shadow p-6 flex flex-col gap-6 relative overflow-hidden accent-bar-performance">
-        <div class="flex justify-between items-center z-10">
-          <h2 class="font-headline-md text-headline-md text-iron-950 flex items-center gap-2">
-            <span class="material-symbols-outlined text-signal-red">monitoring</span> Mi Progreso
-          </h2>
-          <button class="text-iron-700 hover:text-iron-950 transition-colors">
-            <span class="material-symbols-outlined">more_horiz</span>
-          </button>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 z-10">
-          <div class="flex flex-col p-4 bg-chalk-50 rounded-lg inner-glow">
-            <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider mb-1">Entrenamientos</span>
-            <span class="font-display-lg text-display-lg text-iron-950">24</span>
-            <span class="text-track-green text-xs font-utility-mono mt-1 flex items-center">
-              <span class="material-symbols-outlined text-[14px]">arrow_upward</span> 12%
-            </span>
-          </div>
-          <div class="flex flex-col p-4 bg-chalk-50 rounded-lg inner-glow">
-            <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider mb-1">Duración Media</span>
-            <span class="font-display-lg text-display-lg text-iron-950">45m</span>
-          </div>
-          <div class="flex flex-col p-4 bg-chalk-50 rounded-lg inner-glow">
-            <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider mb-1">Calorías</span>
-            <span class="font-display-lg text-display-lg text-iron-950">12k</span>
-          </div>
-          <div class="flex flex-col p-4 bg-chalk-50 rounded-lg inner-glow">
-            <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider mb-1">Racha</span>
-            <span class="font-display-lg text-display-lg text-iron-950">4 <span class="text-sm font-body-md text-iron-700">días</span></span>
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-2 z-10 mt-2">
-          <div class="flex justify-between items-end">
-            <span class="font-utility-mono text-utility-mono text-iron-700">Meta Actual: Hipertrofia Fase 1</span>
-            <span class="font-utility-mono text-utility-mono text-iron-950">65%</span>
-          </div>
-          <div class="w-full h-2 bg-chalk-200 rounded-full overflow-hidden">
-            <div class="h-full bg-signal-red w-[65%] rounded-full"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Detalles -->
-      <section class="bg-white rounded-xl border border-chalk-200 sharp-shadow p-6 flex flex-col gap-4 accent-bar-finance">
-        <h2 class="font-headline-md text-headline-md text-iron-950 mb-2">Detalles</h2>
-        <div class="flex flex-col gap-4">
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-iron-700 mt-0.5">mail</span>
-            <div class="flex flex-col">
-              <span class="font-utility-mono text-utility-mono text-iron-700">Correo electrónico</span>
-              <span class="font-body-md text-body-md text-iron-950 truncate max-w-[200px]">sofia.b@example.com</span>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-iron-700 mt-0.5">phone</span>
-            <div class="flex flex-col">
-              <span class="font-utility-mono text-utility-mono text-iron-700">Teléfono</span>
-              <span class="font-body-md text-body-md text-iron-950">+1 (555) 019-2834</span>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-iron-700 mt-0.5">location_on</span>
-            <div class="flex flex-col">
-              <span class="font-utility-mono text-utility-mono text-iron-700">Sucursal principal</span>
-              <span class="font-body-md text-body-md text-iron-950">Centro</span>
-            </div>
-          </div>
-        </div>
-        <div class="mt-auto pt-4 border-t border-chalk-200">
-          <button class="w-full py-3 rounded-md bg-transparent border-2 border-chalk-200 text-iron-950 font-body-sm text-body-sm hover:bg-chalk-50 transition-colors">
-            Ver Historial Completo
-          </button>
-        </div>
-      </section>
-
-      <!-- Banner -->
-      <section class="md:col-span-3 bg-iron-950 rounded-xl inner-glow sharp-shadow overflow-hidden relative group cursor-pointer border border-chalk-200 transition-colors duration-300">
-        <div class="absolute inset-0 z-0">
-          <div class="w-full h-full bg-cover bg-center opacity-40 group-hover:opacity-60 transition-opacity duration-500 mix-blend-overlay" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwvXElGRRICfuNZS1QOZWWaD0rAwW7g5ktDX8ZUxK2eO6bD8RaG-0tXQ5JPpw2krA69ghy9r7H7VcNWuUthnkgHzBL1pspluHasBvJ25-R6tp-jGWB9-6UkHOld5FYB2oXD4AHFhzeIarAQJaKjyhgtbZu857o8SEKdnxNnWgRtSmdQVbh-1h11UUWOQZNlQa2RICB6yjHVP4gOmXfycBZZweCbf2XPD7YT-ALSOmIIZlIdozZDJxzmA')"></div>
-          <div class="absolute inset-0 bg-gradient-to-r from-iron-950 via-iron-950/80 to-transparent"></div>
-        </div>
-        <div class="relative z-10 p-8 md:p-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div class="flex flex-col max-w-lg">
-            <h2 class="font-display-xl text-display-xl-mobile md:text-display-xl text-white tracking-tighter leading-none mb-3">Guías de Video de Máquinas</h2>
-            <p class="font-body-md text-body-md text-chalk-200">Domina tu técnica con nuestros tutoriales en video de alta definición, paso a paso, para cada equipo en la sala. Escanea códigos QR o explora la biblioteca.</p>
-          </div>
-          <button class="shrink-0 px-8 py-4 bg-signal-red text-white font-body-sm text-body-sm font-bold uppercase tracking-wider rounded-md hover:bg-primary transition-all active:scale-95 flex items-center gap-2 shadow-[0_4px_14px_rgba(225,52,56,0.39)]">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
-            Acceder a la Biblioteca
-          </button>
-        </div>
-      </section>
-    </div>
+    <p class="text-xs text-red-400 font-mono mt-6 animate-pulse uppercase tracking-widest">
+      Escaneando máquina...
+    </p>
   </main>
 
-  <!-- Navegación Móvil Inferior -->
-  <nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-4 bg-chalk-50 border-t border-chalk-200 z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
-    <a class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90" href="#">
-      <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">dashboard</span>
-      <span class="font-body-sm text-[10px] mt-1 group-hover:text-iron-950">Inicio</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90" href="#">
-      <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">group</span>
-      <span class="font-body-sm text-[10px] mt-1 group-hover:text-iron-950">Miembros</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90" href="#">
-      <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">play_circle</span>
-      <span class="font-body-sm text-[10px] mt-1 group-hover:text-iron-950">Videos</span>
-    </a>
-    <a class="flex flex-col items-center justify-center bg-surface-container text-iron-950 rounded-full px-4 py-1 transition-transform active:scale-90" href="#">
-      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-      <span class="font-body-sm text-[10px] mt-1 font-bold">Perfil</span>
-    </a>
+  <!-- Botones de Acción / Pie -->
+  <footer class="w-full max-w-md z-10 pb-6 flex flex-col items-center gap-4">
+    <button routerLink="/user-maquinadet" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg">
+      <span class="material-symbols-outlined text-[20px]">upload_file</span>
+      <span class="uppercase tracking-wider text-sm">SUBIR DESDE GALERÍA</span>
+    </button>
+  </footer>
+
+  <!-- Navegación Inferior Móvil -->
+  <nav class="w-full bg-neutral-900 border-t border-neutral-800 z-50 px-4 py-2 mt-auto">
+    <div class="flex justify-between items-center max-w-md mx-auto">
+      <a routerLink="/user-home" class="flex flex-col items-center justify-center p-2 text-neutral-400 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-[24px]">home</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Inicio</span>
+      </a>
+      <a class="flex flex-col items-center justify-center p-2 text-neutral-400 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-[24px]">groups</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Miembros</span>
+      </a>
+      <a routerLink="/user-escaner" class="flex flex-col items-center justify-center p-2 text-red-500">
+        <span class="material-symbols-outlined text-[24px]">play_circle</span>
+        <span class="text-[10px] font-bold mt-1 tracking-wider uppercase">Videos</span>
+      </a>
+      <a routerLink="/user-perfil" class="flex flex-col items-center justify-center p-2 text-neutral-400 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-[24px]">person</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Perfil</span>
+      </a>
+    </div>
   </nav>
 
 </div>

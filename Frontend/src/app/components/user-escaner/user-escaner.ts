@@ -1,13 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-cliente-perfil',
+  selector: 'app-user-escaner',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './cliente-perfil.component.html',
-  styleUrls: ['./cliente-perfil.component.css']
+  imports: [CommonModule, RouterLink],
+  templateUrl: './user-escaner.html',
+  styleUrl: './user-escaner.css'
 })
-export class ClientePerfilComponent {
+export class UserEscaner implements OnInit {
 
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    // Simula lectura de QR y redirige a la máquina detectada tras 3.5s
+    setTimeout(() => {
+      this.router.navigate(['/user-maquinadet']);
+    }, 3500);
+  }
 }

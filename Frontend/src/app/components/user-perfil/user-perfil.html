@@ -56,6 +56,13 @@
       </div>
     </div>
     <div class="flex gap-3 mt-4 md:mt-0">
+      <!-- Botón VER MI QR agregado -->
+      <button routerLink="/user-qrunico" class="px-5 py-2 rounded-md bg-iron-950 text-white font-body-sm text-body-sm hover:bg-iron-800 transition-colors flex items-center gap-2 active:scale-95">
+        <span class="material-symbols-outlined text-[18px]">qr_code_2</span>
+        <span>VER MI QR</span>
+      </button>
+
+      <!-- Botón Editar existente -->
       <button class="px-6 py-2 rounded-md border-2 border-signal-red text-signal-red font-body-sm text-body-sm hover:bg-surface-container transition-colors flex items-center gap-2">
         <span class="material-symbols-outlined text-[18px]">edit</span> Editar
       </button>
@@ -153,19 +160,19 @@
 </main>
 
 <nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-4 bg-chalk-50 border-t border-chalk-200 z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
-  <a class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90" href="#">
+  <a routerLink="/user-home" class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90 cursor-pointer">
     <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">dashboard</span>
     <span class="font-body-sm text-[10px] mt-1 group-hover:text-iron-950">Inicio</span>
   </a>
-  <a class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90" href="#">
+  <a class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90 cursor-pointer">
     <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">group</span>
     <span class="font-body-sm text-[10px] mt-1 group-hover:text-iron-950">Miembros</span>
   </a>
-  <a class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90" href="#">
+  <a routerLink="/user-escaner" class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90 cursor-pointer">
     <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">play_circle</span>
     <span class="font-body-sm text-[10px] mt-1 group-hover:text-iron-950">Videos</span>
   </a>
-  <a class="flex flex-col items-center justify-center bg-surface-container text-iron-950 rounded-full px-4 py-1 transition-transform active:scale-90" href="#">
+  <a routerLink="/user-perfil" class="flex flex-col items-center justify-center bg-surface-container text-iron-950 rounded-full px-4 py-1 transition-transform active:scale-90 cursor-pointer">
     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
     <span class="font-body-sm text-[10px] mt-1 font-bold">Perfil</span>
   </a>
