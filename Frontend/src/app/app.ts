@@ -39,3 +39,4 @@ import { AdminEscanerAcceso } from './components/admin-escaner-acceso/admin-esca
   styleUrl: './app.css'
 })
 export class App { }
+
