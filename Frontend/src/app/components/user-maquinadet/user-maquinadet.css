@@ -1,0 +1,28 @@
+.inner-glow {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.sharp-shadow {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.accent-bar-performance {
+  border-left: 4px solid #E13438;
+}
+
+.accent-bar-finance {
+  border-left: 4px solid #3E6E8E;
+}
+
+.cta-bg {
+  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwvXElGRRICfuNZS1QOZWWaD0rAwW7g5ktDX8ZUxK2eO6bD8RaG-0tXQ5JPpw2krA69ghy9r7H7VcNWuUthnkgHzBL1pspluHasBvJ25-R6tp-jGWB9-6UkHOld5FYB2oXD4AHFhzeIarAQJaKjyhgtbZu857o8SEKdnxNnWgRtSmdQVbh-1h11UUWOQZNlQa2RICB6yjHVP4gOmXfycBZZweCbf2XPD7YT-ALSOmIIZlIdozZDJxzmA');
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

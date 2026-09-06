@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-user-maquinadet',
-  imports: [],
-  templateUrl: './user-maquinadet.html',
-  styleUrl: './user-maquinadet.css',
+  selector: 'app-perfil-cliente',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './perfil-cliente.component.html',
+  styleUrls: ['./perfil-cliente.component.css']
 })
-export class UserMaquinadet {
+export class PerfilClienteComponent {
 
 }
