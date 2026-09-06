@@ -18,15 +18,24 @@ import { Component } from '@angular/core';
   //styleUrl: './app.css'
 //})
 
-import { AdminFormularioCliente } from './components/admin-formulario-cliente/admin-formulario-cliente';
+//import { AdminFormularioCliente } from './components/admin-formulario-cliente/admin-formulario-cliente';
+
+//@Component({
+  //selector: 'app-root',
+  //standalone: true,
+  //imports: [AdminFormularioCliente], // cambia esto
+  //templateUrl: './app.html',
+  //styleUrl: './app.css'
+//})
+
+
+import { AdminEscanerAcceso } from './components/admin-escaner-acceso/admin-escaner-acceso';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AdminFormularioCliente], // cambia esto
+  imports: [AdminEscanerAcceso], // cambia esto
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App { }
-
-
