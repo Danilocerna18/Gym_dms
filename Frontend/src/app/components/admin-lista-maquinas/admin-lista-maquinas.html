@@ -1,1 +1,493 @@
-<p>admin-lista-maquinas works!</p>
+<header class="header">
+  <div class="header-content">
+
+    <div class="header-left">
+      <button
+        class="back-button"
+        type="button"
+        aria-label="Regresar"
+        (click)="regresar()"
+      >
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+
+      <div class="logo">
+        <span class="material-symbols-outlined logo-icon">fitness_center</span>
+        <span class="logo-text">GymSync</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <span class="register-text">REGISTER</span>
+
+      <div class="user-icon">
+        <span class="material-symbols-outlined">person</span>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="contenido">
+
+    <!-- ENCABEZADO -->
+    <div class="encabezado">
+
+      <div class="encabezado-superior">
+        <span class="seccion">
+          FLOTA DE EQUIPAMIENTO
+        </span>
+
+        <span class="total">
+          Total: 48 Activos
+        </span>
+      </div>
+
+      <h1>GESTIÓN DE MÁQUINAS</h1>
+
+      <p>
+        Controla terminales físicas, asigna tutoriales técnicos en video y
+        sincroniza códigos QR de acceso inmediato.
+      </p>
+
+    </div>
+
+    <!-- NUEVA MÁQUINA -->
+    <div class="nueva-maquina">
+      <button
+        class="boton-nueva"
+        type="button"
+        (click)="nuevaMaquina()"
+      >
+        <span class="material-symbols-outlined">add</span>
+        <span>+ NUEVA MÁQUINA</span>
+      </button>
+    </div>
+
+    <!-- BUSCADOR -->
+    <div class="buscador">
+
+      <span class="material-symbols-outlined icono-buscar">
+        search
+      </span>
+
+      <input
+        type="text"
+        placeholder="Buscar por nombre, ID o zona..."
+        [(ngModel)]="busqueda"
+      />
+
+      <button
+        class="boton-filtro"
+        type="button"
+        aria-label="Filtrar"
+      >
+        <span class="material-symbols-outlined">tune</span>
+      </button>
+
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros">
+
+      <button
+        class="filtro"
+        [class.activo]="filtroActual === 'todas'"
+        (click)="seleccionarFiltro('todas')"
+      >
+        Todas (48)
+      </button>
+
+      <button
+        class="filtro"
+        [class.activo]="filtroActual === 'cardio'"
+        (click)="seleccionarFiltro('cardio')"
+      >
+        Cardio (16)
+      </button>
+
+      <button
+        class="filtro"
+        [class.activo]="filtroActual === 'peso'"
+        (click)="seleccionarFiltro('peso')"
+      >
+        Peso Libre (20)
+      </button>
+
+      <button
+        class="filtro"
+        [class.activo]="filtroActual === 'funcional'"
+        (click)="seleccionarFiltro('funcional')"
+      >
+        Funcional (9)
+      </button>
+
+      <button
+        class="filtro mantenimiento"
+        [class.activo]="filtroActual === 'mantenimiento'"
+        (click)="seleccionarFiltro('mantenimiento')"
+      >
+        <span class="punto-rojo"></span>
+        Mantenimiento (3)
+      </button>
+
+    </div>
+
+    <!-- LISTADO -->
+    <div class="lista-maquinas">
+
+      <!-- MÁQUINA 1 -->
+      <div class="maquina-card">
+
+        <div class="datos-maquina">
+
+          <div class="informacion-maquina">
+
+            <div class="zona">
+              <span class="punto-verde"></span>
+              <span>ZONA CARDIO</span>
+              <span class="piso">• PISO 1</span>
+            </div>
+
+            <h2>Treadmill T-9000</h2>
+
+            <div class="detalles">
+              <span class="id-maquina">
+                ID: TRD-001
+              </span>
+
+              <span>
+                NFC Activo
+              </span>
+            </div>
+
+          </div>
+
+          <div class="qr">
+            <span class="material-symbols-outlined">
+              qr_code_2
+            </span>
+
+            <span class="qr-check">
+              <span class="material-symbols-outlined">
+                check
+              </span>
+            </span>
+          </div>
+
+        </div>
+
+        <!-- VIDEO -->
+        <div class="video">
+
+          <div class="video-imagen">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXvlKye_5YAcDTpQV2vXL18ROrG-iQLty4MxoYR1uct723UHLoHGM039nd8iXsWHQuXqctwWaaU4TBzhBDOXdA3RlvBmBoDgqDitLdd8KPhJOwqBov7XrFdTPSZ4eavjroIwqOvo5de_nxmlYwzlnAZdsa_IMusuFa0ZboxAFWytu8MtO2yGcsJWhBbdy9MWjVwRqmwszM7hpI1qnKgsb4HGfl3v717cAkfMiBbxBRwfUOfKLqIfwaBQ"
+              alt="Treadmill T-9000"
+            >
+
+            <div class="play">
+              <span class="material-symbols-outlined">
+                play_circle
+              </span>
+            </div>
+          </div>
+
+          <div class="video-info">
+
+            <div class="video-detalles">
+              <span>VIDEO 4K</span>
+              <span>03:45</span>
+            </div>
+
+            <p>
+              T-9000 Interval Training
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="acciones">
+
+          <button type="button">
+            <span class="material-symbols-outlined">
+              movie_edit
+            </span>
+            Editar Video
+          </button>
+
+          <button type="button">
+            <span class="material-symbols-outlined">
+              qr_code_2
+            </span>
+            Regenerar QR
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- MÁQUINA 2 -->
+      <div class="maquina-card">
+
+        <div class="datos-maquina">
+
+          <div class="informacion-maquina">
+
+            <div class="zona">
+              <span class="punto-verde"></span>
+              <span>PESO LIBRE</span>
+              <span class="piso">• BAHÍA B</span>
+            </div>
+
+            <h2>Smith Machine Pro</h2>
+
+            <div class="detalles">
+              <span class="id-maquina">
+                ID: SMT-042
+              </span>
+
+              <span>
+                Carga guiada
+              </span>
+            </div>
+
+          </div>
+
+          <div class="qr">
+
+            <span class="material-symbols-outlined">
+              qr_code_2
+            </span>
+
+            <span class="qr-check">
+              <span class="material-symbols-outlined">
+                check
+              </span>
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- VIDEO -->
+        <div class="video">
+
+          <div class="video-imagen">
+
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuGpBH0p1WG0I-mgYFjxT4gxBJf0PGdTmjLVs0UtSu01-8ZaEL_xUojzkwu9l20lQ-XsFDxZvdHKa-0z5IhEbNgyxEJHSArV69qruKEnIbFIPqJvFFoAHlEELWwmoTQkhgkkXpl7w_kgc_qsYhNMw7EHUVSwep5sTF4R1C7jmXSsJdpZ612f4jIb5rbiwd4t1X7rENSIlu7ppKsjDrH8roCp0mgr74Fsj9V42tvL-c6L1oWpCqTKyD6A"
+              alt="Smith Machine Pro"
+            >
+
+            <div class="play">
+              <span class="material-symbols-outlined">
+                play_circle
+              </span>
+            </div>
+
+          </div>
+
+          <div class="video-info">
+
+            <div class="video-detalles">
+              <span>VIDEO 4K</span>
+              <span>05:12</span>
+            </div>
+
+            <p>
+              Smith Squats &amp; Press - Guía
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="acciones">
+
+          <button type="button">
+            <span class="material-symbols-outlined">
+              movie_edit
+            </span>
+            Editar Video
+          </button>
+
+          <button type="button">
+            <span class="material-symbols-outlined">
+              qr_code_2
+            </span>
+            Regenerar QR
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- MÁQUINA 3 -->
+      <div class="maquina-card">
+
+        <div class="datos-maquina">
+
+          <div class="informacion-maquina">
+
+            <div class="zona zona-roja">
+              <span class="punto-rojo"></span>
+              <span>ZONA FUNCIONAL</span>
+              <span class="piso">• TORRE SUR</span>
+            </div>
+
+            <h2>Polea Doble Crossover</h2>
+
+            <div class="detalles">
+
+              <span class="id-maquina">
+                ID: CBL-110
+              </span>
+
+              <span class="mantenimiento-texto">
+                Revisión de cable
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="qr qr-inactivo">
+
+            <span class="material-symbols-outlined">
+              qr_code_2
+            </span>
+
+            <span class="qr-bloqueado">
+              <span class="material-symbols-outlined">
+                block
+              </span>
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- ALERTA -->
+        <div class="alerta">
+
+          <span class="material-symbols-outlined">
+            warning
+          </span>
+
+          <div>
+            <p>
+              En mantenimiento técnico
+            </p>
+
+            <span>
+              QR desactivado para usuarios del gimnasio.
+            </span>
+          </div>
+
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="acciones">
+
+          <button type="button">
+            <span class="material-symbols-outlined">
+              video_library
+            </span>
+            Asignar Video
+          </button>
+
+          <button type="button">
+            <span class="material-symbols-outlined">
+              visibility
+            </span>
+            Ver QR
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- IMPRESIÓN QR -->
+    <div class="impresion">
+
+      <div class="impresion-info">
+
+        <div class="impresion-icono">
+          <span class="material-symbols-outlined">
+            print
+          </span>
+        </div>
+
+        <div>
+          <p>
+            IMPRESIÓN DE LOTE QR
+          </p>
+
+          <span>
+            Exportar 48 etiquetas en PDF de alta resolución
+          </span>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        aria-label="Exportar etiquetas"
+        (click)="exportarQR()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_forward
+        </span>
+      </button>
+
+    </div>
+
+  </div>
+
+</main>
+
+<!-- NAVEGACIÓN -->
+<nav class="navegacion">
+
+  <div class="nav-content">
+
+    <a href="#" class="nav-item">
+      <span class="material-symbols-outlined">
+        dashboard
+      </span>
+      <span>INICIO</span>
+    </a>
+
+    <a href="#" class="nav-item">
+      <span class="material-symbols-outlined">
+        badge
+      </span>
+      <span>SOCIOS</span>
+    </a>
+
+    <a href="#" class="nav-item activo-nav">
+      <span class="material-symbols-outlined icono-relleno">
+        qr_code_scanner
+      </span>
+      <span>MÁQUINAS</span>
+      <span class="linea-activa"></span>
+    </a>
+
+    <a href="#" class="nav-item">
+      <span class="material-symbols-outlined">
+        tune
+      </span>
+      <span>AJUSTES</span>
+    </a>
+
+  </div>
+
+</nav>
