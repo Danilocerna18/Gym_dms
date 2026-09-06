@@ -1,1 +1,300 @@
-<p>auth-registro works!</p>
+<header class="header">
+  <div class="header-content">
+    <div class="header-left">
+      <button
+        class="back-button"
+        type="button"
+        aria-label="Regresar"
+        (click)="regresar()"
+      >
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+
+      <div class="logo">
+        <span class="material-symbols-outlined logo-icon">fitness_center</span>
+        <span class="logo-text">GymSync</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <span class="register-text">Register</span>
+
+      <div class="user-icon">
+        <span class="material-symbols-outlined">person</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="contenido">
+
+    <div class="titulo">
+      <div class="nuevo-ingreso">
+        <span class="punto-rojo"></span>
+        <span>NUEVO INGRESO // ACCESO 2024</span>
+      </div>
+
+      <h1>ÚNETE AL GIMNASIO</h1>
+
+      <p>
+        Entrena con datos en tiempo real y guías de máquinas.
+      </p>
+    </div>
+
+    <div class="registro-card">
+
+      <button class="google-button" type="button">
+        <svg class="google-icon" viewBox="0 0 24 24">
+          <path
+            d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+            fill="#4285F4">
+          </path>
+
+          <path
+            d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
+            fill="#34A853">
+          </path>
+
+          <path
+            d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.14-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+            fill="#FBBC05">
+          </path>
+
+          <path
+            d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+            fill="#EA4335">
+          </path>
+        </svg>
+
+        <span>Registrarse con Google</span>
+      </button>
+
+      <div class="separador">
+        <div class="linea"></div>
+        <span>O COMPLETA TUS DATOS</span>
+      </div>
+
+      <form
+        class="registro-form"
+        (ngSubmit)="crearCuenta()"
+        #formulario="ngForm"
+      >
+
+        <div class="campo">
+          <label for="nombre">
+            <span>Nombre completo</span>
+            <span>REQUERIDO</span>
+          </label>
+
+          <div class="input-container">
+            <span class="material-symbols-outlined input-icon">
+              badge
+            </span>
+
+            <input
+              id="nombre"
+              name="nombre"
+              type="text"
+              placeholder="Ej. Carlos Rivera"
+              [(ngModel)]="nombre"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="email">
+            <span>Correo electrónico</span>
+            <span>OFICIAL</span>
+          </label>
+
+          <div class="input-container">
+            <span class="material-symbols-outlined input-icon">
+              mail
+            </span>
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="carlos@ejemplo.com"
+              [(ngModel)]="email"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="telefono">
+            <span>Teléfono celular</span>
+            <span>ACCESO SMS</span>
+          </label>
+
+          <div class="input-container">
+            <span class="material-symbols-outlined input-icon">
+              smartphone
+            </span>
+
+            <input
+              id="telefono"
+              name="telefono"
+              type="tel"
+              placeholder="+502 0000 0000"
+              [(ngModel)]="telefono"
+            />
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="password">
+            <span>Contraseña</span>
+            <span>MÍNIMO 8 CARACTERES</span>
+          </label>
+
+          <div class="input-container">
+            <span class="material-symbols-outlined input-icon">
+              lock
+            </span>
+
+            <input
+              id="password"
+              name="password"
+              [type]="mostrarPassword ? 'text' : 'password'"
+              placeholder="••••••••"
+              [(ngModel)]="password"
+              minlength="8"
+              required
+            />
+
+            <button
+              class="password-button"
+              type="button"
+              (click)="mostrarPassword = !mostrarPassword"
+              aria-label="Mostrar contraseña"
+            >
+              <span class="material-symbols-outlined">
+                {{ mostrarPassword ? 'visibility_off' : 'visibility' }}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="membresia">
+
+          <div class="membresia-titulo">
+            <span>SELECCIONA TU MEMBRESÍA</span>
+            <span>TARIFAS CLARAS</span>
+          </div>
+
+          <div class="planes">
+
+            <div
+              class="plan"
+              [class.seleccionado]="plan === 'mensual'"
+              [class.no-seleccionado]="plan !== 'mensual'"
+              (click)="seleccionarPlan('mensual')"
+            >
+              <input
+                type="radio"
+                name="membresia"
+                value="mensual"
+                [(ngModel)]="plan"
+              />
+
+              <div class="plan-info">
+                <span class="plan-nombre">MENSUAL</span>
+                <p>Renovación cada 30 días</p>
+              </div>
+
+              <div class="precio">
+                <span>Q250.00</span>
+                <small>/ mes</small>
+              </div>
+
+              <div
+                class="seleccionado-texto"
+                [class.oculto]="plan !== 'mensual'"
+              >
+                <span class="material-symbols-outlined">
+                  check_circle
+                </span>
+                <span>SELECCIONADO</span>
+              </div>
+            </div>
+
+            <div
+              class="plan"
+              [class.seleccionado]="plan === 'anual'"
+              [class.no-seleccionado]="plan !== 'anual'"
+              (click)="seleccionarPlan('anual')"
+            >
+              <input
+                type="radio"
+                name="membresia"
+                value="anual"
+                [(ngModel)]="plan"
+              />
+
+              <div class="plan-info">
+                <span class="plan-nombre">ANUAL</span>
+                <p>Acceso completo 365 días</p>
+              </div>
+
+              <div class="precio">
+                <span>Q2,400.00</span>
+                <small>/ año</small>
+              </div>
+
+              <div
+                class="seleccionado-texto"
+                [class.oculto]="plan !== 'anual'"
+              >
+                <span class="material-symbols-outlined">
+                  check_circle
+                </span>
+                <span>SELECCIONADO</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="informacion">
+          <span class="material-symbols-outlined">
+            verified_user
+          </span>
+
+          <p>
+            Sin permanencia obligatoria. Cancela o cambia de plan en
+            cualquier instante desde tu perfil.
+          </p>
+        </div>
+
+        <button
+          class="crear-button"
+          type="submit"
+          [disabled]="formulario.invalid"
+          [class.exito]="cuentaCreada"
+        >
+          <span>{{ cuentaCreada ? '¡BIENVENIDO A GYMSYNC!' : 'CREAR MI CUENTA' }}</span>
+
+          <span class="material-symbols-outlined">
+            {{ cuentaCreada ? 'done' : 'arrow_forward' }}
+          </span>
+        </button>
+
+      </form>
+
+      <div class="iniciar-sesion">
+        <span>¿Ya tienes una cuenta?</span>
+
+        <a routerLink="/login">
+          Iniciar Sesión
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</main>
