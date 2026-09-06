@@ -1,1 +1,707 @@
-<p>admin-formulario-maquina works!</p>
+<header class="encabezado">
+
+  <div class="encabezado-contenido">
+
+    <div class="encabezado-izquierdo">
+
+      <button
+        class="boton-regresar"
+        type="button"
+        aria-label="Regresar"
+        (click)="regresar()">
+
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+      </button>
+
+      <div class="logo">
+
+        <span class="material-symbols-outlined">
+          fitness_center
+        </span>
+
+        <span>GymSync</span>
+
+      </div>
+
+    </div>
+
+    <div class="usuario">
+
+      <span class="registro">
+        Register
+      </span>
+
+      <div class="icono-usuario">
+
+        <span class="material-symbols-outlined">
+          person
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main class="contenido">
+
+  <div class="contenido-principal">
+
+
+    <!-- ESTADO -->
+
+    <div class="estado">
+
+      <div class="estado-izquierdo">
+
+        <span class="punto-verde"></span>
+
+        <span>
+          TERMINAL // ADMIN 04
+        </span>
+
+      </div>
+
+      <span class="estado-listo">
+        ESTADO: LISTO
+      </span>
+
+    </div>
+
+
+    <!-- TITULO -->
+
+    <section class="titulo">
+
+      <h1>
+        NUEVA MÁQUINA // SUBIR VIDEO
+      </h1>
+
+      <p>
+        Registra el equipo, sube el tutorial técnico en video y genera el código QR para el anclaje físico en sala.
+      </p>
+
+    </section>
+
+
+    <!-- DETALLES -->
+
+    <section class="tarjeta">
+
+      <div class="tarjeta-titulo">
+
+        <span class="titulo-seccion">
+
+          <span class="material-symbols-outlined">
+            tune
+          </span>
+
+          DETALLES DE LA MÁQUINA
+
+        </span>
+
+        <span class="modo">
+          MODO-EDICIÓN
+        </span>
+
+      </div>
+
+
+      <!-- NOMBRE -->
+
+      <div class="campo">
+
+        <label>
+
+          <span>
+            NOMBRE DE LA MÁQUINA *
+          </span>
+
+          <span class="obligatorio">
+            OBLIGATORIO
+          </span>
+
+        </label>
+
+        <div class="input-contenedor">
+
+          <input
+            type="text"
+            [(ngModel)]="nombreMaquina"
+            placeholder="ej. Prensa de Piernas 45°">
+
+          <span class="material-symbols-outlined">
+            fitness_center
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- GRUPO MUSCULAR -->
+
+      <div class="campo">
+
+        <label>
+          GRUPO MUSCULAR PRINCIPAL *
+        </label>
+
+        <div class="grupos">
+
+          <button
+            *ngFor="let grupo of gruposMusculares"
+            type="button"
+            class="grupo"
+            [class.grupo-seleccionado]="grupoMuscular === grupo"
+            (click)="seleccionarGrupo(grupo)">
+
+            <span>
+              {{ grupo }}
+            </span>
+
+            <span class="material-symbols-outlined">
+
+              {{
+                grupoMuscular === grupo
+                  ? 'check_circle'
+                  : 'radio_button_unchecked'
+              }}
+
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- INSTRUCCIONES -->
+
+      <div class="campo">
+
+        <label>
+
+          <span>
+            INSTRUCCIONES RÁPIDAS DE POSTURA
+          </span>
+
+          <span class="opcional">
+            OPCIONAL
+          </span>
+
+        </label>
+
+        <textarea
+          rows="3"
+          [(ngModel)]="instrucciones"
+          placeholder="ej. Ajustar el respaldo a 45°, mantener la zona lumbar completamente apoyada.">
+        </textarea>
+
+      </div>
+
+    </section>
+
+
+    <!-- VIDEO -->
+
+    <section class="tarjeta">
+
+      <div class="tarjeta-titulo">
+
+        <span class="titulo-seccion">
+
+          <span class="material-symbols-outlined">
+            videocam
+          </span>
+
+          VIDEO INSTRUCTIVO
+
+        </span>
+
+        <span class="hd">
+          <span class="punto-verde-pequeno"></span>
+          HD 1080P
+        </span>
+
+      </div>
+
+
+      <!-- INPUT -->
+
+      <input
+        #videoInput
+        class="input-video"
+        type="file"
+        accept="video/mp4,video/quicktime,video/webm"
+        (change)="seleccionarVideo($event)">
+
+
+      <!-- ZONA SUBIR -->
+
+      <div
+        class="zona-subida"
+        (click)="abrirSelectorVideo(videoInput)">
+
+        <div class="icono-subir">
+
+          <span class="material-symbols-outlined">
+            file_upload
+          </span>
+
+        </div>
+
+        <h2>
+          HAZ CLIC PARA SUBIR O ARRASTRA EL TUTORIAL
+        </h2>
+
+        <p>
+          Formatos permitidos: MP4, MOV o WEBM (máx. 150 MB).
+          Duración sugerida: 20-45 seg.
+        </p>
+
+        <div class="etiquetas">
+
+          <span>
+            MAX 150 MB
+          </span>
+
+          <span>
+            9:16 VERTICAL
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- VIDEO SELECCIONADO -->
+
+      <div
+        class="video-card"
+        *ngIf="mostrarVideo">
+
+        <div class="video-icono">
+
+          <span class="material-symbols-outlined">
+            play_arrow
+          </span>
+
+        </div>
+
+        <div class="video-info">
+
+          <div class="video-nombre">
+
+            <strong>
+              {{
+                videoSeleccionado
+                  ? videoSeleccionado.name
+                  : 'prensa_45_tecnica_v02.mp4'
+              }}
+            </strong>
+
+            <span>
+              100%
+            </span>
+
+          </div>
+
+          <p>
+            {{
+              videoSeleccionado
+                ? (videoSeleccionado.size / 1024 / 1024 | number:'1.1-1')
+                : '38.4'
+            }}
+            MB // 00:34 SEG
+          </p>
+
+          <div class="barra">
+
+            <div class="barra-progreso"></div>
+
+          </div>
+
+        </div>
+
+        <button
+          class="boton-eliminar"
+          type="button"
+          aria-label="Eliminar video"
+          (click)="eliminarVideo()">
+
+          <span class="material-symbols-outlined">
+            delete
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- QR -->
+
+    <section class="qr-tarjeta">
+
+      <div class="qr-header">
+
+        <div class="qr-titulo">
+
+          <span class="material-symbols-outlined">
+            qr_code_2
+          </span>
+
+          <span>
+            CÓDIGO QR AUTOMÁTICO
+          </span>
+
+        </div>
+
+        <span class="activo">
+
+          <span></span>
+
+          ACTIVO
+
+        </span>
+
+      </div>
+
+
+      <div class="qr-placa">
+
+        <div class="qr-info-superior">
+
+          <span>
+            ● GYMSYNC ID TAG
+          </span>
+
+          <span>
+            ZONE 02 - LEGS
+          </span>
+
+        </div>
+
+
+        <!-- QR -->
+
+        <div class="qr">
+
+          <svg
+            viewBox="0 0 160 160"
+            xmlns="http://www.w3.org/2000/svg">
+
+            <rect
+              width="160"
+              height="160"
+              fill="white"/>
+
+
+            <!-- Finder izquierdo -->
+
+            <rect
+              x="10"
+              y="10"
+              width="40"
+              height="40"
+              fill="#16181C"/>
+
+            <rect
+              x="16"
+              y="16"
+              width="28"
+              height="28"
+              fill="white"/>
+
+            <rect
+              x="22"
+              y="22"
+              width="16"
+              height="16"
+              fill="#16181C"/>
+
+
+            <!-- Finder derecho -->
+
+            <rect
+              x="110"
+              y="10"
+              width="40"
+              height="40"
+              fill="#16181C"/>
+
+            <rect
+              x="116"
+              y="16"
+              width="28"
+              height="28"
+              fill="white"/>
+
+            <rect
+              x="122"
+              y="22"
+              width="16"
+              height="16"
+              fill="#16181C"/>
+
+
+            <!-- Finder inferior -->
+
+            <rect
+              x="10"
+              y="110"
+              width="40"
+              height="40"
+              fill="#16181C"/>
+
+            <rect
+              x="16"
+              y="116"
+              width="28"
+              height="28"
+              fill="white"/>
+
+            <rect
+              x="22"
+              y="122"
+              width="16"
+              height="16"
+              fill="#16181C"/>
+
+
+            <!-- Datos -->
+
+            <rect fill="#16181C" height="8" width="8" x="58" y="12"/>
+            <rect fill="#16181C" height="8" width="8" x="74" y="12"/>
+            <rect fill="#16181C" height="8" width="12" x="90" y="12"/>
+
+            <rect fill="#16181C" height="8" width="16" x="58" y="28"/>
+            <rect fill="#16181C" height="16" width="8" x="82" y="28"/>
+
+            <rect fill="#16181C" height="8" width="8" x="58" y="44"/>
+            <rect fill="#16181C" height="8" width="8" x="98" y="44"/>
+
+            <rect fill="#16181C" height="8" width="16" x="12" y="58"/>
+            <rect fill="#16181C" height="16" width="8" x="36" y="58"/>
+            <rect fill="#16181C" height="16" width="16" x="52" y="58"/>
+            <rect fill="#16181C" height="8" width="16" x="76" y="58"/>
+            <rect fill="#16181C" height="8" width="24" x="100" y="58"/>
+            <rect fill="#16181C" height="16" width="16" x="132" y="58"/>
+
+            <rect fill="#16181C" height="8" width="24" x="12" y="82"/>
+            <rect fill="#16181C" height="8" width="8" x="44" y="82"/>
+            <rect fill="#16181C" height="16" width="16" x="60" y="82"/>
+            <rect fill="#16181C" height="8" width="16" x="84" y="82"/>
+            <rect fill="#16181C" height="16" width="16" x="108" y="82"/>
+            <rect fill="#16181C" height="24" width="8" x="132" y="82"/>
+
+            <rect fill="#16181C" height="8" width="16" x="58" y="106"/>
+            <rect fill="#16181C" height="8" width="24" x="82" y="106"/>
+            <rect fill="#16181C" height="16" width="8" x="114" y="106"/>
+
+            <rect fill="#16181C" height="26" width="8" x="58" y="122"/>
+            <rect fill="#16181C" height="8" width="16" x="74" y="122"/>
+            <rect fill="#16181C" height="16" width="16" x="98" y="122"/>
+            <rect fill="#16181C" height="8" width="26" x="122" y="122"/>
+
+            <rect fill="#16181C" height="10" width="8" x="74" y="138"/>
+            <rect fill="#16181C" height="10" width="16" x="90" y="138"/>
+            <rect fill="#16181C" height="10" width="8" x="122" y="138"/>
+
+
+            <!-- Centro -->
+
+            <circle
+              cx="80"
+              cy="80"
+              r="16"
+              fill="#E13438"/>
+
+            <path
+              d="M74 77H86M77 74V86M83 74V86"
+              stroke="#F3F1EC"
+              stroke-width="2.5"
+              stroke-linecap="round"/>
+
+          </svg>
+
+        </div>
+
+
+        <!-- ID -->
+
+        <div class="id-contenedor">
+
+          <div>
+
+            <span>
+              IDENTIFICADOR TÉCNICO
+            </span>
+
+            <strong>
+              {{ idMaquina }}
+            </strong>
+
+          </div>
+
+          <button
+            type="button"
+            (click)="copiarId()">
+
+            <span class="material-symbols-outlined">
+              content_copy
+            </span>
+
+            COPIAR
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- DESCARGAR -->
+
+      <button
+        class="boton-descargar"
+        type="button"
+        (click)="descargarQR()">
+
+        <span class="material-symbols-outlined">
+          print
+        </span>
+
+        DESCARGAR QR PARA IMPRIMIR (PDF / PNG)
+
+      </button>
+
+    </section>
+
+
+    <!-- BOTONES -->
+
+    <div class="acciones">
+
+      <button
+        class="boton-guardar"
+        type="button"
+        (click)="guardarMaquina()">
+
+        <span class="material-symbols-outlined">
+          save
+        </span>
+
+        GUARDAR MÁQUINA Y ACTIVAR QR
+
+      </button>
+
+
+      <button
+        class="boton-cancelar"
+        type="button"
+        (click)="regresar()">
+
+        CANCELAR
+
+      </button>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- TOAST -->
+
+  <div
+    class="toast"
+    [class.toast-visible]="mostrarToast">
+
+    <div class="toast-icono">
+
+      <span class="material-symbols-outlined">
+        check
+      </span>
+
+    </div>
+
+    <div>
+
+      <strong>
+        MÁQUINA VINCULADA
+      </strong>
+
+      <p>
+        {{ idMaquina }} ya está listo para sala.
+      </p>
+
+    </div>
+
+  </div>
+
+
+</main>
+
+
+<!-- NAVEGACIÓN -->
+
+<nav class="navegacion">
+
+  <a href="#" class="nav-item">
+
+    <span class="material-symbols-outlined">
+      dashboard
+    </span>
+
+    <span>INICIO</span>
+
+  </a>
+
+
+  <a href="#" class="nav-item">
+
+    <span class="material-symbols-outlined">
+      group
+    </span>
+
+    <span>MIEMBROS</span>
+
+  </a>
+
+
+  <a
+    href="#"
+    class="nav-item nav-activo">
+
+    <span class="material-symbols-outlined">
+      video_library
+    </span>
+
+    <span>MÁQUINAS</span>
+
+    <i></i>
+
+  </a>
+
+
+  <a href="#" class="nav-item">
+
+    <span class="material-symbols-outlined">
+      account_circle
+    </span>
+
+    <span>PERFIL</span>
+
+  </a>
+
+</nav>

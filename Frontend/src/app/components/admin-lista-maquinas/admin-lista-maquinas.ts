@@ -1,31 +1,37 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-lista-maquinas',
   standalone: true,
-  imports: [FormsModule],
+  imports: [
+    FormsModule
+  ],
   templateUrl: './admin-lista-maquinas.html',
   styleUrl: './admin-lista-maquinas.css'
 })
 export class AdminListaMaquinasComponent {
 
-  busqueda: string = '';
-  filtroActual: string = 'todas';
+  busqueda = '';
 
-  seleccionarFiltro(filtro: string): void {
+  filtroActual = 'todas';
+
+  constructor(private router: Router) {}
+
+  nuevaMaquina() {
+    this.router.navigate(['/admin-formulario-maquina']);
+  }
+
+  regresar() {
+    this.router.navigate(['/login']);
+  }
+
+  seleccionarFiltro(filtro: string) {
     this.filtroActual = filtro;
   }
 
-  nuevaMaquina(): void {
-    console.log('Nueva máquina');
-  }
-
-  exportarQR(): void {
-    console.log('Exportando etiquetas QR');
-  }
-
-  regresar(): void {
-    window.history.back();
+  exportarQR() {
+    alert('Preparando exportación de códigos QR...');
   }
 }
