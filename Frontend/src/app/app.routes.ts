@@ -13,6 +13,12 @@ import { UserQrunico } from './components/user-qrunico/user-qrunico';
 import { UserEscaner } from './components/user-escaner/user-escaner';
 import { UserMaquinadet } from './components/user-maquinadet/user-maquinadet';
 
+// Componentes de admin Sofia
+import { AdminPanel } from './components/admin-panel/admin-panel';
+import { AdminListaClientes } from './components/admin-lista-clientes/admin-lista-clientes';
+import { AdminFormularioCliente } from './components/admin-formulario-cliente/admin-formulario-cliente';
+import { AdminEscanerAcceso } from './components/admin-escaner-acceso/admin-escaner-acceso';
+
 export const routes: Routes = [
   {
     path: '',
@@ -41,5 +47,12 @@ export const routes: Routes = [
   { path: 'user-perfil', component: UserPerfil },
   { path: 'user-qrunico', component: UserQrunico },
   { path: 'user-escaner', component: UserEscaner },
-  { path: 'user-maquinadet', component: UserMaquinadet }
+  { path: 'user-maquinadet', component: UserMaquinadet },
+
+  // Módulo de admin Sofia
+  { path: 'admin/dashboard', component: AdminPanel },
+  { path: 'admin/clientes', component: AdminListaClientes },
+  { path: 'admin/clientes/nuevo', component: AdminFormularioCliente },
+  { path: 'admin/clientes/:id/editar', component: AdminFormularioCliente },
+  { path: 'admin/escaner', component: AdminEscanerAcceso }
 ];
