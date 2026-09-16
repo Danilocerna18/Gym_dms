@@ -7,13 +7,34 @@
         <h1 class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</h1>
       </div>
       <nav class="hidden md:flex gap-8">
-        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+        <a
+          routerLink="/admin/dashboard"
+          routerLinkActive
+          #rlaDashboardDesktop="routerLinkActive"
+          [class.text-signal-red]="rlaDashboardDesktop.isActive"
+          [class.text-iron-700]="!rlaDashboardDesktop.isActive"
+          class="font-utility-mono text-utility-mono hover:text-signal-red transition-colors flex items-center gap-2"
+        >
           <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
         </a>
-        <a class="font-utility-mono text-utility-mono text-signal-red flex items-center gap-2" href="#">
-          <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">group</span> Clientes
+        <a
+          routerLink="/admin/clientes"
+          routerLinkActive
+          #rlaClientesDesktop="routerLinkActive"
+          [class.text-signal-red]="rlaClientesDesktop.isActive"
+          [class.text-iron-700]="!rlaClientesDesktop.isActive"
+          class="font-utility-mono text-utility-mono hover:text-signal-red transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">group</span> Clientes
         </a>
-        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+        <a
+          routerLink="/admin-lista-maquinas"
+          routerLinkActive
+          #rlaMaquinasDesktop="routerLinkActive"
+          [class.text-signal-red]="rlaMaquinasDesktop.isActive"
+          [class.text-iron-700]="!rlaMaquinasDesktop.isActive"
+          class="font-utility-mono text-utility-mono hover:text-signal-red transition-colors flex items-center gap-2"
+        >
           <span class="material-symbols-outlined text-xl">fitness_center</span> Máquinas
         </a>
         <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
@@ -264,13 +285,34 @@
 
   <!-- BottomNavBar Mobile -->
   <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface-container-lowest border-t border-chalk-200 shadow-lg md:hidden z-50">
-    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+    <a
+      routerLink="/admin/dashboard"
+      routerLinkActive
+      #rlaDashboardMobile="routerLinkActive"
+      [class.text-signal-red]="rlaDashboardMobile.isActive"
+      [class.text-iron-700]="!rlaDashboardMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200"
+    >
       <span class="material-symbols-outlined text-2xl mb-1">dashboard</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Dashboard</span>
     </a>
-    <a class="flex flex-col items-center justify-center bg-signal-red/10 text-signal-red rounded-full px-3 py-1 active:scale-90 transition-transform duration-200" href="#">
-      <span class="material-symbols-outlined text-2xl mb-1" style="font-variation-settings: 'FILL' 1;">group</span><span class="font-utility-mono text-[10px] font-bold uppercase tracking-wider">Clientes</span>
+    <a
+      routerLink="/admin/clientes"
+      routerLinkActive
+      #rlaClientesMobile="routerLinkActive"
+      [class.text-signal-red]="rlaClientesMobile.isActive"
+      [class.text-iron-700]="!rlaClientesMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">group</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Clientes</span>
     </a>
-    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+    <a
+      routerLink="/admin-lista-maquinas"
+      routerLinkActive
+      #rlaMaquinasMobile="routerLinkActive"
+      [class.text-signal-red]="rlaMaquinasMobile.isActive"
+      [class.text-iron-700]="!rlaMaquinasMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200"
+    >
       <span class="material-symbols-outlined text-2xl mb-1">fitness_center</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Máquinas</span>
     </a>
     <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">

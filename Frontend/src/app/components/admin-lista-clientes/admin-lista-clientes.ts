@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 interface MiembroSeleccionado { //es una interfaz que define la estructura de un objeto que representa a un miembro seleccionado, con propiedades para el nombre y el ID del miembro en esa pantalla
   nombre: string;
@@ -9,7 +10,7 @@ interface MiembroSeleccionado { //es una interfaz que define la estructura de un
 @Component({
   selector: 'app-admin-lista-clientes',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './admin-lista-clientes.html',
   styleUrl: './admin-lista-clientes.css'
 })

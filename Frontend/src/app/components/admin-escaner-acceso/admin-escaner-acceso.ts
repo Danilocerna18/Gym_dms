@@ -1,12 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 type ResultadoEscaneo = 'concedido' | 'denegado'; // tipo de resultado que puede mostrar el escáner
 
 @Component({
   selector: 'app-admin-escaner-acceso',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './admin-escaner-acceso.html',
   styleUrl: './admin-escaner-acceso.css'
 })

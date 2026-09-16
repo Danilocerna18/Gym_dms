@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-auth-iniciar-sesion',
@@ -10,6 +10,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './auth-iniciar-sesion.css'
 })
 export class AuthIniciarSesionComponent {
+
+  private router = inject(Router);
 
   email: string = '';
   password: string = '';
@@ -22,5 +24,13 @@ export class AuthIniciarSesionComponent {
   iniciarSesion(): void {
     console.log('Email:', this.email);
     console.log('Contraseña:', this.password);
+
+    this.router.navigate(['/user-home']);
+  }
+
+  // TODO: quitar este botón cuando exista login real
+  // Botón temporal solo para que el profesor revise el avance del frontend de admin (Sprint 2)
+  verDemoAdmin(): void {
+    this.router.navigate(['/admin/dashboard']);
   }
 }

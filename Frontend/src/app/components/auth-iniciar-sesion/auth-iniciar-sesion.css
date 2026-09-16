@@ -452,6 +452,59 @@
   font-size: 20px;
 }
 
+/* TODO: quitar estos estilos cuando exista login real (botón temporal demo Sprint 2) */
+.demo-separador {
+  position: relative;
+  height: 20px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-separador span {
+  position: absolute;
+  padding: 0 12px;
+  background: #ffffff;
+  color: #b8860b;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.demo-admin-button {
+  align-self: center;
+  min-width: 200px;
+  height: 44px;
+  padding: 0 24px;
+  border: 2px dashed #b8860b;
+  border-radius: 12px;
+  background: transparent;
+  color: #b8860b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.demo-admin-button:hover {
+  background: rgba(184, 134, 11, 0.08);
+}
+
+.demo-admin-button .material-symbols-outlined {
+  font-size: 18px;
+}
+
 .telemetria {
   width: 100%;
   min-height: 72px;

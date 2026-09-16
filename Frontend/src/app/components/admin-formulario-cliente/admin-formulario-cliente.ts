@@ -1,5 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 type ModoFormulario = 'nuevo' | 'editar'; //Definición del tipo ModoFormulario con dos posibles valores: 'nuevo' y 'editar'
 type PlanMembresia = 'mensual' | 'anual'; //Definición del tipo PlanMembresia con dos posibles valores: 'mensual' y 'anual'
@@ -7,7 +8,7 @@ type PlanMembresia = 'mensual' | 'anual'; //Definición del tipo PlanMembresia c
 @Component({
   selector: 'app-admin-formulario-cliente',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './admin-formulario-cliente.html',
   styleUrl: './admin-formulario-cliente.css'
 })

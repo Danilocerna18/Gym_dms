@@ -14,10 +14,6 @@
   border-left: 4px solid #3E6E8E;
 }
 
-.cta-bg {
-  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwvXElGRRICfuNZS1QOZWWaD0rAwW7g5ktDX8ZUxK2eO6bD8RaG-0tXQ5JPpw2krA69ghy9r7H7VcNWuUthnkgHzBL1pspluHasBvJ25-R6tp-jGWB9-6UkHOld5FYB2oXD4AHFhzeIarAQJaKjyhgtbZu857o8SEKdnxNnWgRtSmdQVbh-1h11UUWOQZNlQa2RICB6yjHVP4gOmXfycBZZweCbf2XPD7YT-ALSOmIIZlIdozZDJxzmA');
-}
-
 ::-webkit-scrollbar {
   display: none;
 }
