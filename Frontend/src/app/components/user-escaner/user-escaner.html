@@ -1,0 +1,68 @@
+<div class="min-h-screen bg-neutral-900 text-white flex flex-col justify-between items-center p-6 relative overflow-hidden font-sans">
+  
+  <!-- Encabezado del Escáner -->
+  <header class="w-full max-w-md flex justify-between items-center z-10 pt-4">
+    <a routerLink="/user-home" class="p-2 bg-neutral-800 rounded-full text-white hover:bg-neutral-700 transition-colors flex items-center justify-center">
+      <span class="material-symbols-outlined text-[24px]">close</span>
+    </a>
+    <h1 class="font-bold text-lg tracking-wider uppercase text-neutral-200">GYMSYNC</h1>
+    <div class="w-10"></div>
+  </header>
+
+  <!-- Contenido Central / Cuadro del Escáner -->
+  <main class="w-full max-w-md flex flex-col items-center my-auto z-10">
+    <p class="text-sm text-neutral-400 text-center mb-8 px-4">
+      Apunta con la cámara al código QR de la máquina para cargar el tutorial
+    </p>
+
+    <!-- Recuadro del Escáner Simulado -->
+    <div class="relative w-72 h-72 border-2 border-red-600 rounded-2xl flex items-center justify-center shadow-[0_0_50px_rgba(220,38,38,0.35)] bg-neutral-950/40 backdrop-blur-xs">
+      <!-- Esquinas del visor -->
+      <div class="absolute -top-1 -left-1 w-8 h-8 border-t-4 border-l-4 border-red-500 rounded-tl-xl"></div>
+      <div class="absolute -top-1 -right-1 w-8 h-8 border-t-4 border-r-4 border-red-500 rounded-tr-xl"></div>
+      <div class="absolute -bottom-1 -left-1 w-8 h-8 border-b-4 border-l-4 border-red-500 rounded-bl-xl"></div>
+      <div class="absolute -bottom-1 -right-1 w-8 h-8 border-b-4 border-r-4 border-red-500 rounded-br-xl"></div>
+      
+      <!-- Icono central -->
+      <span class="material-symbols-outlined text-neutral-700 text-6xl">qr_code_2</span>
+
+      <!-- Línea láser de animación -->
+      <div class="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_12px_#ef4444] animate-bounce my-auto"></div>
+    </div>
+
+    <p class="text-xs text-red-400 font-mono mt-6 animate-pulse uppercase tracking-widest">
+      Escaneando máquina...
+    </p>
+  </main>
+
+  <!-- Botones de Acción / Pie -->
+  <footer class="w-full max-w-md z-10 pb-6 flex flex-col items-center gap-4">
+    <button routerLink="/user-maquinadet" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg">
+      <span class="material-symbols-outlined text-[20px]">upload_file</span>
+      <span class="uppercase tracking-wider text-sm">SUBIR DESDE GALERÍA</span>
+    </button>
+  </footer>
+
+  <!-- Navegación Inferior Móvil -->
+  <nav class="w-full bg-neutral-900 border-t border-neutral-800 z-50 px-4 py-2 mt-auto">
+    <div class="flex justify-between items-center max-w-md mx-auto">
+      <a routerLink="/user-home" class="flex flex-col items-center justify-center p-2 text-neutral-400 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-[24px]">home</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Inicio</span>
+      </a>
+      <a class="flex flex-col items-center justify-center p-2 text-neutral-400 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-[24px]">groups</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Miembros</span>
+      </a>
+      <a routerLink="/user-escaner" class="flex flex-col items-center justify-center p-2 text-red-500">
+        <span class="material-symbols-outlined text-[24px]">play_circle</span>
+        <span class="text-[10px] font-bold mt-1 tracking-wider uppercase">Videos</span>
+      </a>
+      <a routerLink="/user-perfil" class="flex flex-col items-center justify-center p-2 text-neutral-400 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-[24px]">person</span>
+        <span class="text-[10px] mt-1 tracking-wider uppercase">Perfil</span>
+      </a>
+    </div>
+  </nav>
+
+</div>

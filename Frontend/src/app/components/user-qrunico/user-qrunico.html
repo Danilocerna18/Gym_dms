@@ -1,0 +1,184 @@
+<header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+  <div class="h-16 px-margin-mobile flex items-center justify-between">
+    <div class="flex items-center gap-gutter">
+      <button aria-label="Volver" class="min-w-[48px] min-h-[48px] flex items-center justify-center text-on-surface hover:text-signal-red transition-colors" (click)="goBack()">
+        <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+      </button>
+      <div class="flex flex-col">
+        <span class="font-utility-mono text-[11px] tracking-wider uppercase text-secondary">GYMSYNC ACCESS</span>
+        <h1 class="font-headline-md text-headline-md uppercase tracking-tight text-on-surface leading-none">Access Pass</h1>
+      </div>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+      <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+    </div>
+  </div>
+</header>
+
+<main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface">
+  <div class="flex flex-col w-full px-margin-mobile pb-8 space-y-4">
+    
+    <!-- Indicador de Estado -->
+    <div class="flex items-center justify-between py-2 px-1">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-track-green opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-track-green"></span>
+        </span>
+        <span class="font-utility-mono text-utility-mono uppercase text-secondary tracking-widest text-[11px]">Sincronizado • Listo</span>
+      </div>
+      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container rounded-full text-on-surface-variant">
+        <span class="material-symbols-outlined text-[16px] text-signal-red">brightness_high</span>
+        <span class="font-utility-mono text-utility-mono text-[11px] font-semibold tracking-tight">BRILLO AL 100%</span>
+      </div>
+    </div>
+
+    <!-- Tarjeta Principal del Pase -->
+    <div class="w-full bg-iron-950 text-chalk-50 rounded-xl p-5 shadow-xl flex flex-col items-center relative overflow-hidden">
+      
+      <!-- Header de Miembro -->
+      <div class="w-full flex items-start justify-between pb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl overflow-hidden bg-iron-700 flex-shrink-0">
+            <img class="w-full h-full object-cover" alt="Fotografía de Sofía Bilbao" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMGF3AR47zfQ8FEt691fXZlEQscaa08giZExm3TPGecb-LG2ho1nW6lDVZOnXklG0CWMMipnGcnh4Xm2xkb3TLDnxlGiBsxxOsWJxd0dI06_9SRhvQDvk6pTeoggdzu2nzvTfIRQUB1_MCEfz-ZJe7bvdMXGwdbK6uBLiLPV2d5h1t5OsfxUIHSFt4lZpoy1Tr84ZPS-S4tianC1RnBoehU0spLLLE9JZ0CncRTJ7LNeC9y7WuCjLvMQ">
+          </div>
+          <div class="flex flex-col">
+            <span class="font-display-lg text-display-lg uppercase tracking-tight text-chalk-50 leading-none">SOFÍA BILBAO</span>
+            <span class="font-utility-mono text-utility-mono text-chalk-200 mt-1 opacity-80">ID: MEM-84920</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 bg-track-green/20 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-track-green"></span>
+          <span class="font-utility-mono text-utility-mono text-[11px] font-bold text-chalk-50 uppercase tracking-wider">ACTIVA</span>
+        </div>
+      </div>
+
+      <!-- Tag de Expiración -->
+      <div class="w-full flex items-center justify-between py-2 px-3 bg-iron-700/60 rounded-lg mb-4 text-chalk-200">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[16px] text-track-green">verified_user</span>
+          <span class="font-body-sm text-body-sm text-chalk-50">Acceso Full-Day Libre</span>
+        </div>
+        <span class="font-utility-mono text-utility-mono text-[11px] text-chalk-200">Vence en 12 días</span>
+      </div>
+
+      <!-- Contenedor del Código QR -->
+      <div class="w-full aspect-square max-w-[280px] bg-white rounded-xl p-4 flex flex-col items-center justify-center relative shadow-md">
+        <svg class="w-full h-full text-iron-950" fill="none" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+          <rect fill="currentColor" height="40" rx="4" width="40" x="10" y="10"></rect>
+          <rect fill="white" height="24" rx="2" width="24" x="18" y="18"></rect>
+          <rect fill="currentColor" height="12" rx="1" width="12" x="24" y="24"></rect>
+          <rect fill="currentColor" height="40" rx="4" width="40" x="110" y="10"></rect>
+          <rect fill="white" height="24" rx="2" width="24" x="118" y="18"></rect>
+          <rect fill="currentColor" height="12" rx="1" width="12" x="124" y="24"></rect>
+          <rect fill="currentColor" height="40" rx="4" width="40" x="10" y="110"></rect>
+          <rect fill="white" height="24" rx="2" width="24" x="18" y="118"></rect>
+          <rect fill="currentColor" height="12" rx="1" width="12" x="24" y="124"></rect>
+          <rect fill="currentColor" height="8" width="8" x="60" y="12"></rect>
+          <rect fill="currentColor" height="8" width="8" x="76" y="12"></rect>
+          <rect fill="currentColor" height="8" width="8" x="92" y="12"></rect>
+          <rect fill="currentColor" height="8" width="16" x="56" y="28"></rect>
+          <rect fill="currentColor" height="16" width="8" x="80" y="28"></rect>
+          <rect fill="currentColor" height="12" width="8" x="12" y="60"></rect>
+          <rect fill="currentColor" height="8" width="12" x="28" y="60"></rect>
+          <rect fill="currentColor" height="16" width="8" x="44" y="60"></rect>
+          <rect fill="currentColor" height="8" width="16" x="104" y="60"></rect>
+          <rect fill="currentColor" height="16" width="8" x="132" y="60"></rect>
+          <rect fill="currentColor" height="8" width="6" x="144" y="60"></rect>
+          <rect fill="currentColor" height="8" width="16" x="12" y="80"></rect>
+          <rect fill="currentColor" height="16" width="8" x="36" y="84"></rect>
+          <rect fill="currentColor" height="6" width="8" x="20" y="96"></rect>
+          <rect fill="currentColor" height="8" width="8" x="108" y="80"></rect>
+          <rect fill="currentColor" height="8" width="16" x="124" y="80"></rect>
+          <rect fill="currentColor" height="8" width="10" x="140" y="96"></rect>
+          <rect fill="currentColor" height="8" width="16" x="60" y="116"></rect>
+          <rect fill="currentColor" height="16" width="8" x="84" y="112"></rect>
+          <rect fill="currentColor" height="16" width="8" x="60" y="132"></rect>
+          <rect fill="currentColor" height="8" width="16" x="76" y="140"></rect>
+          <rect fill="currentColor" height="16" width="8" x="100" y="128"></rect>
+          <rect fill="currentColor" height="8" width="16" x="116" y="112"></rect>
+          <rect fill="currentColor" height="16" width="8" x="140" y="120"></rect>
+          <rect fill="currentColor" height="8" width="16" x="124" y="140"></rect>
+          <rect fill="currentColor" height="6" width="6" x="58" y="44"></rect>
+          <rect fill="currentColor" height="6" width="6" x="70" y="44"></rect>
+          <rect fill="currentColor" height="6" width="6" x="82" y="44"></rect>
+          <rect fill="currentColor" height="6" width="6" x="94" y="44"></rect>
+          <rect fill="currentColor" height="6" width="6" x="44" y="70"></rect>
+          <rect fill="currentColor" height="6" width="6" x="44" y="82"></rect>
+          <rect fill="currentColor" height="6" width="6" x="44" y="94"></rect>
+          <rect fill="white" height="44" rx="8" width="44" x="58" y="58"></rect>
+          <rect fill="#16181C" height="36" rx="6" width="36" x="62" y="62"></rect>
+          <path d="M72 73H76V87H72V73Z" fill="#E13438"></path>
+          <path d="M84 73H88V87H84V73Z" fill="#E13438"></path>
+          <rect fill="#F3F1EC" height="4" rx="1" width="10" x="75" y="78"></rect>
+          <rect fill="#F3F1EC" height="10" rx="0.5" width="2" x="70" y="75"></rect>
+          <rect fill="#F3F1EC" height="10" rx="0.5" width="2" x="88" y="75"></rect>
+        </svg>
+        <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 h-0.5 bg-signal-red opacity-80 pointer-events-none"></div>
+      </div>
+
+      <!-- Código Manual y Copia -->
+      <div class="w-full mt-4 flex items-center justify-between bg-iron-700/80 rounded-xl px-4 py-2.5">
+        <div class="flex flex-col">
+          <span class="font-utility-mono text-[10px] text-chalk-200 tracking-wider uppercase">CÓDIGO MANUAL</span>
+          <span class="font-utility-mono text-headline-md tracking-wider font-bold text-chalk-50 leading-tight">GS-9821-ENT</span>
+        </div>
+        <button #copyBtn aria-label="Copiar código numérico de acceso" class="min-h-touch-target min-w-touch-target px-3 py-2 bg-chalk-50 text-iron-950 font-utility-mono text-utility-mono rounded-lg flex items-center gap-1.5 active:bg-chalk-200 transition-colors" (click)="copyAccessCode(copyBtn, copyIcon, copyText)">
+          <span #copyIcon class="material-symbols-outlined text-[18px]">content_copy</span>
+          <span #copyText class="font-bold">COPIAR</span>
+        </button>
+      </div>
+
+      <!-- Indicaciones -->
+      <div class="w-full mt-3 flex items-start gap-2.5 px-3 py-2 bg-iron-700/30 rounded-lg">
+        <span class="material-symbols-outlined text-signal-red text-[20px] flex-shrink-0 mt-0.5">sensors</span>
+        <p class="font-body-sm text-body-sm text-chalk-200 text-left leading-snug">
+          Presenta este código frente al escáner óptico en recepción o en el torniquete de acceso.
+        </p>
+      </div>
+    </div>
+
+    <!-- Widget de Aforo en Tiempo Real -->
+    <div class="w-full bg-surface-container rounded-xl p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div class="relative w-12 h-12 flex items-center justify-center flex-shrink-0">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <path class="text-surface-container-highest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+            <path class="text-track-green" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="62, 100" stroke-linecap="round" stroke-width="3.5"></path>
+          </svg>
+          <span class="absolute font-utility-mono text-utility-mono text-[11px] font-bold text-on-surface">62%</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-1.5">
+            <span class="font-display-lg text-headline-md uppercase text-on-surface leading-none">SALA PRINCIPAL</span>
+            <span class="px-1.5 py-0.5 rounded bg-track-green/15 text-track-green font-utility-mono text-[10px] font-bold">ÓPTIMO</span>
+          </div>
+          <span class="font-body-sm text-body-sm text-secondary mt-0.5">Aforo en vivo: 34 / 55 personas</span>
+        </div>
+      </div>
+      <div class="flex flex-col items-end">
+        <span class="font-utility-mono text-[11px] text-secondary">TIEMPO ESPERA</span>
+        <span class="font-headline-md text-headline-md text-on-surface leading-none">0 MIN</span>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="w-full flex flex-col gap-2.5 pt-1">
+      <button #walletBtn class="w-full min-h-[48px] bg-secondary-container text-on-secondary-fixed rounded-xl px-4 py-3 flex items-center justify-center gap-2.5 active:bg-secondary-fixed-dim transition-colors" type="button" (click)="triggerWalletFeedback(walletBtn)">
+        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+        <span class="font-headline-md text-headline-md uppercase tracking-tight">Añadir a Google / Apple Wallet</span>
+      </button>
+      <div class="grid grid-cols-2 gap-2.5">
+        <button #brightnessBtn class="w-full min-h-[48px] bg-surface-container rounded-xl px-3 py-2 flex items-center justify-center gap-2 text-on-surface active:bg-surface-container-high transition-colors" type="button" (click)="toggleBrightness(brightnessBtn)">
+          <span class="material-symbols-outlined text-[18px]">wb_sunny</span>
+          <span class="font-utility-mono text-utility-mono font-bold uppercase">Max Brillo</span>
+        </button>
+        <button #refreshBtn class="w-full min-h-[48px] bg-surface-container rounded-xl px-3 py-2 flex items-center justify-center gap-2 text-on-surface active:bg-surface-container-high transition-colors" type="button" (click)="refreshAccessPass(refreshBtn)">
+          <span class="material-symbols-outlined text-[18px]">sync</span>
+          <span class="font-utility-mono text-utility-mono font-bold uppercase">Actualizar</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
