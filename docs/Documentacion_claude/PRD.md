@@ -153,7 +153,7 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 
 ## 9. Integraciones
 - **Recurrente**: procesamiento de pagos recurrentes (mensual/anual), webhooks de confirmación y reintentos manuales de cobro.
-- **PostgreSQL**: base de datos relacional recomendada dado el volumen de relaciones entre clientes, membresías, pagos y máquinas (ver Decisiones Pendientes).
+- **PostgreSQL**: base de datos relacional recomendada dado el volumen de relaciones entre clientes, membresías, pagos y máquinas (ver sección 12 — Decisiones Tomadas).
 - **Vercel**: hosting y despliegue de la aplicación.
 - **Google Sign-In**: autenticación alternativa para miembros.
 - **YouTube (privado)**: alojamiento y reproducción de videos instructivos.
