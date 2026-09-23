@@ -2,12 +2,12 @@
 
 ## Qué es este proyecto
 
-Plataforma web mobile-first de gestión de gimnasios (single-tenant): membresías, control de acceso por QR, video-instrucciones de máquinas por QR, y aforo en tiempo real. Ver `docs/Documentacion_claude/PRD.md` para el detalle funcional completo — no lo dupliques aquí, consúltalo.
+Plataforma web mobile-first de gestión de gimnasios (single-tenant): membresías, control de acceso por QR, video-instrucciones de máquinas por QR, y aforo en tiempo real. Ver `Docs/Documentacion_claude/PRD.md` para el detalle funcional completo — no lo dupliques aquí, consúltalo.
 
 Documentos de referencia (léelos antes de implementar features nuevas):
-- `docs/Documentacion_claude/PRD.md` — alcance, user stories, reglas de negocio
-- `docs/Documentacion_claude/data_model.md` — entidades, relaciones, schema Prisma de referencia
-- `docs/Documentacion_claude/design guide.md` — tokens de color, tipografía, componentes, voz de la UI
+- `Docs/Documentacion_claude/PRD.md` — alcance, user stories, reglas de negocio
+- `Docs/Documentacion_claude/data_model.md` — entidades, relaciones, schema Prisma de referencia
+- `Docs/Documentacion_claude/design_guide.md` — tokens de color, tipografía, componentes, voz de la UI
 
 ## Comandos críticos
 
@@ -41,7 +41,7 @@ npx prisma migrate dev  # aplicar migraciones en desarrollo
 - TypeScript en todo el backend.
 - Nombres de archivo en `kebab-case`, componentes de Angular en `PascalCase` (un componente por archivo, sufijo `.component.ts`).
 - Toda llamada async va con `try/catch`; los errores no se tragan silenciosamente.
-- Los mensajes de error hacia el usuario siguen la voz definida en `docs/Documentacion_claude/design guide.md` (sección 7) — nunca mostrar errores técnicos crudos como "Error 500" al usuario final.
+- Los mensajes de error hacia el usuario siguen la voz definida en `Docs/Documentacion_claude/design_guide.md` (sección 7) — nunca mostrar errores técnicos crudos como "Error 500" al usuario final.
 - Los estados de membresía/acceso se comunican con texto además de color (regla de accesibilidad del design guide).
 
 ## Workflow
@@ -49,7 +49,7 @@ npx prisma migrate dev  # aplicar migraciones en desarrollo
 - Antes de implementar una feature nueva, confirma que está en el alcance de `PRD.md` sección 3. Si no está, pregunta antes de construir.
 - Commits con prefijo: `feat:`, `fix:`, `docs:`, `refactor:`.
 - Explica brevemente los cambios hechos, no solo el código — este proyecto es parte de una entrega académica y Sofia necesita poder explicarlo.
-- Si una decisión técnica no está cubierta por los documentos en `docs/Documentacion_claude/`, dilo explícitamente en vez de asumir — se documenta como nueva decisión, no se resuelve en silencio.
+- Si una decisión técnica no está cubierta por los documentos en `Docs/Documentacion_claude/`, dilo explícitamente en vez de asumir — se documenta como nueva decisión, no se resuelve en silencio.
 
 ## Fuera de alcance (v1.0)
 

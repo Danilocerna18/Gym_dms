@@ -93,7 +93,7 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 - Los webhooks de Recurrente actualizan el estado de pago de forma asíncrona respecto al flujo de UI.
 - El envío de correos (avisos de vencimiento y anuncios) se realiza desde el backend vía Resend, nunca desde el cliente.
 
-*(No se incluyen modelos de datos ni schemas — corresponden al documento `data model.md`.)*
+*(No se incluyen modelos de datos ni schemas — corresponden al documento `data_model.md`.)*
 
 ## 6. Requerimientos No Funcionales
 
@@ -131,7 +131,7 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 - Panel administrativo separado con vista de aforo, ingresos, alertas, gestión de clientes, gestión de contenido y escáner de acceso.
 - Modales rápidos para resultado de escaneo (acceso concedido/denegado, video de máquina).
 
-*(No se incluye línea gráfica ni branding — corresponde al documento `design guide.md`.)*
+*(No se incluye línea gráfica ni branding — corresponde al documento `design_guide.md`.)*
 
 ## 8. Reglas de Negocio
 
