@@ -141,6 +141,7 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 - Al vencer `Membership.end_date`, un job programado (cron) cambia `status` a `expired` automáticamente; no depende de que el usuario intente entrar.
 - `AccessLog` nunca se edita ni se borra — es un log de auditoría append-only, útil también para detectar el caso de QR duplicado (buscar el último `entry` sin `exit` correspondiente antes de conceder uno nuevo).
 - `AccessLog.scanned_by` es obligatorio cuando `type` es `entry` o `exit` (el escaneo físico siempre lo opera un admin); debe ser `null` cuando `type = machine_scan`.
+  - **Nota pendiente (US-09 / US-18):** en `POST /api/access/validate`, `scanned_by` se recibe hoy directamente en el body de la request como solución temporal, porque todavía no existe login de admin ni sesión autenticada. Es falsificable por el cliente y no sirve como auditoría real. Cuando se implemente la autenticación de admin, este endpoint debe cambiarse para leer `scanned_by` de `req.session.user.id` (o equivalente) en vez de confiar en el body.
 - `Announcement` no se edita después de `sent_at` — es un registro histórico del envío, no un borrador editable.
 - Un reintento de cobro (US-21) solo puede dispararse si existe un `Payment` con `status = failed` más reciente, o si `Membership.status = expired`; no se permite sobre membresías `active` al día.
 

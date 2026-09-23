@@ -10,7 +10,7 @@ scanRouter.post("/", async (req, res, next) => {
     if (!qrCode) {
       return res.status(400).json({
         error: "QR_REQUERIDO",
-        message: "Falta el código QR.",
+        message: "Falta el código escaneado.",
       });
     }
 
@@ -26,7 +26,7 @@ scanRouter.post("/", async (req, res, next) => {
 
     return res.status(404).json({
       error: "QR_NO_RECONOCIDO",
-      message: "Código QR no reconocido.",
+      message: "Este código no está registrado.",
     });
   } catch (err) {
     next(err);

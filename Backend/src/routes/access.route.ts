@@ -7,7 +7,10 @@ export const accessRouter = Router();
 // del frontend para conceder acceso (regla de CLAUDE.md).
 accessRouter.post("/validate", async (req, res, next) => {
   try {
-    const { userId } = req.body as { userId?: string };
+    const { userId, scannedBy } = req.body as {
+      userId?: string;
+      scannedBy?: string;
+    };
 
     if (!userId) {
       return res.status(400).json({
@@ -16,12 +19,24 @@ accessRouter.post("/validate", async (req, res, next) => {
       });
     }
 
-    const now = new Date();
+    // data_model.md sección 5: scanned_by es obligatorio para AccessLog de
+    // tipo entry/exit (constraint a nivel aplicación, no en el schema).
+    // Todavía no existe una ruta de login/sesión de admin en el código, así
+    // que se recibe en el body en vez de leerlo de la sesión.
+    //
+    // TODO(seguridad): scannedBy viene del body como stopgap temporal mientras
+    // no existe sesión de admin autenticada. Es falsificable por el cliente —
+    // no sirve como auditoría real hasta que se reemplace por
+    // req.session.user.id (o equivalente) cuando exista login de admin. No
+    // confiar en este campo para auditoría hasta ese cambio.
+    if (!scannedBy) {
+      return res.status(400).json({
+        error: "SCANNED_BY_REQUERIDO",
+        message: "Falta identificar al administrador que escaneó el código.",
+      });
+    }
 
-    // TODO: cuando exista sesión de admin autenticada en este flujo, pasar su
-    // id como `scannedBy` en los AccessLog de abajo — data_model.md sección 5
-    // lo marca como obligatorio para type entry/exit. Pendiente de definir
-    // con el resto del equipo antes de forzarlo.
+    const now = new Date();
 
     const activeMembership = await prisma.membership.findFirst({
       where: { userId, status: "active", endDate: { gte: now } },
@@ -29,7 +44,7 @@ accessRouter.post("/validate", async (req, res, next) => {
 
     if (!activeMembership) {
       await prisma.accessLog.create({
-        data: { userId, type: "entry", result: "denied_expired" },
+        data: { userId, type: "entry", result: "denied_expired", scannedBy },
       });
       return res.json({
         granted: false,
@@ -54,7 +69,7 @@ accessRouter.post("/validate", async (req, res, next) => {
 
       if (!exitAfterEntry) {
         await prisma.accessLog.create({
-          data: { userId, type: "entry", result: "denied_duplicate" },
+          data: { userId, type: "entry", result: "denied_duplicate", scannedBy },
         });
         return res.json({
           granted: false,
@@ -65,7 +80,7 @@ accessRouter.post("/validate", async (req, res, next) => {
     }
 
     await prisma.accessLog.create({
-      data: { userId, type: "entry", result: "granted" },
+      data: { userId, type: "entry", result: "granted", scannedBy },
     });
     return res.json({
       granted: true,
