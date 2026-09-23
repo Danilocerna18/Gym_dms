@@ -1,0 +1,165 @@
+// Schema tomado tal cual de /Docs/Documentacion_claude/data_model.md sección 7.
+// No modificar sin actualizar primero ese documento.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  member
+}
+
+enum MembershipStatus {
+  active
+  expired
+  cancelled
+}
+
+enum PaymentStatus {
+  pending
+  completed
+  failed
+}
+
+enum PaymentTrigger {
+  member
+  admin_retry
+}
+
+enum AccessType {
+  entry
+  exit
+  machine_scan
+}
+
+enum AccessResult {
+  granted
+  denied_expired
+  denied_duplicate
+  denied_offline
+}
+
+enum AnnouncementStatusFilter {
+  all
+  active
+  expired
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String?
+  googleId     String?  @unique
+  role         Role
+  qrCode       String   @unique
+  createdAt    DateTime @default(now())
+
+  memberships       Membership[]
+  accessLogs        AccessLog[]     @relation("MemberAccessLogs")
+  scannedAccessLogs AccessLog[]     @relation("AdminScannedLogs")
+  announcements     Announcement[]
+}
+
+model MembershipPlan {
+  id           String   @id @default(uuid())
+  name         String
+  durationDays Int
+  price        Decimal
+  active       Boolean  @default(true)
+
+  memberships   Membership[]
+  announcements Announcement[]
+}
+
+model Membership {
+  id                        String            @id @default(uuid())
+  userId                    String
+  planId                    String
+  status                    MembershipStatus
+  startDate                 DateTime
+  endDate                   DateTime
+  notifiedBeforeExpiration  Boolean           @default(false)
+  createdAt                 DateTime          @default(now())
+
+  user     User            @relation(fields: [userId], references: [id])
+  plan     MembershipPlan  @relation(fields: [planId], references: [id])
+  payments Payment[]
+
+  @@index([userId, status])
+}
+
+model Payment {
+  id                   String         @id @default(uuid())
+  membershipId         String
+  amount               Decimal
+  status               PaymentStatus
+  recurrentePaymentId  String
+  triggeredBy          PaymentTrigger @default(member)
+  paidAt               DateTime?
+  createdAt            DateTime       @default(now())
+
+  membership Membership @relation(fields: [membershipId], references: [id])
+
+  @@index([membershipId, status])
+}
+
+model Machine {
+  id        String   @id @default(uuid())
+  name      String
+  qrCode    String   @unique
+  createdAt DateTime @default(now())
+
+  videos     InstructionVideo[]
+  accessLogs AccessLog[]
+}
+
+model InstructionVideo {
+  id         String   @id @default(uuid())
+  machineId  String
+  youtubeUrl String
+  title      String
+  createdAt  DateTime @default(now())
+
+  machine Machine @relation(fields: [machineId], references: [id])
+}
+
+model AccessLog {
+  id        String       @id @default(uuid())
+  userId    String
+  type      AccessType
+  machineId String?
+  scannedBy String?
+  result    AccessResult
+  createdAt DateTime     @default(now())
+
+  user      User     @relation("MemberAccessLogs", fields: [userId], references: [id])
+  admin     User?    @relation("AdminScannedLogs", fields: [scannedBy], references: [id])
+  machine   Machine? @relation(fields: [machineId], references: [id])
+
+  @@index([createdAt, type])
+  @@index([scannedBy])
+}
+
+model Announcement {
+  id              String                    @id @default(uuid())
+  adminId         String
+  subject         String
+  body            String
+  statusFilter    AnnouncementStatusFilter?
+  planIdFilter    String?
+  recipientCount  Int
+  sentAt          DateTime
+  createdAt       DateTime                  @default(now())
+
+  admin User            @relation(fields: [adminId], references: [id])
+  plan  MembershipPlan? @relation(fields: [planIdFilter], references: [id])
+
+  @@index([sentAt])
+}
