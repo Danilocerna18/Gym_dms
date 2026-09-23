@@ -18,17 +18,12 @@ accessRouter.post("/validate", async (req, res, next) => {
         message: "Falta el identificador del usuario.",
       });
     }
-
-    // data_model.md sección 5: scanned_by es obligatorio para AccessLog de
-    // tipo entry/exit (constraint a nivel aplicación, no en el schema).
-    // Todavía no existe una ruta de login/sesión de admin en el código, así
-    // que se recibe en el body en vez de leerlo de la sesión.
-    //
     // TODO(seguridad): scannedBy viene del body como stopgap temporal mientras
     // no existe sesión de admin autenticada. Es falsificable por el cliente —
     // no sirve como auditoría real hasta que se reemplace por
     // req.session.user.id (o equivalente) cuando exista login de admin. No
     // confiar en este campo para auditoría hasta ese cambio.
+
     if (!scannedBy) {
       return res.status(400).json({
         error: "SCANNED_BY_REQUERIDO",
@@ -37,6 +32,12 @@ accessRouter.post("/validate", async (req, res, next) => {
     }
 
     const now = new Date();
+     // No basta con status: "active, si el job programado que marca
+    // membresías vencidas todavía no corrió ese día, endDate ya
+    // pudo haber pasado aunque el status en la DB siga desactualizado.
+    // Se valida la fecha real, no solo la etiqueta.
+
+
 
     const activeMembership = await prisma.membership.findFirst({
       where: { userId, status: "active", endDate: { gte: now } },
@@ -53,6 +54,11 @@ accessRouter.post("/validate", async (req, res, next) => {
       });
     }
 
+
+    // QR duplicado: Si la última, entrada concedida de este usuario no tiene una salida registrada
+    // después, significa que ya está adentro (o alguien más entró con su
+    // QR compartido). Se rechaza el segundo ingreso y queda marcado como
+    // intento sospechoso, visible para el admin.
     const lastGrantedEntry = await prisma.accessLog.findFirst({
       where: { userId, type: "entry", result: "granted" },
       orderBy: { createdAt: "desc" },
@@ -67,6 +73,7 @@ accessRouter.post("/validate", async (req, res, next) => {
         },
       });
 
+
       if (!exitAfterEntry) {
         await prisma.accessLog.create({
           data: { userId, type: "entry", result: "denied_duplicate", scannedBy },
@@ -78,6 +85,10 @@ accessRouter.post("/validate", async (req, res, next) => {
         });
       }
     }
+
+    // Acceso concedido: se registra en AccessLog, que es la fuente única
+    // de verdad para el aforo en tiempo real, no se mantiene un contador
+    // separado que pueda desincronizarse (por ejemplo, si se borra un log por error).
 
     await prisma.accessLog.create({
       data: { userId, type: "entry", result: "granted", scannedBy },

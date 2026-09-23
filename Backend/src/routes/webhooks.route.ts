@@ -11,6 +11,10 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
     const signature = req.header("x-recurrente-signature");
     const secret = process.env.RECURRENTE_WEBHOOK_SECRET;
 
+    // Rechaza si falta cualquiera de los dos, sin secreto configurado no
+    // hay forma de verificar nada, y sin firma en el header el request no
+    // viene realmente de Recurrente (o vino mal formado)
+
     if (!secret || !signature) {
       return res.status(401).json({
         error: "FIRMA_INVALIDA",
@@ -28,6 +32,8 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
       paidAt?: string;
     };
 
+     // Se trae membership + plan en la misma consulta porque los vamos a
+    // necesitar más abajo para calcular endDate, evita una segunda ida a la base de datos.
     const payment = await prisma.payment.findFirst({
       where: { recurrentePaymentId },
       include: { membership: { include: { plan: true } } },
@@ -44,6 +50,9 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
       where: { id: payment.id },
       data: {
         status,
+         // Prioridad: el paidAt que manda Recurrente (dato real del
+        // procesador) > "ahora" si se confirmó el pago pero no vino
+        // paidAt > el paidAt que ya tenía (no lo pisa si el pago falló).
         paidAt: paidAt
           ? new Date(paidAt)
           : status === "completed"
@@ -53,6 +62,9 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
     });
 
     if (status === "completed") {
+       // Regla de negocio: el vencimiento se recalcula desde
+      // hoy, no desde el endDate anterior, evita que un pago tardío
+      // "sume" días sobre una membresía que ya llevaba tiempo vencida.
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + payment.membership.plan.durationDays);
 
@@ -61,6 +73,8 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
         data: { status: "active", endDate },
       });
     }
+     // Recurrente espera una respuesta rápida, no se agrega lógica
+    // adicional (como envío de correo de confirmación) directamente aquí.
 
     return res.status(200).json({ received: true });
   } catch (err) {
