@@ -8,6 +8,11 @@ import { scanRouter } from "./routes/scan.route";
 import { accessRouter } from "./routes/access.route";
 import { webhooksRouter } from "./routes/webhooks.route";
 
+// 🔹 NUEVO
+import passport from "passport";
+import authRouter from "./routes/auth.js";
+import "./config/passport.js";
+
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
@@ -20,12 +25,19 @@ app.use(
 app.use(express.json());
 app.use(sessionMiddleware);
 
+// 🔹 NUEVO
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/api/auth", authRateLimit);
 app.use("/api/scan", scanRateLimit);
 
 app.use("/api/scan", scanRouter);
 app.use("/api/access", accessRouter);
 app.use("/api/webhooks", webhooksRouter);
+
+// 🔹 NUEVO
+app.use("/api/auth", authRouter);
 
 app.use(errorHandler);
 
