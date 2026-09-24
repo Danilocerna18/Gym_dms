@@ -30,5 +30,5 @@ app.use("/api/webhooks", webhooksRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`GymSync backend escuchando en el puerto ${PORT}`);
+  console.log(`GymSync backend corriendo en el puerto ${PORT}`);
 });
