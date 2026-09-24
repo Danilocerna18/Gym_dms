@@ -28,8 +28,12 @@ export class AuthIniciarSesionComponent {
     this.router.navigate(['/user-home']);
   }
 
+  // login con Google
+  loginWithGoogle(): void {
+    window.location.href = 'http://localhost:3000/api/auth/google';
+  }
+
   // TODO: quitar este botón cuando exista login real
-  // Botón temporal solo para que el profesor revise el avance del frontend de admin (Sprint 2)
   verDemoAdmin(): void {
     this.router.navigate(['/admin/dashboard']);
   }
