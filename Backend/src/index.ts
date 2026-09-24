@@ -19,6 +19,7 @@ import { webhooksRouter } from "./routes/webhooks.route";
 
 import "./config/passport"; // inicializa passport (usa las vars de entorno)
 import authRouter from "./routes/auth";
+import userRoutes from "./routes/user.routes";
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -48,6 +49,9 @@ app.use("/api/webhooks", webhooksRouter);
 
 // Rutas de auth (Google)
 app.use("/api/auth", authRouter);
+
+// Rutas de usuario (Perfil, QR y Máquinas)
+app.use("/api", userRoutes);
 
 app.use(errorHandler);
 
