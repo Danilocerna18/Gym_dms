@@ -4,8 +4,7 @@ import { prisma } from "../lib/prisma";
 export const webhooksRouter = Router();
 
 // IMPORTANTE: este endpoint comparte el flujo de estado de Payment/Membership
-// con POST /api/payments/initiate (a cargo de Danilo). Coordinar con él antes
-// de tocar la lógica que actualiza status/endDate aquí.
+// con POST /api/payments/initiate
 webhooksRouter.post("/recurrente", async (req, res, next) => {
   try {
     const signature = req.header("x-recurrente-signature");
@@ -22,7 +21,7 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
       });
     }
 
-    // TODO: aún no tenemos credenciales reales de Recurrente. Cuando existan,
+    // aún no tenemos credenciales reales de Recurrente. Cuando existan,
     // validar `signature` contra un HMAC calculado con `secret` sobre el
     // body crudo de la request, en vez de solo comprobar que ambos existan.
 
@@ -62,8 +61,7 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
     });
 
     if (status === "completed") {
-       // Regla de negocio: el vencimiento se recalcula desde
-      // hoy, no desde el endDate anterior, evita que un pago tardío
+       //el vencimiento se recalcula desde hoy, no desde el endDate anterior, evita que un pago tarde
       // "sume" días sobre una membresía que ya llevaba tiempo vencida.
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + payment.membership.plan.durationDays);

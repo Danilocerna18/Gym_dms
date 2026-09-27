@@ -17,10 +17,8 @@
 
   <!-- Main Scanner Area -->
   <main class="flex-grow relative flex flex-col">
-    <!-- Camera Viewfinder (simulado, clic para probar el resultado) -->
-    <div
-      class="relative w-full h-[55vh] bg-iron-950 overflow-hidden cursor-pointer"
-      (click)="simularEscaneo('concedido')">
+    <!-- Camera Viewfinder (sin cámara todavía: el código entra por Ingreso Manual) -->
+    <div class="relative w-full h-[55vh] bg-iron-950 overflow-hidden">
 
       <!-- Instruction Text -->
       <div class="absolute top-8 left-0 w-full text-center px-gutter z-10">
@@ -40,30 +38,58 @@
 
         <div class="absolute inset-0 border border-white/5 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
 
-        <!-- Overlay de Resultado (concedido / denegado) -->
+        <!-- Overlay de Resultado (concedido / denegado / error), tocar para cerrar -->
         <div
           *ngIf="resultadoVisible()"
-          class="absolute top-1/2 left-1/2 resultado-overlay w-48 backdrop-blur-md rounded-lg p-4 flex flex-col items-center justify-center gap-2 z-20"
+          (click)="cerrarResultado()"
+          role="status"
+          class="absolute top-1/2 left-1/2 resultado-overlay w-56 backdrop-blur-md rounded-lg p-4 flex flex-col items-center justify-center gap-2 z-20 cursor-pointer"
           [class.bg-track-green]="resultadoTipo() === 'concedido'"
           [class.border-track-green]="resultadoTipo() === 'concedido'"
           [class.shadow-[0_0_20px_rgba(47,158,82,0.5)]]="resultadoTipo() === 'concedido'"
           [class.bg-signal-red]="resultadoTipo() === 'denegado'"
           [class.border-signal-red]="resultadoTipo() === 'denegado'"
           [class.shadow-[0_0_20px_rgba(225,52,56,0.5)]]="resultadoTipo() === 'denegado'"
+          [class.bg-iron-700]="resultadoTipo() === 'error'"
+          [class.border-white/10]="resultadoTipo() === 'error'"
           style="border-width: 1px;">
           <span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings: 'FILL' 1;">
-            {{ resultadoTipo() === 'concedido' ? 'check_circle' : 'cancel' }}
+            {{ resultadoTipo() === 'concedido' ? 'check_circle' : resultadoTipo() === 'denegado' ? 'cancel' : 'error' }}
           </span>
           <span class="font-headline-md text-headline-md text-white text-center uppercase leading-tight">
-            {{ resultadoTipo() === 'concedido' ? 'Acceso Concedido' : 'Acceso Denegado' }}
+            {{ resultadoTipo() === 'concedido' ? 'Acceso Concedido' : resultadoTipo() === 'denegado' ? 'Acceso Denegado' : 'No se pudo verificar' }}
+          </span>
+          <span *ngIf="resultadoMensaje()" class="font-body-sm text-body-sm text-white/90 text-center leading-snug">
+            {{ resultadoMensaje() }}
           </span>
         </div>
       </div>
 
       <!-- Manual Entry Action -->
-      <div class="absolute bottom-6 left-0 w-full flex justify-center z-10 px-gutter">
+      <div class="absolute bottom-6 left-0 w-full flex flex-col items-center gap-2 z-10 px-gutter">
+        <!-- Input de ingreso manual: único punto de entrada del código mientras no hay cámara -->
+        <form
+          *ngIf="ingresoManualVisible()"
+          (submit)="$event.preventDefault(); enviarIngresoManual(codigoInput)"
+          class="w-full max-w-sm flex gap-2">
+          <input
+            #codigoInput
+            type="text"
+            autocomplete="off"
+            placeholder="Código QR del cliente"
+            aria-label="Código QR del cliente"
+            [disabled]="procesando()"
+            class="flex-grow min-h-12 bg-iron-950/90 text-chalk-50 placeholder:text-chalk-200 border border-white/10 rounded px-3 font-utility-mono text-utility-mono focus:outline-none focus:border-signal-red" />
+          <button
+            type="submit"
+            [disabled]="procesando()"
+            aria-label="Verificar código"
+            class="min-w-12 min-h-12 bg-iron-700 text-chalk-50 rounded flex items-center justify-center border border-white/10 disabled:opacity-50">
+            <span class="material-symbols-outlined">{{ procesando() ? 'hourglass_top' : 'arrow_forward' }}</span>
+          </button>
+        </form>
         <button
-          (click)="$event.stopPropagation(); ingresoManual()"
+          (click)="ingresoManual()"
           class="w-full max-w-sm bg-signal-red text-white font-headline-md text-headline-md uppercase tracking-wide py-3 rounded flex items-center justify-center gap-2 hover:bg-signal-red/90 transition-colors active:scale-95 duration-100 shadow-lg">
           <span class="material-symbols-outlined">keyboard</span>
           Ingreso Manual

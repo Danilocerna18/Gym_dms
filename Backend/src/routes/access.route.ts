@@ -18,7 +18,7 @@ accessRouter.post("/validate", async (req, res, next) => {
         message: "Falta el identificador del usuario.",
       });
     }
-    // TODO(seguridad): scannedBy viene del body como stopgap temporal mientras
+    // seguridad: scannedBy viene del body como stopgap temporal mientras
     // no existe sesión de admin autenticada. Es falsificable por el cliente —
     // no sirve como auditoría real hasta que se reemplace por
     // req.session.user.id (o equivalente) cuando exista login de admin. No

@@ -452,7 +452,7 @@
   font-size: 20px;
 }
 
-/* TODO: quitar estos estilos cuando exista login real (botón temporal demo Sprint 2) */
+/* quitar estos estilos cuando exista login real (botón temporal demo Sprint 2) */
 .demo-separador {
   position: relative;
   height: 20px;

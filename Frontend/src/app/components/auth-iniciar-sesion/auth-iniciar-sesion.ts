@@ -33,7 +33,7 @@ export class AuthIniciarSesionComponent {
     window.location.href = 'http://localhost:3000/api/auth/google';
   }
 
-  // TODO: quitar este botón cuando exista login real
+  // quitar este botón cuando exista login real
   verDemoAdmin(): void {
     this.router.navigate(['/admin/dashboard']);
   }
