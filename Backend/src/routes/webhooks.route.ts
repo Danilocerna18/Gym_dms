@@ -11,7 +11,7 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
     const secret = process.env.RECURRENTE_WEBHOOK_SECRET;
 
     // Rechaza si falta cualquiera de los dos, sin secreto configurado no
-    // hay forma de verificar nada, y sin firma en el header el request no
+    // hay forma de verificar nada y sin firma en el header el request no
     // viene realmente de Recurrente (o vino mal formado)
 
     if (!secret || !signature) {

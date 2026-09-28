@@ -3,8 +3,8 @@ import { prisma } from "../lib/prisma";
 
 export const accessRouter = Router();
 
-// Esta validación siempre ocurre en backend — nunca se confía en el estado
-// del frontend para conceder acceso (regla de CLAUDE.md).
+// Esta validación siempre ocurre en backend nunca se confía en el estado
+// del frontend para conceder acceso
 accessRouter.post("/validate", async (req, res, next) => {
   try {
     const { userId, scannedBy } = req.body as {
@@ -19,7 +19,7 @@ accessRouter.post("/validate", async (req, res, next) => {
       });
     }
     // seguridad: scannedBy viene del body como stopgap temporal mientras
-    // no existe sesión de admin autenticada. Es falsificable por el cliente —
+    // no existe sesión de admin autenticada. Es falsificable por el cliente 
     // no sirve como auditoría real hasta que se reemplace por
     // req.session.user.id (o equivalente) cuando exista login de admin. No
     // confiar en este campo para auditoría hasta ese cambio.
