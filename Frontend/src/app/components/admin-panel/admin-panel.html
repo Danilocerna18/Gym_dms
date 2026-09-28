@@ -49,6 +49,17 @@
           <span class="material-symbols-outlined text-[18px]">campaign</span>
           Anuncios
         </a>
+        <a
+          routerLink="/admin/escaner"
+          routerLinkActive
+          #rlaEscanerDesktop="routerLinkActive"
+          [class.text-signal-red]="rlaEscanerDesktop.isActive"
+          [class.text-iron-700]="!rlaEscanerDesktop.isActive"
+          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
+        >
+          <span class="material-symbols-outlined text-[18px]">qr_code_scanner</span>
+          Escáner
+        </a>
       </nav>
       <div class="w-8 h-8 rounded-full overflow-hidden inner-glow bg-signal-red flex items-center justify-center border border-chalk-200">
   <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">GYM</span>
@@ -244,9 +255,17 @@
       <span class="material-symbols-outlined">notifications</span>
       <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Alertas</span>
     </a>
-    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200 rounded-lg" href="#">
-      <span class="material-symbols-outlined">campaign</span>
-      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Anuncios</span>
+    <a
+      routerLink="/admin/escaner"
+      routerLinkActive
+      #rlaEscanerMobile="routerLinkActive"
+      [class.bg-chalk-200]="rlaEscanerMobile.isActive"
+      [class.text-iron-950]="rlaEscanerMobile.isActive"
+      [class.text-iron-700]="!rlaEscanerMobile.isActive"
+      class="flex flex-col items-center justify-center rounded-lg px-3 py-1 active:scale-90 transition-transform duration-200 hover:bg-chalk-50"
+    >
+      <span class="material-symbols-outlined">qr_code_scanner</span>
+      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Escáner</span>
     </a>
   </nav>
 </div>

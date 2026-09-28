@@ -43,6 +43,16 @@
         <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
           <span class="material-symbols-outlined text-xl">campaign</span> Anuncios
         </a>
+        <a
+          routerLink="/admin/escaner"
+          routerLinkActive
+          #rlaEscanerDesktop="routerLinkActive"
+          [class.text-signal-red]="rlaEscanerDesktop.isActive"
+          [class.text-iron-700]="!rlaEscanerDesktop.isActive"
+          class="font-utility-mono text-utility-mono hover:text-signal-red transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">qr_code_scanner</span> Escáner
+        </a>
       </nav>
       <div class="w-10 h-10 rounded-full bg-signal-red overflow-hidden inner-glow border border-chalk-200 flex items-center justify-center">
         <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">AD</span>
@@ -318,8 +328,15 @@
     <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
       <span class="material-symbols-outlined text-2xl mb-1">notifications</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Alertas</span>
     </a>
-    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
-      <span class="material-symbols-outlined text-2xl mb-1">campaign</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Anuncios</span>
+    <a
+      routerLink="/admin/escaner"
+      routerLinkActive
+      #rlaEscanerMobile="routerLinkActive"
+      [class.text-signal-red]="rlaEscanerMobile.isActive"
+      [class.text-iron-700]="!rlaEscanerMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">qr_code_scanner</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Escáner</span>
     </a>
   </nav>
 </div>
