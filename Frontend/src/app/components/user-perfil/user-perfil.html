@@ -14,29 +14,31 @@
       <span class="material-symbols-outlined text-iron-950 text-3xl">fitness_center</span>
       <span class="font-display-lg text-display-lg font-bold text-iron-950 tracking-tighter">GymSync</span>
     </div>
+    
+    <!-- Navegación con routerLink -->
     <nav class="flex flex-col gap-2">
-      <a class="flex items-center gap-3 p-3 rounded-lg text-iron-700 hover:bg-surface-container transition-colors font-body-sm text-body-sm" href="#">
+      <a routerLink="/user-home" class="flex items-center gap-3 p-3 rounded-lg text-iron-700 hover:bg-surface-container transition-colors font-body-sm text-body-sm cursor-pointer">
         <span class="material-symbols-outlined">dashboard</span> Inicio
       </a>
-      <a class="flex items-center gap-3 p-3 rounded-lg text-iron-700 hover:bg-surface-container transition-colors font-body-sm text-body-sm" href="#">
-        <span class="material-symbols-outlined">group</span> Miembros
-      </a>
-      <a class="flex items-center gap-3 p-3 rounded-lg text-iron-700 hover:bg-surface-container transition-colors font-body-sm text-body-sm" href="#">
+      <a routerLink="/user-escaner" class="flex items-center gap-3 p-3 rounded-lg text-iron-700 hover:bg-surface-container transition-colors font-body-sm text-body-sm cursor-pointer">
         <span class="material-symbols-outlined">play_circle</span> Videos
       </a>
-      <a class="flex items-center gap-3 p-3 rounded-lg bg-surface-container text-iron-950 transition-colors font-body-sm text-body-sm" href="#">
+      <!-- Al hacer clic en Perfil se mantiene en la misma ruta sin recargar -->
+      <a routerLink="/user-perfil" class="flex items-center gap-3 p-3 rounded-lg bg-surface-container text-iron-950 transition-colors font-body-sm text-body-sm cursor-pointer">
         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span> Perfil
       </a>
     </nav>
   </div>
-  <div class="flex items-center gap-3 mt-auto p-3 bg-surface-container rounded-lg inner-glow">
+
+  <!-- Tarjeta inferior de la foto/nombre corregida con routerLink -->
+  <a routerLink="/user-perfil" class="flex items-center gap-3 mt-auto p-3 bg-surface-container rounded-lg inner-glow cursor-pointer">
     <div class="h-10 w-10 rounded-full bg-signal-red flex items-center justify-center flex-shrink-0">
       <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold text-sm">SB</span>
     </div>
     <div>
       <div class="font-body-sm text-body-sm text-iron-950">Sofia Bilbao</div>
     </div>
-  </div>
+  </a>
 </aside>
 
 <main class="flex-1 md:ml-[240px] w-full max-w-5xl mx-auto p-gutter md:p-margin-desktop flex flex-col gap-8 relative overflow-x-hidden pt-6">
@@ -63,11 +65,6 @@
         <span class="material-symbols-outlined text-[18px]">qr_code_2</span>
         <span>VER MI QR</span>
       </button>
-
-      <!-- Botón Editar existente -->
-      <button class="px-6 py-2 rounded-md border-2 border-signal-red text-signal-red font-body-sm text-body-sm hover:bg-surface-container transition-colors flex items-center gap-2">
-        <span class="material-symbols-outlined text-[18px]">edit</span> Editar
-      </button>
     </div>
   </section>
 
@@ -77,9 +74,6 @@
         <h2 class="font-headline-md text-headline-md text-iron-950 flex items-center gap-2">
           <span class="material-symbols-outlined text-signal-red">monitoring</span> Mi Progreso
         </h2>
-        <button class="text-iron-700 hover:text-iron-950 transition-colors">
-          <span class="material-symbols-outlined">more_horiz</span>
-        </button>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 z-10">
         <div class="flex flex-col p-4 bg-chalk-50 rounded-lg inner-glow">
@@ -151,10 +145,12 @@
       <div class="relative z-10 p-8 md:p-10 flex flex-col md:flex-row justify-between items-center gap-6">
         <div class="flex flex-col max-w-lg">
           <h2 class="font-display-xl text-display-xl-mobile md:text-display-xl text-white tracking-tighter leading-none mb-3">Guías de Video de Máquinas</h2>
-          <p class="font-body-md text-body-md text-chalk-200">Domina tu técnica con nuestros tutoriales en video de alta definición, paso a paso, para cada equipo en la sala. Escanea códigos QR o explora la biblioteca.</p>
+          <p class="font-body-md text-body-md text-chalk-200">Domina tu técnica con nuestros tutoriales en video de alta definición, paso a paso, para cada equipo en la sala. Escanea códigos QR.</p>
         </div>
-        <button class="shrink-0 px-8 py-4 bg-signal-red text-white font-body-sm text-body-sm font-bold uppercase tracking-wider rounded-md hover:bg-primary transition-all active:scale-95 flex items-center gap-2 shadow-[0_4px_14px_rgba(225,52,56,0.39)]">
-          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span> Acceder a la Biblioteca
+        <!-- CÓDIGO NUEVO -->
+        <button routerLink="/user-escaner" class="shrink-0 px-8 py-4 bg-signal-red text-white font-body-sm text-body-sm font-bold uppercase tracking-wider rounded-md hover:bg-primary transition-all active:scale-95 flex items-center gap-2 shadow-[0_4px_14px_rgba(225,52,56,0.39)] cursor-pointer">
+          <span class="material-symbols-outlined">qr_code_scanner</span>
+          <span>Escanear Máquina</span>
         </button>
       </div>
     </section>
@@ -165,10 +161,6 @@
   <a routerLink="/user-home" class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90 cursor-pointer">
     <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">dashboard</span>
     <span class="font-body-sm text-[10px] mt-1 group-hover:text-iron-950">Inicio</span>
-  </a>
-  <a class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90 cursor-pointer">
-    <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">group</span>
-    <span class="font-body-sm text-[10px] mt-1 group-hover:text-iron-950">Miembros</span>
   </a>
   <a routerLink="/user-escaner" class="flex flex-col items-center justify-center text-iron-700 p-2 group transition-transform active:scale-90 cursor-pointer">
     <span class="material-symbols-outlined group-hover:text-iron-950 transition-colors">play_circle</span>
