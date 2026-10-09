@@ -194,3 +194,4 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 7. **Librería de generación de QR:** `qrcode` (Node.js), gratuita y ampliamente usada.
 8. **Proveedor de correo: Resend**, para avisos de vencimiento (US-07) y comunicados administrativos (US-20).
 9. **Límite de YouTube privado:** pendiente de validar cuota de subida y restricciones de embebido antes de depender de él como única fuente de video — este punto queda abierto porque depende de una cuenta real de YouTube que aún no existe, no de una decisión de diseño.
+10. **Registro de salidas:** la salida se registra cuando el recepcionista escanea el QR del miembro con el modo "Salida" seleccionado en el escáner. Una salida sin entrada abierta no se guarda: solo responde un aviso. Mejora futura: registrarla con un valor `denied_no_entry` en el enum `AccessResult`, junto con el filtro `result: "granted"` en la query de duplicado.

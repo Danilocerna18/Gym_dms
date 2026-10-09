@@ -32,7 +32,7 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 
 - Un `User` puede tener múltiples `Membership` a lo largo del tiempo (histórico), pero solo una con estado `active` a la vez — regla de negocio validada en aplicación, no solo en base de datos.
 - Un `Payment` siempre pertenece a una `Membership` (nunca a un `User` directamente), para mantener trazabilidad de qué pago corresponde a qué periodo. Los reintentos manuales de cobro (US-21) crean un nuevo `Payment` sobre la misma `Membership`, no editan el fallido anterior.
-- `AccessLog` es genérico: registra tanto escaneos de acceso físico (membresía) como escaneos de máquina, diferenciados por el campo `type`. Esto evita duplicar lógica de escaneo y es la tabla que alimenta el conteo de aforo en tiempo real (se calcula como `entries - exits` sobre los logs del día).
+- `AccessLog` es genérico: registra tanto escaneos de acceso físico (membresía) como escaneos de máquina, diferenciados por el campo `type`. Esto evita duplicar lógica de escaneo y es la tabla que alimenta el conteo de aforo en tiempo real (se calcula como `entries - exits` sobre los logs del día). El aforo cuenta solo `AccessLog` con `result = granted`: `entry` granted menos `exit` granted.
 - `AccessLog.scanned_by` identifica al administrador que operó el escaneo de acceso físico (entry/exit). Es `null` en eventos `machine_scan`, porque esos los realiza el propio miembro desde su teléfono.
 - `Announcement` registra cada envío de comunicado: quién lo envió, con qué filtro y a cuántos destinatarios llegó. No almacena la lista individual de destinatarios (se recalcula del filtro al momento del envío); si se necesita auditoría por destinatario individual, es una extensión futura.
 

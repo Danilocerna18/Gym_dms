@@ -57,7 +57,7 @@
             {{ resultadoTipo() === 'concedido' ? 'check_circle' : resultadoTipo() === 'denegado' ? 'cancel' : 'error' }}
           </span>
           <span class="font-headline-md text-headline-md text-white text-center uppercase leading-tight">
-            {{ resultadoTipo() === 'concedido' ? 'Acceso Concedido' : resultadoTipo() === 'denegado' ? 'Acceso Denegado' : 'No se pudo verificar' }}
+            {{ resultadoTipo() === 'concedido' ? (resultadoEsSalida() ? 'Salida Registrada' : 'Acceso Concedido') : resultadoTipo() === 'denegado' ? 'Acceso Denegado' : 'No se pudo verificar' }}
           </span>
           <span *ngIf="resultadoMensaje()" class="font-body-sm text-body-sm text-white/90 text-center leading-snug">
             {{ resultadoMensaje() }}
@@ -67,6 +67,40 @@
 
       <!-- Manual Entry Action -->
       <div class="absolute bottom-6 left-0 w-full flex flex-col items-center gap-2 z-10 px-gutter">
+        <!-- Selector de modo: siempre visible para que el recepcionista sepa qué va a registrar -->
+        <div class="w-full max-w-sm flex flex-col gap-1">
+          <p class="font-utility-mono text-utility-mono text-chalk-50 text-center uppercase tracking-widest">
+            Modo: {{ modo() === 'entry' ? 'Entrada' : 'Salida' }}
+          </p>
+          <div role="radiogroup" aria-label="Modo de registro" class="flex gap-2">
+            <button
+              type="button"
+              role="radio"
+              [attr.aria-checked]="modo() === 'entry'"
+              (click)="cambiarModo('entry')"
+              [class.bg-iron-700]="modo() === 'entry'"
+              [class.border-chalk-50]="modo() === 'entry'"
+              [class.bg-iron-950/90]="modo() !== 'entry'"
+              [class.border-white/10]="modo() !== 'entry'"
+              class="flex-1 min-h-12 text-chalk-50 border rounded flex items-center justify-center gap-1 font-body-md text-body-md">
+              <span *ngIf="modo() === 'entry'" class="material-symbols-outlined text-base">check</span>
+              Entrada
+            </button>
+            <button
+              type="button"
+              role="radio"
+              [attr.aria-checked]="modo() === 'exit'"
+              (click)="cambiarModo('exit')"
+              [class.bg-iron-700]="modo() === 'exit'"
+              [class.border-chalk-50]="modo() === 'exit'"
+              [class.bg-iron-950/90]="modo() !== 'exit'"
+              [class.border-white/10]="modo() !== 'exit'"
+              class="flex-1 min-h-12 text-chalk-50 border rounded flex items-center justify-center gap-1 font-body-md text-body-md">
+              <span *ngIf="modo() === 'exit'" class="material-symbols-outlined text-base">check</span>
+              Salida
+            </button>
+          </div>
+        </div>
         <!-- Input de ingreso manual: único punto de entrada del código mientras no hay cámara -->
         <form
           *ngIf="ingresoManualVisible()"
