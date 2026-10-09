@@ -2,8 +2,8 @@
   <!-- Header Móvil -->
   <header class="mobile-header">
     <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-iron-950 text-2xl">fitness_center</span>
-      <span class="font-bold text-iron-950 text-xl tracking-tighter">GymSync</span>
+      <span class="material-symbols-outlined text-signal-red text-2xl">fitness_center</span>
+      <span class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</span>
     </div>
   </header>
 
@@ -11,18 +11,18 @@
   <aside class="desktop-sidebar">
     <div class="sidebar-top">
       <div class="brand-logo">
-        <span class="material-symbols-outlined text-iron-950 text-3xl">fitness_center</span>
-        <span class="font-bold text-iron-950 text-2xl tracking-tighter">GymSync</span>
+        <span class="material-symbols-outlined text-signal-red text-3xl">fitness_center</span>
+        <span class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</span>
       </div>
 
       <nav class="sidebar-nav">
-        <a routerLink="/user-home" class="nav-item active">
+        <a routerLink="/user-home" class="nav-item active" aria-current="page">
           <span class="material-symbols-outlined">dashboard</span>
           <span>Inicio</span>
         </a>
         <a routerLink="/user-escaner" class="nav-item">
           <span class="material-symbols-outlined">qr_code_scanner</span>
-          <span>Escanear Máquina</span>
+          <span>Escanear</span>
         </a>
         <a routerLink="/user-perfil" class="nav-item">
           <span class="material-symbols-outlined">person</span>
@@ -46,19 +46,17 @@
   <main class="main-content">
     <div class="content-container">
       
-      <!-- Banner Destacado Estilo GymSync -->
-      <section class="hero-card">
-        <div class="hero-body">
-          <div class="hero-text">
-            <span class="hero-badge">Catálogo Interactivo</span>
-            <h1 class="hero-title">Biblioteca de Máquinas</h1>
-            <p class="hero-subtitle">Selecciona una máquina por su grupo muscular para ver su guía interactiva e instrucciones de uso.</p>
-          </div>
-          <button routerLink="/user-escaner" class="btn-primary-red">
-            <span class="material-symbols-outlined">qr_code_scanner</span>
-            <span>Escanear Máquina</span>
-          </button>
+      <!-- Encabezado de pantalla (mismo patrón que el admin) -->
+      <section class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+        <div>
+          <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider block mb-2">Catálogo Interactivo</span>
+          <h1 class="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl font-bold text-iron-950 mb-2 uppercase">Biblioteca de Máquinas</h1>
+          <p class="font-body-md text-body-md text-iron-700">Selecciona una máquina por su grupo muscular para ver su guía interactiva e instrucciones de uso.</p>
         </div>
+        <button routerLink="/user-escaner" class="btn-primary-red">
+          <span class="material-symbols-outlined">qr_code_scanner</span>
+          <span>Escanear Máquina</span>
+        </button>
       </section>
 
       <!-- Secciones por Músculo -->
@@ -91,7 +89,7 @@
 
   <!-- Navegación Móvil Inferior -->
   <nav class="mobile-nav">
-    <a routerLink="/user-home" class="mobile-nav-item active">
+    <a routerLink="/user-home" class="mobile-nav-item active" aria-current="page">
       <span class="material-symbols-outlined">dashboard</span>
       <span>Inicio</span>
     </a>

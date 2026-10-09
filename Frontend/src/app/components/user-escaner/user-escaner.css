@@ -9,10 +9,18 @@
 /* Layout Unificado */
 .app-layout {
   display: flex;
+  flex-direction: column; /* móvil: cabecera arriba y contenido debajo, no en fila */
   min-height: 100vh;
-  background-color: #f5f5f3;
-  color: #1a1a1a;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100dvh;
+  background-color: var(--color-iron-950); /* pantalla de escaneo: fondo iron-950 */
+  color: var(--color-chalk-50);
+  font-family: var(--font-body-md);
+}
+
+@media (min-width: 768px) {
+  .app-layout {
+    flex-direction: row;
+  }
 }
 
 .desktop-sidebar {
@@ -20,10 +28,11 @@
   flex-direction: column;
   justify-content: space-between;
   width: 240px;
-  background-color: #f5f5f3;
-  border-right: 1px solid #e5e5e0;
+  background-color: var(--color-iron-950);
+  border-right: 1px solid var(--color-iron-700);
   position: fixed;
   height: 100vh;
+  height: 100dvh;
   z-index: 40;
   padding: 24px 16px;
   top: 0;
@@ -54,24 +63,27 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-height: 48px;
   padding: 12px 16px;
   border-radius: 8px;
-  color: #555555;
+  color: var(--color-chalk-200);
   text-decoration: none;
-  font-size: 14px;
+  font-family: var(--font-utility-mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
   font-weight: 500;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .nav-item:hover {
-  background-color: #eaeaea;
-  color: #1a1a1a;
+  background-color: var(--color-iron-900);
+  color: var(--color-signal-red);
 }
 
 .nav-item.active {
-  background-color: #e5e5e0;
-  color: #1a1a1a;
+  background-color: var(--color-iron-700);
+  color: var(--color-signal-red);
   font-weight: 600;
 }
 
@@ -80,10 +92,10 @@
   align-items: center;
   gap: 12px;
   padding: 12px;
-  background-color: #e5e5e0;
+  background-color: var(--color-iron-700);
   border-radius: 10px;
   text-decoration: none;
-  color: #1a1a1a;
+  color: var(--color-chalk-50);
   cursor: pointer;
 }
 
@@ -91,8 +103,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: #e13438;
-  color: #ffffff;
+  background-color: var(--color-signal-red);
+  color: var(--color-chalk-50);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,7 +122,9 @@
 .main-content {
   flex: 1;
   width: 100%;
-  padding-bottom: 80px;
+  min-width: 0; /* evita que el contenido ensanche la página */
+  /* la barra inferior fija (60px) más el safe-area del iPhone nunca tapa el último elemento */
+  padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px) + 24px);
 }
 
 @media (min-width: 768px) {
@@ -124,8 +138,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px);
-  padding: 24px 16px;
+  /* móvil: pantalla menos cabecera (56px) y barra inferior (60px + safe-area) */
+  min-height: calc(100vh - 116px);
+  min-height: calc(100dvh - 116px - env(safe-area-inset-bottom, 0px));
+  padding: 16px;
 }
 
 .mobile-header {
@@ -133,8 +149,8 @@
   align-items: center;
   height: 56px;
   padding: 0 16px;
-  background-color: #f5f5f3;
-  border-bottom: 1px solid #e5e5e0;
+  background-color: var(--color-iron-950);
+  border-bottom: 1px solid var(--color-iron-700);
   position: sticky;
   top: 0;
   z-index: 30;
@@ -148,16 +164,16 @@
 
 /* Tarjeta del Escáner estilo Neumórfico / Limpio */
 .scanner-card {
-  background-color: #ffffff;
-  border: 1px solid #e5e5e0;
+  background-color: var(--color-iron-900);
+  border: 1px solid var(--color-iron-700);
   border-radius: 20px;
-  padding: 32px 24px;
+  padding: 24px 16px;
   max-width: 480px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   position: relative;
 }
 
@@ -168,36 +184,39 @@
 
 .btn-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #f5f5f3;
+  top: 8px;
+  right: 8px;
+  background: var(--color-iron-700);
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #555;
+  color: var(--color-chalk-50);
   transition: background 0.2s ease;
 }
 
 .btn-close:hover {
-  background: #e5e5e0;
-  color: #1a1a1a;
+  background: var(--color-iron-950);
+  color: var(--color-chalk-50);
 }
 
 .scanner-header h2 {
-  font-size: 20px;
-  font-weight: 800;
+  font-family: var(--font-headline-md);
+  font-size: 22px;
+  font-weight: 700;
   margin: 0 0 6px 0;
-  color: #1a1a1a;
+  padding: 0 40px; /* deja libre el botón de cerrar (48px) en pantallas angostas */
+  color: var(--color-chalk-50);
 }
 
 .scanner-header p {
-  font-size: 13px;
-  color: #666666;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-chalk-50);
   margin: 0;
 }
 
@@ -208,9 +227,13 @@
 }
 
 .qr-viewfinder {
-  width: 240px;
-  height: 240px;
-  background-color: #111111;
+  /* el visor se achica con la altura disponible para que la tarjeta quepa en pantalla */
+  width: clamp(140px, calc(100vh - 420px), 240px);
+  width: clamp(140px, calc(100dvh - 420px), 240px);
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: var(--color-iron-950);
+  border: 1px solid var(--color-iron-700);
   border-radius: 16px;
   position: relative;
   display: flex;
@@ -221,7 +244,7 @@
 
 .qr-icon-center {
   font-size: 64px;
-  color: #333333;
+  color: var(--color-iron-700);
 }
 
 /* Esquinas Rojas de Neón */
@@ -229,7 +252,7 @@
   position: absolute;
   width: 24px;
   height: 24px;
-  border-color: #e13438;
+  border-color: var(--color-signal-red);
   border-style: solid;
 }
 
@@ -243,8 +266,8 @@
   position: absolute;
   width: 100%;
   height: 2px;
-  background: #e13438;
-  box-shadow: 0 0 12px #e13438;
+  background: var(--color-signal-red);
+  box-shadow: 0 0 12px var(--color-signal-red);
   animation: scanning 2.5s infinite ease-in-out;
 }
 
@@ -255,20 +278,21 @@
 }
 
 .scan-status-text {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
-  color: #e13438;
+  color: var(--color-chalk-50); /* signal-red sobre iron-900 no alcanza contraste AA en texto chico */
   letter-spacing: 1.5px;
   margin-bottom: 24px;
 }
 
 .btn-upload-gallery {
   width: 100%;
-  background-color: #e13438;
-  color: #ffffff;
+  background-color: var(--color-signal-red);
+  color: var(--color-chalk-50);
   border: none;
+  min-height: 48px;
   padding: 14px;
-  border-radius: 10px;
+  border-radius: var(--radius-custom);
   font-weight: 700;
   font-size: 14px;
   display: flex;
@@ -280,7 +304,7 @@
 }
 
 .btn-upload-gallery:hover {
-  background-color: #c9282c;
+  background-color: var(--color-signal-red-hover);
 }
 
 .btn-upload-gallery:active {
@@ -294,9 +318,10 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 60px;
-  background-color: #f5f5f3;
-  border-top: 1px solid #e5e5e0;
+  min-height: 60px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background-color: var(--color-iron-950);
+  border-top: 1px solid var(--color-iron-700);
   justify-content: space-around;
   align-items: center;
   z-index: 50;
@@ -312,13 +337,46 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #666666;
+  justify-content: center;
+  flex: 1 1 0;
+  min-width: 48px;
+  min-height: 48px;
+  color: var(--color-chalk-200);
   text-decoration: none;
-  font-size: 11px;
+  font-family: var(--font-utility-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   gap: 2px;
 }
 
 .mobile-nav-item.active {
-  color: #1a1a1a;
+  color: var(--color-signal-red);
   font-weight: 700;
+}
+@media (min-width: 480px) {
+  .scanner-card {
+    padding: 32px 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  .content-container.flex-center {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
+/* Respeta la preferencia de menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .scan-laser {
+    top: 50%;
+  }
 }

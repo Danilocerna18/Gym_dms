@@ -2,8 +2,8 @@
   <!-- Header Móvil -->
   <header class="mobile-header">
     <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-iron-950 text-2xl">fitness_center</span>
-      <span class="font-bold text-iron-950 text-xl tracking-tighter">GymSync</span>
+      <span class="material-symbols-outlined text-signal-red text-2xl">fitness_center</span>
+      <span class="font-headline-md text-headline-md font-extrabold text-chalk-50 tracking-tighter uppercase">GymSync</span>
     </div>
   </header>
 
@@ -11,8 +11,8 @@
   <aside class="desktop-sidebar">
     <div class="sidebar-top">
       <div class="brand-logo">
-        <span class="material-symbols-outlined text-iron-950 text-3xl">fitness_center</span>
-        <span class="font-bold text-iron-950 text-2xl tracking-tighter">GymSync</span>
+        <span class="material-symbols-outlined text-signal-red text-3xl">fitness_center</span>
+        <span class="font-headline-md text-headline-md font-extrabold text-chalk-50 tracking-tighter uppercase">GymSync</span>
       </div>
 
       <nav class="sidebar-nav">
@@ -20,9 +20,9 @@
           <span class="material-symbols-outlined">dashboard</span>
           <span>Inicio</span>
         </a>
-        <a routerLink="/user-escaner" class="nav-item active">
+        <a routerLink="/user-escaner" class="nav-item active" aria-current="page">
           <span class="material-symbols-outlined">qr_code_scanner</span>
-          <span>Escanear Máquina</span>
+          <span>Escanear</span>
         </a>
         <a routerLink="/user-perfil" class="nav-item">
           <span class="material-symbols-outlined">person</span>
@@ -47,7 +47,7 @@
       
       <div class="scanner-card">
         <div class="scanner-header">
-          <button class="btn-close" (click)="closeScanner()">
+          <button class="btn-close" (click)="closeScanner()" aria-label="Cerrar escáner">
             <span class="material-symbols-outlined">close</span>
           </button>
           <h2>Apunta al Código QR</h2>
@@ -83,7 +83,7 @@
       <span class="material-symbols-outlined">dashboard</span>
       <span>Inicio</span>
     </a>
-    <a routerLink="/user-escaner" class="mobile-nav-item active">
+    <a routerLink="/user-escaner" class="mobile-nav-item active" aria-current="page">
       <span class="material-symbols-outlined">qr_code_scanner</span>
       <span>Escanear</span>
     </a>

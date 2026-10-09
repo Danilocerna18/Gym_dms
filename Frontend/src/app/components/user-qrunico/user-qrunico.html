@@ -1,49 +1,35 @@
-<header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-  <div class="h-16 px-margin-mobile flex items-center justify-between">
+<header class="fixed top-0 w-full z-50 bg-chalk-50 border-b border-chalk-200 shadow-sm pt-safe">
+  <div class="h-16 w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop flex items-center justify-between">
     <div class="flex items-center gap-gutter">
-      <button aria-label="Volver" class="min-w-[48px] min-h-[48px] flex items-center justify-center text-on-surface hover:text-signal-red transition-colors" (click)="goBack()">
+      <button aria-label="Volver" class="min-w-[48px] min-h-[48px] flex items-center justify-center text-iron-950 hover:text-signal-red transition-colors" (click)="goBack()">
         <span class="material-symbols-outlined text-[24px]">arrow_back</span>
       </button>
       <div class="flex flex-col">
-        <span class="font-utility-mono text-[11px] tracking-wider uppercase text-secondary">GYMSYNC ACCESS</span>
-        <h1 class="font-headline-md text-headline-md uppercase tracking-tight text-on-surface leading-none">Access Pass</h1>
+        <span class="font-utility-mono text-utility-mono uppercase tracking-wider text-iron-700">GYMSYNC ACCESS</span>
+        <h1 class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase leading-none">Access Pass</h1>
       </div>
     </div>
-    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-      <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+    <div class="w-8 h-8 rounded-full bg-signal-red inner-glow border border-chalk-200 flex items-center justify-center">
+      <span class="material-symbols-outlined text-chalk-50 text-[18px]">person</span>
     </div>
   </div>
 </header>
 
-<main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface">
-  <div class="flex flex-col w-full px-margin-mobile pb-8 space-y-4">
+<main class="flex-1 flex flex-col relative w-full pt-[calc(4rem_+_env(safe-area-inset-top))] pb-safe bg-chalk-50 text-iron-950 font-body-md min-h-screen min-h-dvh">
+  <div class="flex flex-col w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop py-8">
+  <div class="w-full max-w-xl mx-auto space-y-4">
     
-    <!-- Indicador de Estado -->
-    <div class="flex items-center justify-between py-2 px-1">
-      <div class="flex items-center gap-2">
-        <span class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-track-green opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-track-green"></span>
-        </span>
-        <span class="font-utility-mono text-utility-mono uppercase text-secondary tracking-widest text-[11px]">Sincronizado • Listo</span>
-      </div>
-      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container rounded-full text-on-surface-variant">
-        <span class="material-symbols-outlined text-[16px] text-signal-red">brightness_high</span>
-        <span class="font-utility-mono text-utility-mono text-[11px] font-semibold tracking-tight">BRILLO AL 100%</span>
-      </div>
-    </div>
-
     <!-- Tarjeta Principal del Pase -->
-    <div class="w-full bg-iron-950 text-chalk-50 rounded-xl p-5 shadow-xl flex flex-col items-center relative overflow-hidden">
+    <div class="w-full bg-iron-950 text-chalk-50 rounded-lg p-4 sm:p-6 sharp-shadow flex flex-col items-center relative overflow-hidden">
       
       <!-- Header de Miembro -->
-      <div class="w-full flex items-start justify-between pb-4">
-        <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-xl overflow-hidden bg-iron-700 flex-shrink-0">
+      <div class="w-full flex flex-wrap items-start justify-between gap-3 pb-4">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-12 h-12 rounded-lg overflow-hidden bg-iron-700 flex-shrink-0">
             <img class="w-full h-full object-cover" alt="Fotografía de Sofía Bilbao" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMGF3AR47zfQ8FEt691fXZlEQscaa08giZExm3TPGecb-LG2ho1nW6lDVZOnXklG0CWMMipnGcnh4Xm2xkb3TLDnxlGiBsxxOsWJxd0dI06_9SRhvQDvk6pTeoggdzu2nzvTfIRQUB1_MCEfz-ZJe7bvdMXGwdbK6uBLiLPV2d5h1t5OsfxUIHSFt4lZpoy1Tr84ZPS-S4tianC1RnBoehU0spLLLE9JZ0CncRTJ7LNeC9y7WuCjLvMQ">
           </div>
-          <div class="flex flex-col">
-            <span class="font-display-lg text-display-lg uppercase tracking-tight text-chalk-50 leading-none">SOFÍA BILBAO</span>
+          <div class="flex flex-col min-w-0">
+            <span class="font-display-lg text-display-lg uppercase tracking-tight text-chalk-50 leading-none break-words">SOFÍA BILBAO</span>
             <span class="font-utility-mono text-utility-mono text-chalk-200 mt-1 opacity-80">ID: MEM-84920</span>
           </div>
         </div>
@@ -54,16 +40,16 @@
       </div>
 
       <!-- Tag de Expiración -->
-      <div class="w-full flex items-center justify-between py-2 px-3 bg-iron-700/60 rounded-lg mb-4 text-chalk-200">
+      <div class="w-full flex flex-wrap items-center justify-between gap-x-3 gap-y-1 py-2 px-3 bg-iron-700/60 rounded-lg mb-4 text-chalk-200">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-[16px] text-track-green">verified_user</span>
           <span class="font-body-sm text-body-sm text-chalk-50">Acceso Full-Day Libre</span>
         </div>
-        <span class="font-utility-mono text-utility-mono text-[11px] text-chalk-200">Vence en 12 días</span>
+        <span class="font-utility-mono text-utility-mono uppercase tracking-wider text-chalk-200">Vence en 12 días</span>
       </div>
 
       <!-- Contenedor del Código QR -->
-      <div class="w-full aspect-square max-w-[280px] bg-white rounded-xl p-4 flex flex-col items-center justify-center relative shadow-md">
+      <div class="w-full aspect-square max-w-[280px] bg-surface-container-lowest rounded-lg p-3 sm:p-4 flex flex-col items-center justify-center relative shadow-md">
         <svg class="w-full h-full text-iron-950" fill="none" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
           <rect fill="currentColor" height="40" rx="4" width="40" x="10" y="10"></rect>
           <rect fill="white" height="24" rx="2" width="24" x="18" y="18"></rect>
@@ -118,12 +104,12 @@
       </div>
 
       <!-- Código Manual y Copia -->
-      <div class="w-full mt-4 flex items-center justify-between bg-iron-700/80 rounded-xl px-4 py-2.5">
+      <div class="w-full mt-4 flex flex-wrap items-center justify-between gap-3 bg-iron-700/80 rounded-lg px-4 py-2.5">
         <div class="flex flex-col">
-          <span class="font-utility-mono text-[10px] text-chalk-200 tracking-wider uppercase">CÓDIGO MANUAL</span>
+          <span class="font-utility-mono text-utility-mono text-chalk-200 tracking-wider uppercase">CÓDIGO MANUAL</span>
           <span class="font-utility-mono text-headline-md tracking-wider font-bold text-chalk-50 leading-tight">GS-9821-ENT</span>
         </div>
-        <button #copyBtn aria-label="Copiar código numérico de acceso" class="min-h-touch-target min-w-touch-target px-3 py-2 bg-chalk-50 text-iron-950 font-utility-mono text-utility-mono rounded-lg flex items-center gap-1.5 active:bg-chalk-200 transition-colors" (click)="copyAccessCode(copyBtn, copyIcon, copyText)">
+        <button #copyBtn aria-label="Copiar código numérico de acceso" class="min-h-12 min-w-12 px-3 py-2 bg-chalk-50 text-iron-950 font-utility-mono text-utility-mono rounded-custom flex items-center gap-1.5 active:bg-chalk-200 transition-colors" (click)="copyAccessCode(copyBtn, copyIcon, copyText)">
           <span #copyIcon class="material-symbols-outlined text-[18px]">content_copy</span>
           <span #copyText class="font-bold">COPIAR</span>
         </button>
@@ -139,46 +125,29 @@
     </div>
 
     <!-- Widget de Aforo en Tiempo Real -->
-    <div class="w-full bg-surface-container rounded-xl p-4 flex items-center justify-between">
+    <div class="w-full bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-4 sm:p-6 border border-chalk-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div class="flex items-center gap-3.5">
         <div class="relative w-12 h-12 flex items-center justify-center flex-shrink-0">
           <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
             <path class="text-surface-container-highest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
             <path class="text-track-green" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="62, 100" stroke-linecap="round" stroke-width="3.5"></path>
           </svg>
-          <span class="absolute font-utility-mono text-utility-mono text-[11px] font-bold text-on-surface">62%</span>
+          <span class="absolute font-utility-mono text-utility-mono text-[11px] font-bold text-iron-950">62%</span>
         </div>
         <div class="flex flex-col">
-          <div class="flex items-center gap-1.5">
-            <span class="font-display-lg text-headline-md uppercase text-on-surface leading-none">SALA PRINCIPAL</span>
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span class="font-headline-md text-headline-md text-iron-950 uppercase leading-none">SALA PRINCIPAL</span>
             <span class="px-1.5 py-0.5 rounded bg-track-green/15 text-track-green font-utility-mono text-[10px] font-bold">ÓPTIMO</span>
           </div>
-          <span class="font-body-sm text-body-sm text-secondary mt-0.5">Aforo en vivo: 34 / 55 personas</span>
+          <span class="font-body-sm text-body-sm text-iron-700 mt-0.5">Aforo en vivo: 34 / 55 personas</span>
         </div>
       </div>
-      <div class="flex flex-col items-end">
-        <span class="font-utility-mono text-[11px] text-secondary">TIEMPO ESPERA</span>
-        <span class="font-headline-md text-headline-md text-on-surface leading-none">0 MIN</span>
+      <div class="flex flex-col sm:items-end">
+        <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider">TIEMPO ESPERA</span>
+        <span class="font-headline-md text-headline-md text-iron-950 leading-none">0 MIN</span>
       </div>
     </div>
 
-    <!-- Botones de Acción -->
-    <div class="w-full flex flex-col gap-2.5 pt-1">
-      <button #walletBtn class="w-full min-h-[48px] bg-secondary-container text-on-secondary-fixed rounded-xl px-4 py-3 flex items-center justify-center gap-2.5 active:bg-secondary-fixed-dim transition-colors" type="button" (click)="triggerWalletFeedback(walletBtn)">
-        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
-        <span class="font-headline-md text-headline-md uppercase tracking-tight">Añadir a Google / Apple Wallet</span>
-      </button>
-      <div class="grid grid-cols-2 gap-2.5">
-        <button #brightnessBtn class="w-full min-h-[48px] bg-surface-container rounded-xl px-3 py-2 flex items-center justify-center gap-2 text-on-surface active:bg-surface-container-high transition-colors" type="button" (click)="toggleBrightness(brightnessBtn)">
-          <span class="material-symbols-outlined text-[18px]">wb_sunny</span>
-          <span class="font-utility-mono text-utility-mono font-bold uppercase">Max Brillo</span>
-        </button>
-        <button #refreshBtn class="w-full min-h-[48px] bg-surface-container rounded-xl px-3 py-2 flex items-center justify-center gap-2 text-on-surface active:bg-surface-container-high transition-colors" type="button" (click)="refreshAccessPass(refreshBtn)">
-          <span class="material-symbols-outlined text-[18px]">sync</span>
-          <span class="font-utility-mono text-utility-mono font-bold uppercase">Actualizar</span>
-        </button>
-      </div>
-    </div>
-
+  </div>
   </div>
 </main>

@@ -28,35 +28,6 @@ export class UserQrunico {
     });
   }
 
-  // Lógica para exportar a Wallet
-  triggerWalletFeedback(btn: HTMLButtonElement): void {
-    const originalContent = btn.innerHTML;
-    btn.innerHTML = '<span class="material-symbols-outlined text-[20px] text-track-green">check_circle</span><span class="font-headline-md text-headline-md uppercase">Pase Exportado</span>';
-
-    setTimeout(() => {
-      btn.innerHTML = originalContent;
-    }, 2200);
-  }
-
-  // Alternar brillo máximo
-  toggleBrightness(btn: HTMLButtonElement): void {
-    btn.classList.toggle('bg-primary');
-    btn.classList.toggle('text-on-primary');
-  }
-
-  // Animación de actualización del pase
-  refreshAccessPass(btn: HTMLButtonElement): void {
-    const icon = btn.querySelector<HTMLElement>('.material-symbols-outlined');
-    if (icon) {
-      icon.classList.add('rotate-180');
-      icon.style.transition = 'transform 0.4s ease';
-
-      setTimeout(() => {
-        icon.classList.remove('rotate-180');
-      }, 400);
-    }
-  }
-
   // Navegación hacia atrás
   goBack(): void {
     history.back();
