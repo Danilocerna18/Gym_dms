@@ -81,7 +81,8 @@
         </div>
 
         <!-- Metrics Grid  -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        <!-- La tarjeta de ingresos (US-16) se retiró del MVP por decisión del equipo. -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
           <!-- Total Members -->
           <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex flex-col justify-between h-40">
             <div class="flex justify-between items-start">
@@ -89,46 +90,24 @@
               <span class="material-symbols-outlined text-steel-500">group</span>
             </div>
             <div>
-              <p class="font-display-lg text-display-lg text-iron-950">245</p>
+              <p class="font-display-lg text-display-lg text-iron-950">{{ resumen().totalMiembros }}</p>
               <div class="flex items-center gap-1 mt-1">
                 <span class="material-symbols-outlined text-track-green text-[16px]">arrow_upward</span>
-                <span class="font-utility-mono text-utility-mono text-track-green">+12 este mes</span>
+                <span class="font-utility-mono text-utility-mono text-track-green">+{{ resumen().nuevosEsteMes }} este mes</span>
               </div>
             </div>
           </div>
 
-          <!-- Active Membersr -->
-          <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex justify-between h-40">
-            <div class="flex flex-col justify-between">
-              <h2 class="font-utility-mono text-utility-mono text-steel-500 uppercase tracking-wider">Activos Hoy</h2>
-              <div>
-                <p class="font-display-lg text-display-lg text-iron-950">210</p>
-                <p class="font-utility-mono text-utility-mono text-iron-700 mt-1">85% de Capacidad</p>
-              </div>
-            </div>
-            <div class="w-24 h-24 self-center relative flex items-center justify-center">
-              <svg class="circular-chart text-steel-500" viewBox="0 0 36 36">
-                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
-                <path class="circle primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dasharray="85, 100"></path>
-              </svg>
-              <div class="absolute inset-0 flex items-center justify-center">
-                <span class="material-symbols-outlined text-steel-500">how_to_reg</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Monthly Revenue -->
-          <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card finance flex flex-col justify-between h-40">
+          <!-- Active Members -->
+          <!-- El anillo de aforo (design guide §5) se reincorporará con datos reales cuando se haga US-15. -->
+          <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex flex-col justify-between h-40">
             <div class="flex justify-between items-start">
-              <h2 class="font-utility-mono text-utility-mono text-track-green uppercase tracking-wider">Ingresos Mensuales</h2>
-              <span class="material-symbols-outlined text-track-green">payments</span>
+              <h2 class="font-utility-mono text-utility-mono text-steel-500 uppercase tracking-wider">Activos Hoy</h2>
+              <span class="material-symbols-outlined text-steel-500">how_to_reg</span>
             </div>
             <div>
-              <p class="font-display-lg text-display-lg text-iron-950">$18.4k</p>
-              <div class="flex items-center gap-1 mt-1">
-                <span class="material-symbols-outlined text-track-green text-[16px]">trending_up</span>
-                <span class="font-utility-mono text-utility-mono text-track-green">+5.2% vs mes pasado</span>
-              </div>
+              <p class="font-display-lg text-display-lg text-iron-950">{{ resumen().activosHoy }}</p>
+              <p class="font-utility-mono text-utility-mono text-iron-700 mt-1">Han entrado hoy</p>
             </div>
           </div>
         </div>
@@ -140,53 +119,31 @@
             Alertas Recientes
           </h2>
           <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg overflow-hidden border border-chalk-200">
-            <div class="divide-y divide-chalk-200">
-              <!-- Alert Item 1 -->
-              <div class="p-4 flex items-center justify-between hover:bg-chalk-50 transition-colors">
+            <!-- Estados: cargando, error y sin alertas -->
+            <div *ngIf="cargando()" class="p-4 text-center font-body-md text-body-md text-iron-700">Cargando alertas...</div>
+            <div *ngIf="!cargando() && error()" class="p-4 text-center flex flex-col items-center gap-3">
+              <p class="font-body-md text-body-md text-iron-700">{{ error() }}</p>
+              <button (click)="cargar()" class="px-3 py-1 bg-transparent border border-steel-500 text-steel-500 font-utility-mono text-utility-mono rounded hover:bg-surface-container transition-colors uppercase">Reintentar</button>
+            </div>
+            <div *ngIf="!cargando() && !error() && alertas().length === 0" class="p-4 text-center font-body-md text-body-md text-iron-700">Sin alertas por ahora.</div>
+
+            <div class="divide-y divide-chalk-200" *ngIf="!cargando() && !error()">
+              <div *ngFor="let alerta of alertas()" class="p-4 flex items-center justify-between hover:bg-chalk-50 transition-colors">
                 <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-signal-red">
-                    <span class="material-symbols-outlined">credit_card_off</span>
+                  <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center"
+                       [class.text-signal-red]="alerta.tipo !== 'por_caducar'"
+                       [class.text-iron-700]="alerta.tipo === 'por_caducar'">
+                    <span class="material-symbols-outlined">{{ alerta.tipo === 'fallido' ? 'credit_card_off' : 'event_busy' }}</span>
                   </div>
                   <div>
-                    <p class="font-body-md text-body-md text-iron-950 font-semibold">Sofia Bilbao</p>
-                    <p class="font-utility-mono text-utility-mono text-iron-700">Pago Vencido - Plan Mensual</p>
+                    <p class="font-body-md text-body-md text-iron-950 font-semibold">{{ alerta.miembro.name }}</p>
+                    <p class="font-utility-mono text-utility-mono text-iron-700">{{ alerta.detalle }} - {{ alerta.plan }}</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-3">
-                  <span class="px-2 py-1 rounded bg-signal-red/10 text-signal-red font-utility-mono text-utility-mono border border-signal-red/20 uppercase">Vencido</span>
-                  <button class="px-3 py-1 bg-transparent border border-steel-500 text-steel-500 font-utility-mono text-utility-mono rounded hover:bg-surface-container transition-colors uppercase">Recordar</button>
-                </div>
-              </div>
-              <!-- Alert Item 2 -->
-              <div class="p-4 flex items-center justify-between hover:bg-chalk-50 transition-colors">
-                <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-signal-red">
-                    <span class="material-symbols-outlined">credit_card_off</span>
-                  </div>
-                  <div>
-                    <p class="font-body-md text-body-md text-iron-950 font-semibold">Lucca Bilbao</p>
-                    <p class="font-utility-mono text-utility-mono text-iron-700">Pago Fallido - Plan Anual</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span class="px-2 py-1 rounded bg-signal-red/10 text-signal-red font-utility-mono text-utility-mono border border-signal-red/20 uppercase">Fallido</span>
-                  <button class="px-3 py-1 bg-transparent border border-steel-500 text-steel-500 font-utility-mono text-utility-mono rounded hover:bg-surface-container transition-colors uppercase">Recordar</button>
-                </div>
-              </div>
-              <!-- Alert Item 3 -->
-              <div class="p-4 flex items-center justify-between hover:bg-chalk-50 transition-colors">
-                <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-iron-700">
-                    <span class="material-symbols-outlined">event_busy</span>
-                  </div>
-                  <div>
-                    <p class="font-body-md text-body-md text-iron-950 font-semibold">Cristina Bilbao</p>
-                    <p class="font-utility-mono text-utility-mono text-iron-700">Membresía Anual Caduca en 3 Días</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span class="px-2 py-1 rounded bg-surface-container text-iron-700 font-utility-mono text-utility-mono uppercase border border-chalk-200">Por Caducar</span>
-                  <button class="px-3 py-1 bg-transparent border border-steel-500 text-steel-500 font-utility-mono text-utility-mono rounded hover:bg-surface-container transition-colors uppercase">Contactar</button>
+                  <span *ngIf="alerta.tipo === 'vencido'" class="px-2 py-1 rounded bg-signal-red/10 text-signal-red font-utility-mono text-utility-mono border border-signal-red/20 uppercase">Vencido</span>
+                  <span *ngIf="alerta.tipo === 'fallido'" class="px-2 py-1 rounded bg-signal-red/10 text-signal-red font-utility-mono text-utility-mono border border-signal-red/20 uppercase">Fallido</span>
+                  <span *ngIf="alerta.tipo === 'por_caducar'" class="px-2 py-1 rounded bg-surface-container text-iron-700 font-utility-mono text-utility-mono uppercase border border-chalk-200">Por Caducar</span>
                 </div>
               </div>
             </div>

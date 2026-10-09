@@ -36,6 +36,7 @@ import { errorHandler } from "./middleware/error-handler";
 import { scanRouter } from "./routes/scan.route";
 import { accessRouter } from "./routes/access.route";
 import { clientesRouter } from "./routes/clientes.route";
+import { dashboardRouter } from "./routes/dashboard.route";
 import { webhooksRouter } from "./routes/webhooks.route";
 
 import "./config/passport";
@@ -74,6 +75,8 @@ app.use("/api/scan", scanRouter);
 app.use("/api/access", accessRouter);
 
 app.use("/api/clientes", clientesRouter);
+
+app.use("/api/dashboard", dashboardRouter);
 
 app.use("/api/webhooks", webhooksRouter);
 
