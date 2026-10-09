@@ -1,108 +1,114 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MachineService } from '../../services/machine.service';
 
 @Component({
   selector: 'app-admin-formulario-maquina',
   standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-formulario-maquina.html',
   styleUrl: './admin-formulario-maquina.css'
 })
-export class AdminFormularioMaquinaComponent {
+export class AdminFormularioMaquinaComponent implements OnInit {
 
-  nombreMaquina = 'Prensa de Piernas 45° Inclinada';
+  nombreMaquina: string = '';
+  grupoMuscular: string = 'Piernas';
+  instrucciones: string = '';
+  youtubeUrl: string = '';
+  idMaquina: string = '';
 
-  grupoMuscular = 'Cuádriceps y Glúteos';
+  mostrarToast: boolean = false;
+  guardando: boolean = false;
+  errorMensaje: string = '';
 
-  instrucciones =
-    'Ajustar respaldo a posición fija. Apoyar zona lumbar firmemente en el cojín. Bloquear seguro antes de colocar carga máxima.';
-
-  videoSeleccionado: File | null = null;
-
-  mostrarVideo = true;
-
-  mostrarToast = false;
-
-  idMaquina = 'QR-MCH-8942-PR45';
-
-  gruposMusculares = [
-    'Cuádriceps y Glúteos',
-    'Pecho y Tríceps',
-    'Espalda Completa',
-    'Cardio & HIIT'
+  gruposMusculares: string[] = [
+    'Piernas',
+    'Pecho',
+    'Espalda',
+    'Bíceps',
+    'Tríceps',
+    'Hombros'
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private machineService: MachineService,
+    private router: Router
+  ) {}
 
-  regresar() {
-    this.router.navigate(['/admin-lista-maquinas']);
+  ngOnInit(): void {
+    this.generarNuevoId();
   }
 
-  seleccionarGrupo(grupo: string) {
+  generarNuevoId(): void {
+    const aleatorio = Math.floor(100 + Math.random() * 900);
+    this.idMaquina = `MAC-${aleatorio}`;
+  }
+
+  seleccionarGrupo(grupo: string): void {
     this.grupoMuscular = grupo;
   }
 
-  abrirSelectorVideo(input: HTMLInputElement) {
-    input.click();
-  }
-
-  seleccionarVideo(event: Event) {
-    const input = event.target as HTMLInputElement;
-
-    if (input.files && input.files.length > 0) {
-
-      const archivo = input.files[0];
-
-      if (archivo.size > 150 * 1024 * 1024) {
-        alert('El video no puede superar los 150 MB.');
-        input.value = '';
-        return;
-      }
-
-      this.videoSeleccionado = archivo;
-      this.mostrarVideo = true;
-    }
-  }
-
-  eliminarVideo() {
-    this.videoSeleccionado = null;
-    this.mostrarVideo = false;
-  }
-
-  copiarId() {
+  copiarId(): void {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(this.idMaquina);
     }
-
-    alert('ID copiado: ' + this.idMaquina);
   }
 
-  descargarQR() {
-    alert('Preparando QR para imprimir...');
+  descargarQR(): void {
+    window.print();
   }
 
-  guardarMaquina() {
+  regresar(): void {
+    this.router.navigate(['/user-home']);
+  }
+
+  guardarMaquina(): void {
+    this.errorMensaje = '';
 
     if (!this.nombreMaquina.trim()) {
-      alert('Debes ingresar el nombre de la máquina.');
+      this.errorMensaje = 'Por favor ingresa el nombre de la máquina.';
       return;
     }
 
-    if (!this.grupoMuscular) {
-      alert('Debes seleccionar un grupo muscular.');
+    if (!this.youtubeUrl.trim()) {
+      this.errorMensaje = 'Por favor ingresa la URL del video de YouTube.';
       return;
     }
 
-    this.mostrarToast = true;
+    this.guardando = true;
 
-    setTimeout(() => {
-      this.mostrarToast = false;
-      this.router.navigate(['/admin-lista-maquinas']);
-    }, 2500);
+    const payload = {
+      id: this.idMaquina,
+      name: this.nombreMaquina,
+      qrCode: this.idMaquina,
+      youtubeUrl: this.youtubeUrl,
+      videoTitle: `Tutorial de ${this.nombreMaquina}`
+    };
+
+    this.machineService.createMachine(payload).subscribe({
+      next: () => {
+        this.guardando = false;
+        this.mostrarToast = true;
+
+        setTimeout(() => {
+          this.mostrarToast = false;
+          this.resetFormulario();
+        }, 3000);
+      },
+      error: (err) => {
+        this.guardando = false;
+        this.errorMensaje = err.error?.message || 'Error al guardar la máquina en la base de datos.';
+      }
+    });
+  }
+
+  resetFormulario(): void {
+    this.nombreMaquina = '';
+    this.instrucciones = '';
+    this.youtubeUrl = '';
+    this.grupoMuscular = 'Piernas';
+    this.generarNuevoId();
   }
 }
