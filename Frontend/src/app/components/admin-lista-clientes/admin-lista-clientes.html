@@ -92,23 +92,19 @@
       <div class="bg-surface-container-lowest inner-glow rounded-lg p-6 border border-chalk-200 data-card alert">
         <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider block mb-2">Miembros Activos</span>
         <div class="flex items-end gap-3">
-          <span class="font-display-lg text-display-lg font-extrabold text-iron-950 uppercase">1,248</span>
-          <span class="font-utility-mono text-utility-mono text-track-green bg-track-green/10 px-2 py-1 rounded-full mb-1 flex items-center gap-1">
-            <span class="material-symbols-outlined text-[10px]">trending_up</span> +12%
-          </span>
+          <span class="font-display-lg text-display-lg font-extrabold text-iron-950 uppercase">{{ resumen().miembrosActivos }}</span>
         </div>
       </div>
       <div class="bg-surface-container-lowest inner-glow rounded-lg p-6 border border-chalk-200 data-card alert">
         <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider block mb-2">Accesos Hoy</span>
         <div class="flex items-end gap-3">
-          <span class="font-display-lg text-display-lg font-extrabold text-iron-950 uppercase">342</span>
-          <span class="font-utility-mono text-utility-mono text-iron-700 mb-1">Peak: 18:00</span>
+          <span class="font-display-lg text-display-lg font-extrabold text-iron-950 uppercase">{{ resumen().accesosHoy }}</span>
         </div>
       </div>
       <div class="bg-surface-container-lowest inner-glow rounded-lg p-6 border border-chalk-200 data-card alert">
         <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider block mb-2">Membresías por Vencer</span>
         <div class="flex items-end gap-3">
-          <span class="font-display-lg text-display-lg font-extrabold text-steel-500 uppercase">24</span>
+          <span class="font-display-lg text-display-lg font-extrabold text-steel-500 uppercase">{{ resumen().porVencer }}</span>
           <button class="font-utility-mono text-utility-mono text-steel-500 hover:underline mb-1 ml-auto">Revisar</button>
         </div>
       </div>
@@ -124,79 +120,54 @@
         <div class="col-span-3 font-utility-mono text-utility-mono text-iron-700 uppercase text-right">Acciones QR</div>
       </div>
 
-      <div class="flex flex-col">
-        <!-- Item 1 -->
-        <div class="group border-b border-chalk-200 last:border-0 hover:bg-chalk-50 transition-colors">
+      <!-- Estados de la pantalla: cargando, error y vacío -->
+      <div *ngIf="cargando()" class="px-6 py-8 text-center font-body-md text-body-md text-iron-700">Cargando miembros...</div>
+      <div *ngIf="!cargando() && error()" class="px-6 py-8 text-center flex flex-col items-center gap-3">
+        <p class="font-body-md text-body-md text-iron-700">{{ error() }}</p>
+        <button (click)="cargar()" class="px-4 py-2 bg-transparent border border-chalk-200 rounded text-iron-950 hover:border-signal-red hover:text-signal-red font-utility-mono text-utility-mono transition-all">Reintentar</button>
+      </div>
+      <div *ngIf="!cargando() && !error() && clientes().length === 0" class="px-6 py-8 text-center font-body-md text-body-md text-iron-700">Aún no hay miembros registrados.</div>
+
+      <div class="flex flex-col" *ngIf="!cargando() && !error()">
+        <div *ngFor="let cliente of clientes()" class="group border-b border-chalk-200 last:border-0 hover:bg-chalk-50 transition-colors">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center px-gutter md:px-6 py-4">
-            <div class="col-span-1 md:col-span-4 flex items-center gap-4 cursor-pointer" (click)="verQr('Carlos Mendoza', 'GYM-8492')">
+            <div class="col-span-1 md:col-span-4 flex items-center gap-4 cursor-pointer" (click)="verQr(cliente.name, cliente.qrCode)">
               <div class="w-12 h-12 rounded bg-steel-500 inner-glow flex items-center justify-center relative border border-chalk-200">
-                <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">CM</span>
+                <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">{{ iniciales(cliente.name) }}</span>
                 <div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-1 border border-chalk-200">
                   <span class="material-symbols-outlined text-signal-red text-[14px]">qr_code_2</span>
                 </div>
               </div>
               <div>
-                <h3 class="font-body-md text-body-md font-bold text-iron-950 group-hover:text-signal-red transition-colors">Carlos Mendoza</h3>
-                <p class="font-utility-mono text-utility-mono text-iron-700">ID: GYM-8492</p>
+                <h3 class="font-body-md text-body-md font-bold text-iron-950 group-hover:text-signal-red transition-colors">{{ cliente.name }}</h3>
+                <p class="font-utility-mono text-utility-mono text-iron-700">{{ cliente.email }}</p>
               </div>
             </div>
             <div class="col-span-1 md:col-span-2 hidden md:flex items-center">
-              <span class="font-utility-mono text-utility-mono px-3 py-1 rounded-full bg-track-green/10 text-track-green border border-track-green/30 flex items-center gap-1">
+              <span *ngIf="cliente.estado === 'activo'" class="font-utility-mono text-utility-mono px-3 py-1 rounded-full bg-track-green/10 text-track-green border border-track-green/30 flex items-center gap-1">
                 <span class="w-1.5 h-1.5 rounded-full bg-track-green"></span> Activo
               </span>
-            </div>
-            <div class="col-span-1 md:col-span-3 flex items-center justify-between md:justify-start gap-4">
-              <div class="md:hidden font-utility-mono text-utility-mono text-iron-700">Último Acceso:</div>
-              <div class="flex flex-col">
-                <div class="flex items-center gap-2 text-iron-950 font-utility-mono text-utility-mono">
-                  <span class="material-symbols-outlined text-track-green text-[16px]">login</span> Hoy, 07:15 AM
-                </div>
-                <div class="flex items-center gap-2 text-iron-700 font-utility-mono text-utility-mono mt-1">
-                  <span class="material-symbols-outlined text-[16px]">logout</span> Hoy, 08:45 AM
-                </div>
-              </div>
-            </div>
-            <div class="col-span-1 md:col-span-3 flex items-center justify-end gap-3 mt-4 md:mt-0 border-t border-chalk-200 md:border-0 pt-4 md:pt-0">
-              <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-transparent border border-chalk-200 rounded text-iron-950 hover:border-signal-red hover:text-signal-red font-utility-mono text-utility-mono transition-all" (click)="verQr('Carlos Mendoza', 'GYM-8492')">
-                <span class="material-symbols-outlined text-[18px]">qr_code</span> Ver QR
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="group border-b border-chalk-200 last:border-0 hover:bg-chalk-50 transition-colors">
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center px-gutter md:px-6 py-4">
-            <div class="col-span-1 md:col-span-4 flex items-center gap-4 cursor-pointer" (click)="verQr('Ana Silva', 'GYM-9103')">
-              <div class="w-12 h-12 rounded bg-steel-500 inner-glow flex items-center justify-center relative border border-chalk-200">
-                <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">AS</span>
-                <div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-1 border border-chalk-200">
-                  <span class="material-symbols-outlined text-signal-red text-[14px]">qr_code_2</span>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-body-md text-body-md font-bold text-iron-950 group-hover:text-signal-red transition-colors">Ana Silva</h3>
-                <p class="font-utility-mono text-utility-mono text-iron-700">ID: GYM-9103</p>
-              </div>
-            </div>
-            <div class="col-span-1 md:col-span-2 hidden md:flex items-center">
-              <span class="font-utility-mono text-utility-mono px-3 py-1 rounded-full bg-steel-500/10 text-steel-500 border border-steel-500/30 flex items-center gap-1">
+              <span *ngIf="cliente.estado === 'por_vencer'" class="font-utility-mono text-utility-mono px-3 py-1 rounded-full bg-steel-500/10 text-steel-500 border border-steel-500/30 flex items-center gap-1">
                 <span class="w-1.5 h-1.5 rounded-full bg-steel-500"></span> Por Vencer
+              </span>
+              <span *ngIf="cliente.estado === 'vencido'" class="font-utility-mono text-utility-mono px-3 py-1 rounded-full bg-iron-700/10 text-iron-700 border border-iron-700/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-iron-700"></span> Vencido
               </span>
             </div>
             <div class="col-span-1 md:col-span-3 flex items-center justify-between md:justify-start gap-4">
               <div class="md:hidden font-utility-mono text-utility-mono text-iron-700">Último Acceso:</div>
               <div class="flex flex-col">
-                <div class="flex items-center gap-2 text-iron-950 font-utility-mono text-utility-mono">
-                  <span class="material-symbols-outlined text-track-green text-[16px]">login</span> Ayer, 18:30 PM
+                <div *ngIf="!cliente.ultimaEntrada && !cliente.ultimaSalida" class="text-iron-700 font-utility-mono text-utility-mono">Sin accesos</div>
+                <div *ngIf="cliente.ultimaEntrada" class="flex items-center gap-2 text-iron-950 font-utility-mono text-utility-mono">
+                  <span class="material-symbols-outlined text-track-green text-[16px]">login</span> {{ formatearFecha(cliente.ultimaEntrada) }}
                 </div>
-                <div class="flex items-center gap-2 text-iron-700 font-utility-mono text-utility-mono mt-1">
-                  <span class="material-symbols-outlined text-[16px]">logout</span> Ayer, 20:15 PM
+                <div *ngIf="cliente.ultimaSalida" class="flex items-center gap-2 text-iron-700 font-utility-mono text-utility-mono mt-1">
+                  <span class="material-symbols-outlined text-[16px]">logout</span> {{ formatearFecha(cliente.ultimaSalida) }}
                 </div>
               </div>
             </div>
             <div class="col-span-1 md:col-span-3 flex items-center justify-end gap-3 mt-4 md:mt-0 border-t border-chalk-200 md:border-0 pt-4 md:pt-0">
-              <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-transparent border border-chalk-200 rounded text-iron-950 hover:border-signal-red hover:text-signal-red font-utility-mono text-utility-mono transition-all" (click)="verQr('Ana Silva', 'GYM-9103')">
+              <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-transparent border border-chalk-200 rounded text-iron-950 hover:border-signal-red hover:text-signal-red font-utility-mono text-utility-mono transition-all" (click)="verQr(cliente.name, cliente.qrCode)">
                 <span class="material-symbols-outlined text-[18px]">qr_code</span> Ver QR
               </button>
             </div>
@@ -265,7 +236,7 @@
       <div class="p-6 flex flex-col items-center" *ngIf="miembroSeleccionado() as miembro">
         <div class="mb-4 text-center">
           <p class="font-body-md text-body-md font-bold text-iron-950">{{ miembro.nombre }}</p>
-          <p class="font-utility-mono text-utility-mono text-iron-700">ID: {{ miembro.id }}</p>
+          <p class="font-utility-mono text-utility-mono text-iron-700">ID: {{ miembro.qrCode }}</p>
         </div>
         <div class="bg-white p-4 rounded-lg mb-6 w-48 h-48 flex items-center justify-center border border-chalk-200">
           <span class="material-symbols-outlined text-[120px] text-iron-950">qr_code_2</span>
