@@ -43,21 +43,7 @@
     </div>
 
     <div class="registro-card">
-    <div
-      *ngIf="mensajeError"
-      class="mensaje-error"
-      role="alert"
-    >
-      {{ mensajeError }}
-    </div>
 
-    <div
-      *ngIf="mensajeExito"
-      class="mensaje-exito"
-      role="status"
-    >
-      {{ mensajeExito }}
-    </div>
       <button
         class="google-button"
         type="button"
@@ -268,12 +254,9 @@
           </p>
         </div>
 
-
         <button
-          class="crear-button"
           type="submit"
           [disabled]="formulario.invalid || registrando || cuentaCreada"
-          [class.exito]="cuentaCreada"
         >
           <span>
             {{
@@ -298,6 +281,22 @@
 
       </form>
 
+      <p
+        *ngIf="mensajeExito"
+        class="mensaje-exito"
+        role="status"
+      >
+        {{ mensajeExito }}
+      </p>
+
+      <p
+        *ngIf="mensajeError"
+        class="mensaje-error"
+        role="alert"
+      >
+        {{ mensajeError }}
+      </p>
+
       <div class="iniciar-sesion">
         <span>¿Ya tienes una cuenta?</span>
 
@@ -306,7 +305,7 @@
         </a>
       </div>
 
-    </div>
+    </div> <!-- cierra registro-card -->
 
-  </div>
+  </div> <!-- cierra contenido -->
 </main>

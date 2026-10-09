@@ -1,9 +1,10 @@
 
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
+import { finalize } from "rxjs";
 
 import { RegistroService } from "../../services/registro.service";
 
@@ -18,8 +19,8 @@ export class AuthRegistroComponent {
   nombre: string = "";
   email: string = "";
   telefono: string = "";
-  password: string = "";
 
+  password: string = "";
   plan: string = "mensual";
 
   mostrarPassword: boolean = false;
@@ -29,7 +30,10 @@ export class AuthRegistroComponent {
   mensajeError: string = "";
   mensajeExito: string = "";
 
-  constructor(private registroService: RegistroService) {}
+  constructor(
+    private registroService: RegistroService,
+    private detector: ChangeDetectorRef
+  ) {}
 
   seleccionarPlan(plan: string): void {
     this.plan = plan;
@@ -42,37 +46,52 @@ export class AuthRegistroComponent {
 
     this.mensajeError = "";
     this.mensajeExito = "";
-
     this.registrando = true;
 
-    // Enviamos los nombres de campos que espera el backend.
-    this.registroService.registrarUsuario({
+    const datos = {
       name: this.nombre.trim(),
-      email: this.email.trim(),
+      email: this.email.trim().toLowerCase(),
       password: this.password,
-    }).subscribe({
-      next: (respuesta) => {
-        this.cuentaCreada = true;
-        this.registrando = false;
-        this.mensajeExito = respuesta.message;
-      },
+    };
 
-      error: (error: HttpErrorResponse) => {
-        this.registrando = false;
+    this.detector.markForCheck();
 
-        if (error.error?.message) {
-          this.mensajeError = error.error.message;
-        } else {
+    this.registroService
+      .registrarUsuario(datos)
+      .pipe(
+        finalize(() => {
+          this.registrando = false;
+
+          console.log("FINALIZE EJECUTADO");
+
+          this.detector.markForCheck();
+        })
+      )
+      .subscribe({
+        next: (respuesta) => {
+          console.log("REGISTRO EXITOSO:", respuesta);
+
+          this.cuentaCreada = true;
+          this.mensajeExito =
+            respuesta.message || "Tu cuenta fue creada correctamente.";
+
+          this.detector.markForCheck();
+        },
+
+        error: (error: HttpErrorResponse) => {
+          console.error("ERROR AL REGISTRAR:", error);
+
           this.mensajeError =
-            "No se pudo conectar con el servidor. Comprueba que el backend esté funcionando.";
-        }
-      },
-    });
+            error.error?.message ||
+            "No se pudo crear la cuenta. Inténtalo nuevamente.";
+
+          this.detector.markForCheck();
+        },
+      });
   }
 
   registrarseConGoogle(): void {
-    window.location.href =
-      "http://localhost:3000/api/auth/google";
+    window.location.href = "http://localhost:3000/api/auth/google";
   }
 
   regresar(): void {
