@@ -35,38 +35,40 @@ export class AuthRegistroComponent {
     this.plan = plan;
   }
 
+
   crearCuenta(): void {
-    if (this.registrando || this.cuentaCreada) {
-      return;
-    }
-
-    this.mensajeError = "";
-    this.mensajeExito = "";
-
+    this.mensajeError = '';
+    this.mensajeExito = '';
+    this.cuentaCreada = false;
     this.registrando = true;
 
-    // Enviamos los nombres de campos que espera el backend.
-    this.registroService.registrarUsuario({
+    const datos = {
       name: this.nombre.trim(),
-      email: this.email.trim(),
-      password: this.password,
-    }).subscribe({
+      email: this.email.trim().toLowerCase(),
+      password: this.password
+    };
+
+    console.log('Enviando registro:', datos.email);
+
+    this.registroService.registrarUsuario(datos).subscribe({
       next: (respuesta) => {
+        console.log('Respuesta del servidor:', respuesta);
+
+        this.registrando = false;
         this.cuentaCreada = true;
-        this.registrando = false;
-        this.mensajeExito = respuesta.message;
+        this.mensajeExito =
+          respuesta.message || 'Tu cuenta fue creada correctamente.';
       },
+      error: (error) => {
+        console.error('Error al registrar:', error);
 
-      error: (error: HttpErrorResponse) => {
         this.registrando = false;
-
-        if (error.error?.message) {
-          this.mensajeError = error.error.message;
-        } else {
-          this.mensajeError =
-            "No se pudo conectar con el servidor. Comprueba que el backend esté funcionando.";
-        }
+        this.mensajeError =
+          error.error?.message || 'No se pudo crear la cuenta.';
       },
+      complete: () => {
+        console.log('Solicitud de registro finalizada.');
+      }
     });
   }
 
