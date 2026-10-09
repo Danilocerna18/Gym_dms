@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MachineService } from '../../services/machine.service';
 
 // youtube.com/watch?v=, youtu.be/, youtube.com/shorts/ y youtube.com/embed/; el ID debe ser exactamente de 11 caracteres válidos
 const PATRON_YOUTUBE = /^(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})(?:[?&#\/].*)?$/i;
@@ -10,111 +10,108 @@ const PATRON_YOUTUBE = /^(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/(?:watch
 @Component({
   selector: 'app-admin-formulario-maquina',
   standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    RouterLink,
-    RouterLinkActive
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-formulario-maquina.html',
   styleUrl: './admin-formulario-maquina.css'
 })
-export class AdminFormularioMaquinaComponent {
+export class AdminFormularioMaquinaComponent implements OnInit {
 
-  nombreMaquina = 'Prensa de Piernas 45° Inclinada';
+  nombreMaquina: string = '';
+  grupoMuscular: string = 'Piernas';
+  instrucciones: string = '';
+  youtubeUrl: string = '';
+  idMaquina: string = '';
 
-  grupoMuscular = 'Cuádriceps y Glúteos';
+  mostrarToast: boolean = false;
+  guardando: boolean = false;
+  errorMensaje: string = '';
 
-  instrucciones =
-    'Ajustar respaldo a posición fija. Apoyar zona lumbar firmemente en el cojín. Bloquear seguro antes de colocar carga máxima.';
-
-  enlaceVideo = '';
-
-  tituloVideo = '';
-
-  enlaceInvalido = false; // hay texto en el enlace pero no es un enlace de YouTube válido
-
-  // se calcula una sola vez al cambiar el enlace: si se generara en un getter, Angular
-  // recibiría un objeto nuevo en cada ciclo y el iframe se recargaría sin parar
-  urlVideo: SafeResourceUrl | null = null;
-
-  mostrarToast = false;
-
-  idMaquina = 'QR-MCH-8942-PR45';
-
-  gruposMusculares = [
-    'Cuádriceps y Glúteos',
-    'Pecho y Tríceps',
-    'Espalda Completa',
-    'Cardio & HIIT'
+  gruposMusculares: string[] = [
+    'Piernas',
+    'Pecho',
+    'Espalda',
+    'Bíceps',
+    'Tríceps',
+    'Hombros'
   ];
 
-  constructor(private router: Router, private sanitizer: DomSanitizer) {}
+  constructor(
+    private machineService: MachineService,
+    private router: Router
+  ) {}
 
-  regresar() {
-    this.router.navigate(['/admin/maquinas']);
+  ngOnInit(): void {
+    this.generarNuevoId();
   }
 
-  seleccionarGrupo(grupo: string) {
+  generarNuevoId(): void {
+    const aleatorio = Math.floor(100 + Math.random() * 900);
+    this.idMaquina = `MAC-${aleatorio}`;
+  }
+
+  seleccionarGrupo(grupo: string): void {
     this.grupoMuscular = grupo;
   }
 
-  cambiarEnlaceVideo(enlace: string) {
-    this.enlaceVideo = enlace;
-    const texto = enlace.trim();
-    const id = PATRON_YOUTUBE.exec(texto)?.[1] ?? null;
-
-    this.enlaceInvalido = texto !== '' && !id;
-
-    // la URL del iframe se arma solo con el ID ya validado, nunca con el texto escrito;
-    // el sanitizer solo recibe esa URL construida
-    this.urlVideo = id
-      ? this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1`
-        )
-      : null;
-  }
-
-  copiarId() {
+  copiarId(): void {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(this.idMaquina);
     }
-
-    alert('ID copiado: ' + this.idMaquina);
   }
 
-  descargarQR() {
-    alert('Preparando QR para imprimir...');
+  descargarQR(): void {
+    window.print();
   }
 
-  guardarMaquina() {
+  regresar(): void {
+    this.router.navigate(['/user-home']);
+  }
+
+  guardarMaquina(): void {
+    this.errorMensaje = '';
 
     if (!this.nombreMaquina.trim()) {
-      alert('Debes ingresar el nombre de la máquina.');
+      this.errorMensaje = 'Por favor ingresa el nombre de la máquina.';
       return;
     }
 
-    if (!this.grupoMuscular) {
-      alert('Debes seleccionar un grupo muscular.');
+    if (!this.youtubeUrl.trim()) {
+      this.errorMensaje = 'Por favor ingresa la URL del video de YouTube.';
       return;
     }
 
-    // el video es opcional, pero si hay enlace debe ser válido y llevar título
-    if (this.enlaceInvalido) {
-      alert('Pega un enlace válido de YouTube.');
-      return;
-    }
+    this.guardando = true;
 
-    if (this.urlVideo && !this.tituloVideo.trim()) {
-      alert('Escribe un título para el video.');
-      return;
-    }
+    const payload = {
+      id: this.idMaquina,
+      name: this.nombreMaquina,
+      qrCode: this.idMaquina,
+      youtubeUrl: this.youtubeUrl,
+      videoTitle: `Tutorial de ${this.nombreMaquina}`
+    };
 
-    this.mostrarToast = true;
+    this.machineService.createMachine(payload).subscribe({
+      next: () => {
+        this.guardando = false;
+        this.mostrarToast = true;
 
-    setTimeout(() => {
-      this.mostrarToast = false;
-      this.router.navigate(['/admin/maquinas']);
-    }, 2500);
+        setTimeout(() => {
+          this.mostrarToast = false;
+          this.resetFormulario();
+        }, 3000);
+      },
+      error: (err) => {
+        this.guardando = false;
+        this.errorMensaje = err.error?.message || 'Error al guardar la máquina en la base de datos.';
+      }
+    });
+  }
+
+  resetFormulario(): void {
+    this.nombreMaquina = '';
+    this.instrucciones = '';
+    this.youtubeUrl = '';
+    this.grupoMuscular = 'Piernas';
+    this.generarNuevoId();
   }
 }
