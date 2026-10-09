@@ -595,4 +595,28 @@
   .precio small {
     font-size: 11px;
   }
+
+
+  .mensaje-error {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border: 1px solid #e13438;
+    border-radius: 6px;
+    background: rgba(225, 52, 56, 0.08);
+    color: #e13438;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .mensaje-exito {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border: 1px solid #26834a;
+    border-radius: 6px;
+    background: rgba(38, 131, 74, 0.08);
+    color: #26834a;
+    font-size: 13px;
+    line-height: 1.5;
+  }
 }
+

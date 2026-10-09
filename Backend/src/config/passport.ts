@@ -29,8 +29,8 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
             displayName: profile.displayName,
             email: profile.emails?.[0]?.value,
           });
-
-          const email = profile.emails?.[0]?.value;
+          
+          const email = profile.emails?.[0]?.value?.trim().toLowerCase();
 
           if (!email) {
             return done(new Error("Google no devolvió un email"), undefined);
