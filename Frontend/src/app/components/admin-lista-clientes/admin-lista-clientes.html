@@ -79,9 +79,9 @@
       <div class="flex gap-4 w-full md:w-auto">
         <div class="relative w-full md:w-64">
           <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-iron-700 text-xl">search</span>
-          <input class="w-full bg-chalk-200 text-iron-700 font-body-md text-body-md rounded border border-chalk-200 focus:border-signal-red focus:ring-1 focus:ring-signal-red pl-10 pr-4 py-2 transition-colors placeholder-iron-700/70" placeholder="Buscar miembro..." type="text">
+          <input #buscador (input)="buscar(buscador)" aria-label="Buscar miembro" class="w-full bg-chalk-200 text-iron-700 font-body-md text-body-md rounded border border-chalk-200 focus:border-signal-red focus:ring-1 focus:ring-signal-red pl-10 pr-4 py-2 transition-colors placeholder-iron-700/70" placeholder="Buscar miembro..." type="text">
         </div>
-        <button class="bg-signal-red text-white font-utility-mono text-utility-mono px-6 py-2 rounded font-bold hover:bg-signal-red/90 transition-colors whitespace-nowrap flex items-center gap-2 shadow-sm">
+        <button type="button" routerLink="/admin/clientes/nuevo" class="bg-signal-red text-white font-utility-mono text-utility-mono px-6 py-2 rounded font-bold hover:bg-signal-red/90 transition-colors whitespace-nowrap flex items-center gap-2 shadow-sm">
           <span class="material-symbols-outlined text-lg">person_add</span> Nuevo
         </button>
       </div>
@@ -127,9 +127,10 @@
         <button (click)="cargar()" class="px-4 py-2 bg-transparent border border-chalk-200 rounded text-iron-950 hover:border-signal-red hover:text-signal-red font-utility-mono text-utility-mono transition-all">Reintentar</button>
       </div>
       <div *ngIf="!cargando() && !error() && clientes().length === 0" class="px-6 py-8 text-center font-body-md text-body-md text-iron-700">Aún no hay miembros registrados.</div>
+      <div *ngIf="!cargando() && !error() && clientes().length > 0 && clientesFiltrados().length === 0" class="px-6 py-8 text-center font-body-md text-body-md text-iron-700">No hay miembros que coincidan con tu búsqueda.</div>
 
       <div class="flex flex-col" *ngIf="!cargando() && !error()">
-        <div *ngFor="let cliente of clientes()" class="group border-b border-chalk-200 last:border-0 hover:bg-chalk-50 transition-colors">
+        <div *ngFor="let cliente of clientesFiltrados()" class="group border-b border-chalk-200 last:border-0 hover:bg-chalk-50 transition-colors">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center px-gutter md:px-6 py-4">
             <div class="col-span-1 md:col-span-4 flex items-center gap-4 cursor-pointer" (click)="verQr(cliente.name, cliente.qrCode)">
               <div class="w-12 h-12 rounded bg-steel-500 inner-glow flex items-center justify-center relative border border-chalk-200">
@@ -234,16 +235,10 @@
         </button>
       </div>
       <div class="p-6 flex flex-col items-center" *ngIf="miembroSeleccionado() as miembro">
-        <div class="mb-4 text-center">
+        <div class="mb-6 text-center">
           <p class="font-body-md text-body-md font-bold text-iron-950">{{ miembro.nombre }}</p>
           <p class="font-utility-mono text-utility-mono text-iron-700">ID: {{ miembro.qrCode }}</p>
         </div>
-        <div class="bg-white p-4 rounded-lg mb-6 w-48 h-48 flex items-center justify-center border border-chalk-200">
-          <span class="material-symbols-outlined text-[120px] text-iron-950">qr_code_2</span>
-        </div>
-        <p class="font-body-sm text-body-sm text-iron-700 text-center mb-6 max-w-xs">
-          Este código cambia dinámicamente cada 30 segundos por seguridad.
-        </p>
         <div class="w-full flex flex-col gap-3">
           <button class="w-full bg-signal-red text-white font-utility-mono text-utility-mono px-6 py-3 rounded font-bold hover:bg-signal-red/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
             <span class="material-symbols-outlined">mail</span> Enviar por Email
