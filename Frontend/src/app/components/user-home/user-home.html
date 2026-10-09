@@ -1,5 +1,5 @@
 <div class="app-layout">
-  <!-- Sidebar Móvil (Header superior) -->
+  <!-- Header Móvil -->
   <header class="mobile-header">
     <div class="flex items-center gap-2">
       <span class="material-symbols-outlined text-iron-950 text-2xl">fitness_center</span>
@@ -7,7 +7,7 @@
     </div>
   </header>
 
-  <!-- Sidebar Escritorio (Fija a la izquierda como en la foto) -->
+  <!-- Sidebar Escritorio -->
   <aside class="desktop-sidebar">
     <div class="sidebar-top">
       <div class="brand-logo">
@@ -36,14 +36,56 @@
       <div class="avatar-circle">
         <span>SB</span>
       </div>
-    </div>
+      <div class="user-info">
+        <span class="user-name">Sofia Bilbao</span>
+      </div>
+    </a>
+  </aside>
 
-    <!-- Acciones -->
-    <div class="flex flex-col gap-4 w-full">
-      <button routerLink="/user-escaner" class="w-full bg-signal-red hover:bg-signal-red-hover text-white font-headline-md text-[18px] uppercase tracking-wider py-4 px-6 rounded-custom flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-md min-h-touch-target-min">
-        <span class="material-symbols-outlined text-[24px]">qr_code_scanner</span>
-        <span>Escanear QR de Máquina</span>
-      </button>
+  <!-- Contenido Principal -->
+  <main class="main-content">
+    <div class="content-container">
+      
+      <!-- Banner Destacado Estilo GymSync -->
+      <section class="hero-card">
+        <div class="hero-body">
+          <div class="hero-text">
+            <span class="hero-badge">Catálogo Interactivo</span>
+            <h1 class="hero-title">Biblioteca de Máquinas</h1>
+            <p class="hero-subtitle">Selecciona una máquina por su grupo muscular para ver su guía interactiva e instrucciones de uso.</p>
+          </div>
+          <button routerLink="/user-escaner" class="btn-primary-red">
+            <span class="material-symbols-outlined">qr_code_scanner</span>
+            <span>Escanear Máquina</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Secciones por Músculo -->
+      <section *ngFor="let category of muscleCategories" class="muscle-section">
+        <h2 class="section-title">
+          <span class="material-symbols-outlined text-signal-red">fitness_center</span>
+          {{ category.title }}
+        </h2>
+
+        <div class="carousel-container">
+          <div class="carousel-track">
+            <div 
+              *ngFor="let machine of category.machines" 
+              class="machine-card" 
+              (click)="openMachineDetail(machine)"
+            >
+              <div class="image-wrapper">
+                <img [src]="machine.imageUrl" [alt]="machine.name" loading="lazy" />
+              </div>
+              <div class="card-info">
+                <p class="machine-name">{{ machine.name }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
