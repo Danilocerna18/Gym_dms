@@ -1,30 +1,40 @@
-<div class="bg-chalk-50 text-iron-950 font-body-md min-h-screen w-full overflow-x-hidden flex flex-col items-center relative">
-
-  <!-- TopAppBar -->
-  <header class="w-full z-50 bg-chalk-50 border-b border-chalk-200">
-    <div class="flex items-center justify-center px-margin-mobile md:px-margin-desktop h-16 w-full max-w-screen-xl mx-auto">
-      <h1 class="font-headline-md text-headline-md text-iron-950 tracking-wide uppercase text-center">GymSync</h1>
+<div class="app-layout">
+  <!-- Sidebar Móvil (Header superior) -->
+  <header class="mobile-header">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-iron-950 text-2xl">fitness_center</span>
+      <span class="font-bold text-iron-950 text-xl tracking-tighter">GymSync</span>
     </div>
   </header>
 
-  <!-- Contenido Principal -->
-  <main class="w-full max-w-md px-margin-mobile flex flex-col items-center justify-start z-10 pt-8 pb-24 flex-1">
-    <!-- Texto de bienvenida -->
-    <div class="text-center mb-8 space-y-2">
-      <h2 class="font-display-xl-mobile text-display-xl-mobile text-iron-950 uppercase">¡Bienvenido a GymSync, Sofia!</h2>
-      <p class="font-body-md text-body-md text-iron-700">Tu cuenta está lista. Hora de entrenar. Sigue las instrucciones a continuación.</p>
+  <!-- Sidebar Escritorio (Fija a la izquierda como en la foto) -->
+  <aside class="desktop-sidebar">
+    <div class="sidebar-top">
+      <div class="brand-logo">
+        <span class="material-symbols-outlined text-iron-950 text-3xl">fitness_center</span>
+        <span class="font-bold text-iron-950 text-2xl tracking-tighter">GymSync</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a routerLink="/user-home" class="nav-item active">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Inicio</span>
+        </a>
+        <a routerLink="/user-escaner" class="nav-item">
+          <span class="material-symbols-outlined">qr_code_scanner</span>
+          <span>Escanear Máquina</span>
+        </a>
+        <a routerLink="/user-perfil" class="nav-item">
+          <span class="material-symbols-outlined">person</span>
+          <span>Perfil</span>
+        </a>
+      </nav>
     </div>
 
-    <!-- Anillo de Aforo -->
-    <div class="relative w-48 h-48 mb-8 flex items-center justify-center">
-      <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
-        <circle class="text-chalk-200 stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-width="8"></circle>
-        <!-- Progreso (42%) -->
-        <circle class="text-track-green stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-dasharray="282.7" stroke-dashoffset="163.9" stroke-linecap="round" stroke-width="8"></circle>
-      </svg>
-      <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-        <span class="font-display-xl text-display-xl text-iron-950">42<span class="text-headline-md text-iron-700">/100</span></span>
-        <span class="font-utility-mono text-utility-mono text-iron-700 uppercase mt-1">Aforo Actual</span>
+    <!-- Perfil de usuario abajo a la izquierda -->
+    <a routerLink="/user-perfil" class="user-card-bottom">
+      <div class="avatar-circle">
+        <span>SB</span>
       </div>
     </div>
 
@@ -37,21 +47,19 @@
     </div>
   </main>
 
-  <!-- Navegación Inferior -->
-  <nav class="fixed bottom-0 w-full bg-chalk-50 border-t border-chalk-200 z-50 px-margin-mobile pb-safe pt-2">
-    <div class="flex justify-between items-center max-w-md mx-auto">
-      <a routerLink="/user-home" class="flex flex-col items-center justify-center p-2 text-signal-red cursor-pointer">
-        <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1">home</span>
-        <span class="font-utility-mono text-[10px] mt-1 tracking-wider uppercase">Inicio</span>
-      </a>
-      <a routerLink="/user-escaner" class="flex flex-col items-center justify-center p-2 text-iron-700 hover:text-iron-950 transition-colors cursor-pointer">
-        <span class="material-symbols-outlined text-[24px]">play_circle</span>
-        <span class="font-utility-mono text-[10px] mt-1 tracking-wider uppercase">Videos</span>
-      </a>
-      <a routerLink="/user-perfil" class="flex flex-col items-center justify-center p-2 text-iron-700 hover:text-iron-950 transition-colors cursor-pointer">
-        <span class="material-symbols-outlined text-[24px]">person</span>
-        <span class="font-utility-mono text-[10px] mt-1 tracking-wider uppercase">Perfil</span>
-      </a>
-    </div>
+  <!-- Navegación Móvil Inferior -->
+  <nav class="mobile-nav">
+    <a routerLink="/user-home" class="mobile-nav-item active">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span>Inicio</span>
+    </a>
+    <a routerLink="/user-escaner" class="mobile-nav-item">
+      <span class="material-symbols-outlined">qr_code_scanner</span>
+      <span>Escanear</span>
+    </a>
+    <a routerLink="/user-perfil" class="mobile-nav-item">
+      <span class="material-symbols-outlined">person</span>
+      <span>Perfil</span>
+    </a>
   </nav>
 </div>
