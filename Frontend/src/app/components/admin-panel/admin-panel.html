@@ -6,7 +6,7 @@
         <span class="material-symbols-outlined text-signal-red">fitness_center</span>
         <span class="font-headline-md text-headline-md font-extrabold text-signal-red tracking-tighter uppercase">GymSync</span>
       </div>
-      <!-- Desktop Navigation Links (Hidden on Mobile) -->
+      <!-- Desktop Navigation Links -->
       <nav class="hidden md:flex gap-6 items-center">
         <a
           routerLink="/admin/dashboard"
@@ -41,11 +41,25 @@
           <span class="material-symbols-outlined text-[18px]">fitness_center</span>
           Máquinas
         </a>
-        <a class="text-iron-700 font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full" href="#">
+        <a
+          routerLink="/admin/alertas"
+          routerLinkActive
+          #rlaAlertasDesktop="routerLinkActive"
+          [class.text-signal-red]="rlaAlertasDesktop.isActive"
+          [class.text-iron-700]="!rlaAlertasDesktop.isActive"
+          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
+        >
           <span class="material-symbols-outlined text-[18px]">notifications</span>
           Alertas
         </a>
-        <a class="text-iron-700 font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full" href="#">
+        <a
+          routerLink="/admin/anuncios"
+          routerLinkActive
+          #rlaAnunciosDesktop="routerLinkActive"
+          [class.text-signal-red]="rlaAnunciosDesktop.isActive"
+          [class.text-iron-700]="!rlaAnunciosDesktop.isActive"
+          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
+        >
           <span class="material-symbols-outlined text-[18px]">campaign</span>
           Anuncios
         </a>
@@ -77,7 +91,7 @@
           <p class="font-body-md text-body-md text-iron-700 mt-unit">Rendimiento actual del gimnasio y alertas activas.</p>
         </div>
 
-        <!-- Metrics Grid (Bento Style) -->
+        <!-- Metrics Grid  -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
           <!-- Total Members -->
           <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex flex-col justify-between h-40">
@@ -94,7 +108,7 @@
             </div>
           </div>
 
-          <!-- Active Members with Circular Indicator -->
+          <!-- Active Membersr -->
           <div class="bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex justify-between h-40">
             <div class="flex flex-col justify-between">
               <h2 class="font-utility-mono text-utility-mono text-steel-500 uppercase tracking-wider">Activos Hoy</h2>
@@ -130,7 +144,7 @@
           </div>
         </div>
 
-        <!-- Secondary Section: Recent Alerts -->
+        <!-- Recent Alerts -->
         <div>
           <h2 class="font-headline-md text-headline-md text-iron-950 mb-4 flex items-center gap-2 uppercase">
             <span class="material-symbols-outlined text-signal-red">warning</span>
