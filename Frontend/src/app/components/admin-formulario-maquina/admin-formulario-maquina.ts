@@ -4,9 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MachineService } from '../../services/machine.service';
 
-// youtube.com/watch?v=, youtu.be/, youtube.com/shorts/ y youtube.com/embed/; el ID debe ser exactamente de 11 caracteres válidos
-const PATRON_YOUTUBE = /^(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})(?:[?&#\/].*)?$/i;
-
 @Component({
   selector: 'app-admin-formulario-maquina',
   standalone: true,
