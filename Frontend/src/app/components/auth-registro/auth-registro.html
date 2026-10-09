@@ -20,6 +20,10 @@
       <span class="register-text">Register</span>
 
       <div class="user-icon">
+
+
+
+        
         <span class="material-symbols-outlined">person</span>
       </div>
     </div>
@@ -270,10 +274,8 @@
 
 
         <button
-          class="crear-button"
           type="submit"
           [disabled]="formulario.invalid || registrando || cuentaCreada"
-          [class.exito]="cuentaCreada"
         >
           <span>
             {{
@@ -295,8 +297,16 @@
             }}
           </span>
         </button>
+        
 
       </form>
+      <p *ngIf="mensajeExito" class="mensaje-exito">
+        {{ mensajeExito }}
+      </p>
+
+      <p *ngIf="mensajeError" class="mensaje-error">
+        {{ mensajeError }}
+      </p>
 
       <div class="iniciar-sesion">
         <span>¿Ya tienes una cuenta?</span>

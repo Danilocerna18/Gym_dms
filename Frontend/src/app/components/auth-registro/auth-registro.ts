@@ -1,4 +1,4 @@
-
+import { finalize } from 'rxjs';
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -48,29 +48,30 @@ export class AuthRegistroComponent {
       password: this.password
     };
 
-    console.log('Enviando registro:', datos.email);
+    this.registroService.registrarUsuario(datos)
+      .pipe(
+        finalize(() => {
+          console.log('FINALIZE EJECUTADO');
+          this.registrando = false;
+        })
+      )
+      .subscribe({
+        next: (respuesta) => {
+          console.log('ENTRÓ AL NEXT:', respuesta);
 
-    this.registroService.registrarUsuario(datos).subscribe({
-      next: (respuesta) => {
-        console.log('Respuesta del servidor:', respuesta);
+          this.cuentaCreada = true;
+          this.mensajeExito = respuesta.message;
+        },
+        error: (error) => {
+          console.error('ENTRÓ AL ERROR:', error);
 
-        this.registrando = false;
-        this.cuentaCreada = true;
-        this.mensajeExito =
-          respuesta.message || 'Tu cuenta fue creada correctamente.';
-      },
-      error: (error) => {
-        console.error('Error al registrar:', error);
+          this.mensajeError =
+            error.error?.message || 'No se pudo crear la cuenta.';
+        }
+      });
 
-        this.registrando = false;
-        this.mensajeError =
-          error.error?.message || 'No se pudo crear la cuenta.';
-      },
-      complete: () => {
-        console.log('Solicitud de registro finalizada.');
-      }
-    });
   }
+
 
   registrarseConGoogle(): void {
     window.location.href =
