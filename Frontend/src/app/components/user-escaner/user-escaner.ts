@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -9,14 +9,25 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './user-escaner.html',
   styleUrl: './user-escaner.css'
 })
-export class UserEscaner implements OnInit {
+export class UserEscanerComponent {
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    // Simula lectura de QR y redirige a la máquina detectada tras 3.5s
-    setTimeout(() => {
-      this.router.navigate(['/user-maquinadet']);
-    }, 3500);
+  // Simulación de escaneo al tocar la zona o cargar imagen
+  onScanSuccess(): void {
+    this.router.navigate(['/user-maquinadet'], {
+      state: {
+        machineData: {
+          id: 'm2',
+          name: 'Extensión de Cuádriceps',
+          description: 'Aislamiento directo para cuadriceps. Mantén la espalda pegada al respaldo y controla el movimiento.',
+          muscleGroup: 'Pierna'
+        }
+      }
+    });
+  }
+
+  closeScanner(): void {
+    this.router.navigate(['/user-home']);
   }
 }

@@ -1,64 +1,95 @@
-<div class="min-h-screen bg-neutral-900 text-white flex flex-col justify-between items-center p-6 relative overflow-hidden font-sans">
-  
-  <!-- Encabezado del Escáner -->
-  <header class="w-full max-w-md flex justify-between items-center z-10 pt-4">
-    <a routerLink="/user-home" class="p-2 bg-neutral-800 rounded-full text-white hover:bg-neutral-700 transition-colors flex items-center justify-center">
-      <span class="material-symbols-outlined text-[24px]">close</span>
-    </a>
-    <h1 class="font-bold text-lg tracking-wider uppercase text-neutral-200">GYMSYNC</h1>
-    <div class="w-10"></div>
+<div class="app-layout">
+  <!-- Header Móvil -->
+  <header class="mobile-header">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-iron-950 text-2xl">fitness_center</span>
+      <span class="font-bold text-iron-950 text-xl tracking-tighter">GymSync</span>
+    </div>
   </header>
 
-  <!-- Contenido Central / Cuadro del Escáner -->
-  <main class="w-full max-w-md flex flex-col items-center my-auto z-10">
-    <p class="text-sm text-neutral-400 text-center mb-8 px-4">
-      Apunta con la cámara al código QR de la máquina para cargar el tutorial
-    </p>
+  <!-- Sidebar Escritorio -->
+  <aside class="desktop-sidebar">
+    <div class="sidebar-top">
+      <div class="brand-logo">
+        <span class="material-symbols-outlined text-iron-950 text-3xl">fitness_center</span>
+        <span class="font-bold text-iron-950 text-2xl tracking-tighter">GymSync</span>
+      </div>
 
-    <!-- Recuadro del Escáner Simulado -->
-    <div class="relative w-72 h-72 border-2 border-red-600 rounded-2xl flex items-center justify-center shadow-[0_0_50px_rgba(220,38,38,0.35)] bg-neutral-950/40 backdrop-blur-xs">
-      <!-- Esquinas del visor -->
-      <div class="absolute -top-1 -left-1 w-8 h-8 border-t-4 border-l-4 border-red-500 rounded-tl-xl"></div>
-      <div class="absolute -top-1 -right-1 w-8 h-8 border-t-4 border-r-4 border-red-500 rounded-tr-xl"></div>
-      <div class="absolute -bottom-1 -left-1 w-8 h-8 border-b-4 border-l-4 border-red-500 rounded-bl-xl"></div>
-      <div class="absolute -bottom-1 -right-1 w-8 h-8 border-b-4 border-r-4 border-red-500 rounded-br-xl"></div>
-      
-      <!-- Icono central -->
-      <span class="material-symbols-outlined text-neutral-700 text-6xl">qr_code_2</span>
-
-      <!-- Línea láser de animación -->
-      <div class="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_12px_#ef4444] animate-bounce my-auto"></div>
+      <nav class="sidebar-nav">
+        <a routerLink="/user-home" class="nav-item">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Inicio</span>
+        </a>
+        <a routerLink="/user-escaner" class="nav-item active">
+          <span class="material-symbols-outlined">qr_code_scanner</span>
+          <span>Escanear Máquina</span>
+        </a>
+        <a routerLink="/user-perfil" class="nav-item">
+          <span class="material-symbols-outlined">person</span>
+          <span>Perfil</span>
+        </a>
+      </nav>
     </div>
 
-    <p class="text-xs text-red-400 font-mono mt-6 animate-pulse uppercase tracking-widest">
-      Escaneando máquina...
-    </p>
+    <a routerLink="/user-perfil" class="user-card-bottom">
+      <div class="avatar-circle">
+        <span>SB</span>
+      </div>
+      <div class="user-info">
+        <span class="user-name">Sofia Bilbao</span>
+      </div>
+    </a>
+  </aside>
+
+  <!-- Contenido Principal: Escáner QR -->
+  <main class="main-content">
+    <div class="content-container flex-center">
+      
+      <div class="scanner-card">
+        <div class="scanner-header">
+          <button class="btn-close" (click)="closeScanner()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          <h2>Apunta al Código QR</h2>
+          <p>Escanea el código de la máquina para abrir su guía de entrenamiento</p>
+        </div>
+
+        <!-- Marco del Visor QR -->
+        <div class="qr-frame-wrapper" (click)="onScanSuccess()">
+          <div class="qr-viewfinder">
+            <span class="material-symbols-outlined qr-icon-center">qr_code_2</span>
+            <div class="scan-corner corner-tl"></div>
+            <div class="scan-corner corner-tr"></div>
+            <div class="scan-corner corner-bl"></div>
+            <div class="scan-corner corner-br"></div>
+            <div class="scan-laser"></div>
+          </div>
+        </div>
+
+        <p class="scan-status-text">ESCANEANDO MÁQUINA...</p>
+
+        <button class="btn-upload-gallery" (click)="onScanSuccess()">
+          <span class="material-symbols-outlined">upload_file</span>
+          <span>SUBIR DESDE GALERÍA</span>
+        </button>
+      </div>
+
+    </div>
   </main>
 
-  <!-- Botones de Acción / Pie -->
-  <footer class="w-full max-w-md z-10 pb-6 flex flex-col items-center gap-4">
-    <button routerLink="/user-maquinadet" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg">
-      <span class="material-symbols-outlined text-[20px]">upload_file</span>
-      <span class="uppercase tracking-wider text-sm">SUBIR DESDE GALERÍA</span>
-    </button>
-  </footer>
-
-  <!-- Navegación Inferior Móvil -->
-  <nav class="w-full bg-neutral-900 border-t border-neutral-800 z-50 px-4 py-2 mt-auto">
-    <div class="flex justify-between items-center max-w-md mx-auto">
-      <a routerLink="/user-home" class="flex flex-col items-center justify-center p-2 text-neutral-400 hover:text-white transition-colors">
-        <span class="material-symbols-outlined text-[24px]">home</span>
-        <span class="text-[10px] mt-1 tracking-wider uppercase">Inicio</span>
-      </a>
-      <a routerLink="/user-escaner" class="flex flex-col items-center justify-center p-2 text-red-500">
-        <span class="material-symbols-outlined text-[24px]">play_circle</span>
-        <span class="text-[10px] font-bold mt-1 tracking-wider uppercase">Videos</span>
-      </a>
-      <a routerLink="/user-perfil" class="flex flex-col items-center justify-center p-2 text-neutral-400 hover:text-white transition-colors">
-        <span class="material-symbols-outlined text-[24px]">person</span>
-        <span class="text-[10px] mt-1 tracking-wider uppercase">Perfil</span>
-      </a>
-    </div>
+  <!-- Navegación Móvil Inferior -->
+  <nav class="mobile-nav">
+    <a routerLink="/user-home" class="mobile-nav-item">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span>Inicio</span>
+    </a>
+    <a routerLink="/user-escaner" class="mobile-nav-item active">
+      <span class="material-symbols-outlined">qr_code_scanner</span>
+      <span>Escanear</span>
+    </a>
+    <a routerLink="/user-perfil" class="mobile-nav-item">
+      <span class="material-symbols-outlined">person</span>
+      <span>Perfil</span>
+    </a>
   </nav>
-
 </div>

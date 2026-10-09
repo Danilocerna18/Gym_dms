@@ -7,11 +7,11 @@ import { AdminListaMaquinasComponent } from './components/admin-lista-maquinas/a
 import { AdminFormularioMaquinaComponent } from './components/admin-formulario-maquina/admin-formulario-maquina';
 
 // Componentes del usuario Migue
-import { UserHome } from './components/user-home/user-home';
+import { UserHomeComponent } from './components/user-home/user-home';
 import { UserPerfil } from './components/user-perfil/user-perfil';
 import { UserQrunico } from './components/user-qrunico/user-qrunico';
-import { UserEscaner } from './components/user-escaner/user-escaner';
-import { UserMaquinadet } from './components/user-maquinadet/user-maquinadet';
+import { UserEscanerComponent } from './components/user-escaner/user-escaner';
+import { UserMaquinadetComponent } from './components/user-maquinadet/user-maquinadet';
 
 // Componentes de admin Sofia
 import { AdminPanel } from './components/admin-panel/admin-panel';
@@ -43,11 +43,11 @@ export const routes: Routes = [
   },
 
   // Módulo de usuario Migue
-  { path: 'user-home', component: UserHome },
+  { path: 'user-home', component: UserHomeComponent },
   { path: 'user-perfil', component: UserPerfil },
   { path: 'user-qrunico', component: UserQrunico },
-  { path: 'user-escaner', component: UserEscaner },
-  { path: 'user-maquinadet', component: UserMaquinadet },
+  { path: 'user-escaner', component: UserEscanerComponent },
+  { path: 'user-maquinadet', component: UserMaquinadetComponent },
 
   // Módulo de admin Sofia
   { path: 'admin/dashboard', component: AdminPanel },
