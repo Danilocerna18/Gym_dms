@@ -7,9 +7,10 @@ export const accessRouter = Router();
 // del frontend para conceder acceso
 accessRouter.post("/validate", async (req, res, next) => {
   try {
-    const { userId, scannedBy } = req.body as {
+    const { userId, scannedBy, type = "entry" } = req.body as {
       userId?: string;
       scannedBy?: string;
+      type?: string;
     };
 
     if (!userId) {
@@ -28,6 +29,57 @@ accessRouter.post("/validate", async (req, res, next) => {
       return res.status(400).json({
         error: "SCANNED_BY_REQUERIDO",
         message: "Falta identificar al administrador que escaneó el código.",
+      });
+    }
+
+    // Si no viene type se asume "entry" para no romper a los clientes que
+    // todavía no lo mandan. Cualquier otro valor se rechaza en vez de
+    // tratarlo como entrada, para que un error de captura no registre un
+    // acceso equivocado.
+    if (type !== "entry" && type !== "exit") {
+      return res.status(400).json({
+        error: "TIPO_INVALIDO",
+        message: "Elige si es entrada o salida.",
+      });
+    }
+
+    if (type === "exit") {
+      // La salida no valida la membresía: si venció durante la visita, la
+      // persona igual tiene que poder salir y quedar fuera del aforo.
+      const lastGrantedEntry = await prisma.accessLog.findFirst({
+        where: { userId, type: "entry", result: "granted" },
+        orderBy: { createdAt: "desc" },
+      });
+
+      const exitAfterEntry = lastGrantedEntry
+        ? await prisma.accessLog.findFirst({
+            where: {
+              userId,
+              type: "exit",
+              createdAt: { gt: lastGrantedEntry.createdAt },
+            },
+          })
+        : null;
+
+      // Sin entrada abierta no se guarda nada: el aforo cuenta solo eventos
+      // "granted" y el enum no tiene un valor para este caso. Registrar la
+      // salida igual dejaría el aforo desfasado.
+      if (!lastGrantedEntry || exitAfterEntry) {
+        return res.json({
+          granted: false,
+          result: "no_entry",
+          message: "Este código no tiene una entrada registrada.",
+        });
+      }
+
+      // Todo exit se guarda como "granted", porque el aforo resta solo esos.
+      await prisma.accessLog.create({
+        data: { userId, type: "exit", result: "granted", scannedBy },
+      });
+      return res.json({
+        granted: true,
+        result: "granted",
+        message: "Salida registrada",
       });
     }
 

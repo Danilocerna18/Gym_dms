@@ -11,7 +11,7 @@ export type RespuestaEscaneo =
 // respuesta de POST /api/access/validate (los rechazos llegan con HTTP 200 y granted: false)
 export interface RespuestaValidacion {
   granted: boolean;
-  result: 'granted' | 'denied_expired' | 'denied_duplicate';
+  result: 'granted' | 'denied_expired' | 'denied_duplicate' | 'no_entry';
   message: string;
 }
 
@@ -26,7 +26,7 @@ export class Acceso {
     return this.http.post<RespuestaEscaneo>(`${environment.apiUrl}/api/scan`, { qrCode }, { withCredentials: true });
   }
 
-  validateAccess(userId: string, scannedBy: string): Observable<RespuestaValidacion> { // valida la membresía y registra el intento en AccessLog
-    return this.http.post<RespuestaValidacion>(`${environment.apiUrl}/api/access/validate`, { userId, scannedBy }, { withCredentials: true });
+  validateAccess(userId: string, scannedBy: string, type: 'entry' | 'exit'): Observable<RespuestaValidacion> { // registra la entrada (valida membresía) o la salida en AccessLog
+    return this.http.post<RespuestaValidacion>(`${environment.apiUrl}/api/access/validate`, { userId, scannedBy, type }, { withCredentials: true });
   }
 }
