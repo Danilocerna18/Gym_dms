@@ -1,5 +1,5 @@
 <div class="detail-page-layout">
-  <!-- Header de Navegación Limpio (Sin Sidebar) -->
+  <!-- Header de Navegación -->
   <header class="detail-topbar">
     <button class="btn-back-home" (click)="goBack()">
       <span class="material-symbols-outlined">arrow_back</span>
@@ -11,12 +11,23 @@
   </header>
 
   <main class="detail-main-content" *ngIf="machine">
-    <!-- Reproductor / Marco de Video -->
+    <!-- Reproductor de YouTube -->
     <div class="video-container-card">
-      <div class="black-video-screen">
-        <span class="material-symbols-outlined play-placeholder-icon">play_circle</span>
-        <p class="placeholder-text">Video no disponible temporalmente</p>
-      </div>
+      <iframe 
+        *ngIf="safeVideoUrl; else noVideo"
+        [src]="safeVideoUrl" 
+        [title]="videoTitle || machine.name"
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+
+      <ng-template #noVideo>
+        <div class="black-video-screen">
+          <span class="material-symbols-outlined play-placeholder-icon">videocam_off</span>
+          <p class="placeholder-text">Video no disponible para esta máquina</p>
+        </div>
+      </ng-template>
     </div>
 
     <!-- Detalles de la máquina -->
@@ -30,7 +41,7 @@
 
       <div class="instructions-block">
         <h2>INSTRUCCIONES DE USO</h2>
-        <p>{{ machine.description }}</p>
+        <p>{{ machine.description || 'Consulta al entrenador de turno para sugerencias de peso e intensidad.' }}</p>
       </div>
     </section>
   </main>
