@@ -1,9 +1,10 @@
-import { finalize } from 'rxjs';
-import { Component } from "@angular/core";
+
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
+import { finalize } from "rxjs";
 
 import { RegistroService } from "../../services/registro.service";
 
@@ -18,8 +19,8 @@ export class AuthRegistroComponent {
   nombre: string = "";
   email: string = "";
   telefono: string = "";
-  password: string = "";
 
+  password: string = "";
   plan: string = "mensual";
 
   mostrarPassword: boolean = false;
@@ -29,53 +30,68 @@ export class AuthRegistroComponent {
   mensajeError: string = "";
   mensajeExito: string = "";
 
-  constructor(private registroService: RegistroService) {}
+  constructor(
+    private registroService: RegistroService,
+    private detector: ChangeDetectorRef
+  ) {}
 
   seleccionarPlan(plan: string): void {
     this.plan = plan;
   }
 
-
   crearCuenta(): void {
-    this.mensajeError = '';
-    this.mensajeExito = '';
-    this.cuentaCreada = false;
+    if (this.registrando || this.cuentaCreada) {
+      return;
+    }
+
+    this.mensajeError = "";
+    this.mensajeExito = "";
     this.registrando = true;
 
     const datos = {
       name: this.nombre.trim(),
       email: this.email.trim().toLowerCase(),
-      password: this.password
+      password: this.password,
     };
 
-    this.registroService.registrarUsuario(datos)
+    this.detector.markForCheck();
+
+    this.registroService
+      .registrarUsuario(datos)
       .pipe(
         finalize(() => {
-          console.log('FINALIZE EJECUTADO');
           this.registrando = false;
+
+          console.log("FINALIZE EJECUTADO");
+
+          this.detector.markForCheck();
         })
       )
       .subscribe({
         next: (respuesta) => {
-          console.log('ENTRÓ AL NEXT:', respuesta);
+          console.log("REGISTRO EXITOSO:", respuesta);
 
           this.cuentaCreada = true;
-          this.mensajeExito = respuesta.message;
+          this.mensajeExito =
+            respuesta.message || "Tu cuenta fue creada correctamente.";
+
+          this.detector.markForCheck();
         },
-        error: (error) => {
-          console.error('ENTRÓ AL ERROR:', error);
+
+        error: (error: HttpErrorResponse) => {
+          console.error("ERROR AL REGISTRAR:", error);
 
           this.mensajeError =
-            error.error?.message || 'No se pudo crear la cuenta.';
-        }
-      });
+            error.error?.message ||
+            "No se pudo crear la cuenta. Inténtalo nuevamente.";
 
+          this.detector.markForCheck();
+        },
+      });
   }
 
-
   registrarseConGoogle(): void {
-    window.location.href =
-      "http://localhost:3000/api/auth/google";
+    window.location.href = "http://localhost:3000/api/auth/google";
   }
 
   regresar(): void {
