@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Clientes, Cliente, ResumenClientes } from '../../services/clientes';
@@ -23,6 +23,13 @@ export class AdminListaClientes implements OnInit {
   cargando = signal(true); // mientras llega la respuesta del backend
   error = signal(''); // mensaje para el usuario si la carga falla, vacío si no hay error
   clientes = signal<Cliente[]>([]); // miembros que devuelve el backend
+  busqueda = signal(''); // texto del buscador
+  // La búsqueda opera sobre los miembros ya cargados (máximo LIMITE_CLIENTES del backend); al agregar paginación, moverla al backend con un parámetro q.
+  clientesFiltrados = computed(() => { // lista que muestra la tabla: por nombre o correo, sin importar mayúsculas ni tildes
+    const texto = this.normalizar(this.busqueda());
+    if (!texto) return this.clientes();
+    return this.clientes().filter(c => this.normalizar(c.name).includes(texto) || this.normalizar(c.email).includes(texto));
+  });
   resumen = signal<ResumenClientes>({ miembrosActivos: 0, accesosHoy: 0, porVencer: 0 }); // números de las tarjetas
 
   qrModalAbierto = signal(false); //es una señal que indica si el modal de código QR está abierto o cerrado. Inicialmente, está cerrado (false).
@@ -46,6 +53,14 @@ export class AdminListaClientes implements OnInit {
         this.cargando.set(false);
       }
     });
+  }
+
+  buscar(input: HTMLInputElement) { // se llama en cada tecla del buscador
+    this.busqueda.set(input.value);
+  }
+
+  private normalizar(texto: string): string { // minúsculas, sin tildes y sin espacios al inicio ni al final
+    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   }
 
   verQr(nombre: string, qrCode: string) { //es un método que se llama cuando se desea ver el código QR de un miembro específico. Toma el nombre y el código QR del miembro como parámetros.
