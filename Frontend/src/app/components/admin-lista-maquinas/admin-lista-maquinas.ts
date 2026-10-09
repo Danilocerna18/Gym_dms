@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-lista-maquinas',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './admin-lista-maquinas.html',
   styleUrl: './admin-lista-maquinas.css'

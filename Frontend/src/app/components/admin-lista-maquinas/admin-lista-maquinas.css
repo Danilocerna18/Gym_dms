@@ -34,183 +34,6 @@ button {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
 }
 
-.header-content {
-  height: 64px;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.header-left,
-.header-right {
-  display: flex;
-  align-items: center;
-}
-
-.header-left {
-  gap: 16px;
-}
-
-.header-right {
-  gap: 8px;
-}
-
-.back-button {
-  width: 48px;
-  height: 48px;
-  margin-left: -8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #3a3f47;
-  background: transparent;
-  border-radius: 4px;
-}
-
-.back-button:hover {
-  color: #1b1c19;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.logo-icon {
-  color: #e13438;
-  font-size: 24px;
-}
-
-.logo-text {
-  font-family: 'Oswald', sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.register-text {
-  display: none;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-  color: #5d5e63;
-  text-transform: uppercase;
-}
-
-.user-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #b81020;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
-.user-icon .material-symbols-outlined {
-  font-size: 18px;
-}
-
-.main {
-  min-height: 100vh;
-  padding: 64px 20px 100px;
-  background: #f3f1ec;
-}
-
-.contenido {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding-bottom: 24px;
-}
-
-.encabezado {
-  padding-top: 16px;
-  padding-bottom: 8px;
-}
-
-.encabezado-superior {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 4px;
-}
-
-.seccion {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-  line-height: 18px;
-  color: #3e6e8e;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.total {
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: #f0eee9;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-  line-height: 18px;
-  color: #5b403e;
-  white-space: nowrap;
-}
-
-.encabezado h1 {
-  margin: 0;
-  color: #16181c;
-  font-family: 'Oswald', sans-serif;
-  font-size: 28px;
-  line-height: 32px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-
-.encabezado p {
-  margin: 4px 0 0;
-  color: #5d5e63;
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.nueva-maquina {
-  margin-top: 16px;
-}
-
-.boton-nueva {
-  width: 100%;
-  min-height: 48px;
-  padding: 10px 16px;
-  background: #e13438;
-  color: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 24px;
-  line-height: 28px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-}
-
-.boton-nueva:active {
-  transform: scale(0.99);
-  background: #dc3035;
-}
-
-.boton-nueva .material-symbols-outlined {
-  font-size: 24px;
-}
-
 .buscador {
   position: relative;
   display: flex;
@@ -585,6 +408,10 @@ button {
 }
 
 .alerta > .material-symbols-outlined {
+  /* sin esto `.alerta span` le pone la fuente mono y el ícono se ve como texto */
+  font-family: 'Material Symbols Outlined';
+  margin-top: 0;
+  opacity: 1;
   flex-shrink: 0;
   color: #e13438;
   font-size: 22px;
@@ -674,103 +501,7 @@ button {
   font-size: 20px;
 }
 
-.navegacion {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 40;
-  height: 64px;
-  background: white;
-  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
-}
-
-.nav-content {
-  width: 100%;
-  max-width: 500px;
-  height: 64px;
-  margin: 0 auto;
-  padding: 0 16px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  align-items: center;
-}
-
-.nav-item {
-  position: relative;
-  height: 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  color: #5d5e63;
-  text-decoration: none;
-}
-
-.nav-item .material-symbols-outlined {
-  font-size: 24px;
-}
-
-.nav-item > span:last-child {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  line-height: 14px;
-  text-transform: uppercase;
-}
-
-.nav-item.activo-nav {
-  color: #e13438;
-  font-weight: 600;
-}
-
-.icono-relleno {
-  font-variation-settings: 'FILL' 1;
-}
-
-.linea-activa {
-  position: absolute;
-  top: 6px;
-  width: 24px;
-  height: 2px;
-  border-radius: 4px;
-  background: #e13438;
-}
-
-@media (min-width: 640px) {
-
-  .header-content {
-    padding: 0 40px;
-  }
-
-  .main {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-
-  .register-text {
-    display: inline-block;
-  }
-
-  .boton-nueva {
-    width: auto;
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-
-  .nueva-maquina {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-}
-
 @media (min-width: 768px) {
-
-  .contenido {
-    max-width: 1000px;
-  }
-
   .lista-maquinas {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -779,16 +510,9 @@ button {
   .maquina-card:last-child {
     grid-column: span 2;
   }
-
 }
 
 @media (max-width: 480px) {
-
-  .encabezado-superior {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
   .informacion-maquina h2 {
     font-size: 21px;
     line-height: 25px;
@@ -806,5 +530,4 @@ button {
     font-size: 12px;
     line-height: 17px;
   }
-
 }

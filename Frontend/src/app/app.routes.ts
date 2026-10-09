@@ -34,12 +34,18 @@ export const routes: Routes = [
     component: AuthRegistroComponent
   },
   {
-    path: 'admin-lista-maquinas',
+    path: 'admin/maquinas',
     component: AdminListaMaquinasComponent
   },
   {
-    path: 'admin-formulario-maquina',
+    path: 'admin/maquinas/nueva',
     component: AdminFormularioMaquinaComponent
+  },
+  // path anterior de la lista de máquinas
+  {
+    path: 'admin-lista-maquinas',
+    redirectTo: 'admin/maquinas',
+    pathMatch: 'full'
   },
 
   // Módulo de usuario Migue

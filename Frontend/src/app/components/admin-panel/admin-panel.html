@@ -1,23 +1,21 @@
-<div class="bg-chalk-50 text-iron-950">
-  <!-- TopAppBar -->
-  <header class="w-full top-0 sticky bg-surface-container-lowest border-b border-chalk-200 shadow-sm z-50">
-    <div class="flex justify-between items-center px-margin-desktop py-unit w-full h-16">
-      <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-signal-red">fitness_center</span>
-        <span class="font-headline-md text-headline-md font-extrabold text-signal-red tracking-tighter uppercase">GymSync</span>
+<div class="bg-chalk-50 text-iron-950 font-body-md min-h-screen pb-24 md:pb-0">
+  <!-- TopAppBar Desktop -->
+  <header class="w-full top-0 sticky bg-surface-container-lowest border-b border-chalk-200 shadow-sm z-40 hidden md:block">
+    <div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-7xl mx-auto">
+      <div class="flex items-center gap-4">
+        <span class="material-symbols-outlined text-signal-red text-3xl">fitness_center</span>
+        <h1 class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</h1>
       </div>
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex gap-6 items-center">
+      <nav class="hidden md:flex gap-8">
         <a
           routerLink="/admin/dashboard"
           routerLinkActive
           #rlaDashboardDesktop="routerLinkActive"
           [class.text-signal-red]="rlaDashboardDesktop.isActive"
           [class.text-iron-700]="!rlaDashboardDesktop.isActive"
-          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
+          class="font-utility-mono text-utility-mono hover:text-signal-red transition-colors flex items-center gap-2"
         >
-          <span class="material-symbols-outlined text-[18px]">dashboard</span>
-          Dashboard
+          <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
         </a>
         <a
           routerLink="/admin/clientes"
@@ -25,32 +23,22 @@
           #rlaClientesDesktop="routerLinkActive"
           [class.text-signal-red]="rlaClientesDesktop.isActive"
           [class.text-iron-700]="!rlaClientesDesktop.isActive"
-          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
+          class="font-utility-mono text-utility-mono hover:text-signal-red transition-colors flex items-center gap-2"
         >
-          <span class="material-symbols-outlined text-[18px]">group</span>
-          Clientes
+          <span class="material-symbols-outlined text-xl">group</span> Clientes
         </a>
         <a
-          routerLink="/admin-lista-maquinas"
+          routerLink="/admin/maquinas"
           routerLinkActive
           #rlaMaquinasDesktop="routerLinkActive"
           [class.text-signal-red]="rlaMaquinasDesktop.isActive"
           [class.text-iron-700]="!rlaMaquinasDesktop.isActive"
-          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
+          class="font-utility-mono text-utility-mono hover:text-signal-red transition-colors flex items-center gap-2"
         >
-          <span class="material-symbols-outlined text-[18px]">fitness_center</span>
-          Máquinas
+          <span class="material-symbols-outlined text-xl">fitness_center</span> Máquinas
         </a>
-        <a
-          routerLink="/admin/alertas"
-          routerLinkActive
-          #rlaAlertasDesktop="routerLinkActive"
-          [class.text-signal-red]="rlaAlertasDesktop.isActive"
-          [class.text-iron-700]="!rlaAlertasDesktop.isActive"
-          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
-        >
-          <span class="material-symbols-outlined text-[18px]">notifications</span>
-          Alertas
+        <a class="font-utility-mono text-utility-mono text-iron-700 hover:text-signal-red transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">notifications</span> Alertas
         </a>
         <a
           routerLink="/admin/escaner"
@@ -58,26 +46,37 @@
           #rlaEscanerDesktop="routerLinkActive"
           [class.text-signal-red]="rlaEscanerDesktop.isActive"
           [class.text-iron-700]="!rlaEscanerDesktop.isActive"
-          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
+          class="font-utility-mono text-utility-mono hover:text-signal-red transition-colors flex items-center gap-2"
         >
-          <span class="material-symbols-outlined text-[18px]">qr_code_scanner</span>
-          Escáner
+          <span class="material-symbols-outlined text-xl">qr_code_scanner</span> Escáner
         </a>
       </nav>
-      <div class="w-8 h-8 rounded-full overflow-hidden inner-glow bg-signal-red flex items-center justify-center border border-chalk-200">
-  <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">GYM</span>
-</div>
+      <div class="w-10 h-10 rounded-full bg-signal-red overflow-hidden inner-glow border border-chalk-200 flex items-center justify-center">
+        <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold">AD</span>
+      </div>
     </div>
   </header>
 
-  <div class="app-container">
-    <!-- Main Canvas -->
-    <main class="main-content">
-      <div class="max-w-7xl mx-auto space-y-8">
-        <!-- Page Header -->
-        <div>
-          <h1 class="font-display-xl-mobile text-display-xl-mobile md:font-display-xl md:text-display-xl text-iron-950 uppercase">Resumen General</h1>
-          <p class="font-body-md text-body-md text-iron-700 mt-unit">Rendimiento actual del gimnasio y alertas activas.</p>
+  <!-- Mobile Header -->
+  <header class="w-full top-0 sticky bg-surface-container-lowest border-b border-chalk-200 shadow-sm z-40 md:hidden flex justify-between items-center px-margin-mobile py-4">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-signal-red text-2xl">fitness_center</span>
+      <h1 class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</h1>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-signal-red overflow-hidden inner-glow border border-chalk-200 flex items-center justify-center">
+      <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold text-sm">AD</span>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop py-8">
+    <div class="space-y-8">
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div>
+            <h2 class="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl font-bold text-iron-950 mb-2 uppercase">Resumen General</h2>
+            <p class="font-body-md text-body-md text-iron-700">Rendimiento actual del gimnasio y alertas activas.</p>
+          </div>
         </div>
 
         <!-- Metrics Grid  -->
@@ -161,63 +160,53 @@
             <span class="font-utility-mono text-utility-mono text-iron-950 uppercase">Ajustes</span>
           </button>
         </div>
-      </div>
-    </main>
-  </div>
+    </div>
+  </main>
 
   <!-- BottomNavBar (Mobile Only) -->
-  <nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface-container-lowest border-t border-chalk-200 z-50 shadow-lg">
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface-container-lowest border-t border-chalk-200 shadow-lg md:hidden z-50">
     <a
       routerLink="/admin/dashboard"
       routerLinkActive
       #rlaDashboardMobile="routerLinkActive"
-      [class.bg-chalk-200]="rlaDashboardMobile.isActive"
-      [class.text-iron-950]="rlaDashboardMobile.isActive"
+      [class.text-signal-red]="rlaDashboardMobile.isActive"
       [class.text-iron-700]="!rlaDashboardMobile.isActive"
-      class="flex flex-col items-center justify-center rounded-lg px-3 py-1 active:scale-90 transition-transform duration-200 hover:bg-chalk-50"
+      class="flex flex-col items-center justify-center p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200"
     >
-      <span class="material-symbols-outlined">dashboard</span>
-      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Dashboard</span>
+      <span class="material-symbols-outlined text-2xl mb-1">dashboard</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Dashboard</span>
     </a>
     <a
       routerLink="/admin/clientes"
       routerLinkActive
       #rlaClientesMobile="routerLinkActive"
-      [class.bg-chalk-200]="rlaClientesMobile.isActive"
-      [class.text-iron-950]="rlaClientesMobile.isActive"
+      [class.text-signal-red]="rlaClientesMobile.isActive"
       [class.text-iron-700]="!rlaClientesMobile.isActive"
-      class="flex flex-col items-center justify-center rounded-lg px-3 py-1 active:scale-90 transition-transform duration-200 hover:bg-chalk-50"
+      class="flex flex-col items-center justify-center p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200"
     >
-      <span class="material-symbols-outlined">group</span>
-      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Clientes</span>
+      <span class="material-symbols-outlined text-2xl mb-1">group</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Clientes</span>
     </a>
     <a
-      routerLink="/admin-lista-maquinas"
+      routerLink="/admin/maquinas"
       routerLinkActive
       #rlaMaquinasMobile="routerLinkActive"
-      [class.bg-chalk-200]="rlaMaquinasMobile.isActive"
-      [class.text-iron-950]="rlaMaquinasMobile.isActive"
+      [class.text-signal-red]="rlaMaquinasMobile.isActive"
       [class.text-iron-700]="!rlaMaquinasMobile.isActive"
-      class="flex flex-col items-center justify-center rounded-lg px-3 py-1 active:scale-90 transition-transform duration-200 hover:bg-chalk-50"
+      class="flex flex-col items-center justify-center p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200"
     >
-      <span class="material-symbols-outlined">fitness_center</span>
-      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Máquinas</span>
+      <span class="material-symbols-outlined text-2xl mb-1">fitness_center</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Máquinas</span>
     </a>
-    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200 rounded-lg" href="#">
-      <span class="material-symbols-outlined">notifications</span>
-      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Alertas</span>
+    <a class="flex flex-col items-center justify-center text-iron-700 p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">notifications</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Alertas</span>
     </a>
     <a
       routerLink="/admin/escaner"
       routerLinkActive
       #rlaEscanerMobile="routerLinkActive"
-      [class.bg-chalk-200]="rlaEscanerMobile.isActive"
-      [class.text-iron-950]="rlaEscanerMobile.isActive"
+      [class.text-signal-red]="rlaEscanerMobile.isActive"
       [class.text-iron-700]="!rlaEscanerMobile.isActive"
-      class="flex flex-col items-center justify-center rounded-lg px-3 py-1 active:scale-90 transition-transform duration-200 hover:bg-chalk-50"
+      class="flex flex-col items-center justify-center p-2 hover:bg-chalk-50 active:scale-90 transition-transform duration-200"
     >
-      <span class="material-symbols-outlined">qr_code_scanner</span>
-      <span class="font-utility-mono text-utility-mono mt-1 uppercase text-[10px]">Escáner</span>
+      <span class="material-symbols-outlined text-2xl mb-1">qr_code_scanner</span><span class="font-utility-mono text-[10px] uppercase tracking-wider">Escáner</span>
     </a>
   </nav>
 </div>
