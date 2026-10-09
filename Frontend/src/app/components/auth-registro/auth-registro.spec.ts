@@ -9,6 +9,7 @@ import { RegistroService } from "../../services/registro.service";
 describe("AuthRegistroComponent", () => {
   let component: AuthRegistroComponent;
   let fixture: ComponentFixture<AuthRegistroComponent>;
+  
   let registroService: jasmine.SpyObj<RegistroService>;
 
   const respuestaPrueba = {
