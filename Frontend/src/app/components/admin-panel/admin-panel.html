@@ -53,17 +53,6 @@
           Alertas
         </a>
         <a
-          routerLink="/admin/anuncios"
-          routerLinkActive
-          #rlaAnunciosDesktop="routerLinkActive"
-          [class.text-signal-red]="rlaAnunciosDesktop.isActive"
-          [class.text-iron-700]="!rlaAnunciosDesktop.isActive"
-          class="font-utility-mono text-utility-mono flex items-center gap-1 active:scale-95 duration-100 hover:bg-surface-container transition-colors px-3 py-2 rounded-full"
-        >
-          <span class="material-symbols-outlined text-[18px]">campaign</span>
-          Anuncios
-        </a>
-        <a
           routerLink="/admin/escaner"
           routerLinkActive
           #rlaEscanerDesktop="routerLinkActive"
@@ -205,18 +194,10 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+        <div class="grid grid-cols-2 md:max-w-md md:mx-auto gap-4 mt-8">
           <button routerLink="/admin/clientes/nuevo" class="bg-surface-container-lowest sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-chalk-50 transition-all border border-chalk-200 hover:border-steel-500 group">
             <span class="material-symbols-outlined text-iron-700 group-hover:text-steel-500 transition-colors text-[32px]">person_add</span>
             <span class="font-utility-mono text-utility-mono text-iron-950 uppercase">Nuevo Miembro</span>
-          </button>
-          <button class="bg-surface-container-lowest sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-chalk-50 transition-all border border-chalk-200 hover:border-steel-500 group">
-            <span class="material-symbols-outlined text-iron-700 group-hover:text-steel-500 transition-colors text-[32px]">campaign</span>
-            <span class="font-utility-mono text-utility-mono text-iron-950 uppercase">Enviar Anuncio</span>
-          </button>
-          <button class="bg-surface-container-lowest sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-chalk-50 transition-all border border-chalk-200 hover:border-steel-500 group">
-            <span class="material-symbols-outlined text-iron-700 group-hover:text-steel-500 transition-colors text-[32px]">receipt_long</span>
-            <span class="font-utility-mono text-utility-mono text-iron-950 uppercase">Facturación</span>
           </button>
           <button class="bg-surface-container-lowest sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-chalk-50 transition-all border border-chalk-200 hover:border-steel-500 group">
             <span class="material-symbols-outlined text-iron-700 group-hover:text-steel-500 transition-colors text-[32px]">settings</span>
