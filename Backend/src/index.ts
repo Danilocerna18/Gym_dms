@@ -46,7 +46,11 @@ import userRoutes from "./routes/user.routes";
 
 const app = express();
 
-const PORT = process.env.PORT ?? 3000;
+const PORT = Number(process.env.PORT) || 3000;
+
+app.get("/ping", (req, res) => {
+  res.status(200).json({ ok: true });
+});
 
 app.use(
   cors({
@@ -84,10 +88,10 @@ app.use("/api/auth", authRouter);
 
 app.use("/api", userRoutes);
 
-app.use(errorHandler); 
+app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(
-    `GymSync backend corriendo en http://localhost:${PORT}`
+    `GymSync backend corriendo en el puerto ${PORT}`
   );
 });
