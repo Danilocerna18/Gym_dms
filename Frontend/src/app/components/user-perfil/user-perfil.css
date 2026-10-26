@@ -6,14 +6,6 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.accent-bar-performance {
-  border-left: 4px solid #E13438;
-}
-
-.accent-bar-finance {
-  border-left: 4px solid #3E6E8E;
-}
-
 ::-webkit-scrollbar {
   display: none;
 }
@@ -21,4 +13,13 @@
 * {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+/* Respeta la preferencia de menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
 }
