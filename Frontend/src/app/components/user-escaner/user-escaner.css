@@ -12,9 +12,9 @@
   flex-direction: column; /* móvil: cabecera arriba y contenido debajo, no en fila */
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--color-iron-950); /* pantalla de escaneo: fondo iron-950 */
-  color: var(--color-chalk-50);
-  font-family: var(--font-body-md);
+  background-color: var(--color-ink); /* pantalla de escaneo: fondo ink */
+  color: var(--color-cream);
+  font-family: var(--font-body);
 }
 
 @media (min-width: 768px) {
@@ -28,8 +28,8 @@
   flex-direction: column;
   justify-content: space-between;
   width: 240px;
-  background-color: var(--color-iron-950);
-  border-right: 1px solid var(--color-iron-700);
+  background-color: var(--color-ink);
+  border-right: 1px solid color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
   position: fixed;
   height: 100vh;
   height: 100dvh;
@@ -66,9 +66,9 @@
   min-height: 48px;
   padding: 12px 16px;
   border-radius: 8px;
-  color: var(--color-chalk-200);
+  color: var(--color-cream-dark);
   text-decoration: none;
-  font-family: var(--font-utility-mono);
+  font-family: var(--font-body);
   font-size: 13px;
   letter-spacing: 0.05em;
   font-weight: 500;
@@ -77,13 +77,13 @@
 }
 
 .nav-item:hover {
-  background-color: var(--color-iron-900);
-  color: var(--color-signal-red);
+  background-color: color-mix(in srgb, var(--color-cream) 5%, var(--color-ink));
+  color: var(--color-cream);
 }
 
 .nav-item.active {
-  background-color: var(--color-iron-700);
-  color: var(--color-signal-red);
+  background-color: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
+  color: var(--color-cream);
   font-weight: 600;
 }
 
@@ -92,10 +92,10 @@
   align-items: center;
   gap: 12px;
   padding: 12px;
-  background-color: var(--color-iron-700);
+  background-color: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
   border-radius: 10px;
   text-decoration: none;
-  color: var(--color-chalk-50);
+  color: var(--color-cream);
   cursor: pointer;
 }
 
@@ -103,8 +103,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: var(--color-signal-red);
-  color: var(--color-chalk-50);
+  background-color: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
+  color: var(--color-cream);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -149,8 +149,8 @@
   align-items: center;
   height: 56px;
   padding: 0 16px;
-  background-color: var(--color-iron-950);
-  border-bottom: 1px solid var(--color-iron-700);
+  background-color: var(--color-ink);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
   position: sticky;
   top: 0;
   z-index: 30;
@@ -164,8 +164,8 @@
 
 /* Tarjeta del Escáner estilo Neumórfico / Limpio */
 .scanner-card {
-  background-color: var(--color-iron-900);
-  border: 1px solid var(--color-iron-700);
+  background-color: color-mix(in srgb, var(--color-cream) 5%, var(--color-ink));
+  border: 1px solid color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
   border-radius: 20px;
   padding: 24px 16px;
   max-width: 480px;
@@ -173,7 +173,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 30px rgba(27, 52, 92, 0.4);
   position: relative;
 }
 
@@ -186,7 +186,7 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background: var(--color-iron-700);
+  background: color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
   border: none;
   border-radius: 50%;
   width: 48px;
@@ -195,28 +195,28 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--color-chalk-50);
+  color: var(--color-cream);
   transition: background 0.2s ease;
 }
 
 .btn-close:hover {
-  background: var(--color-iron-950);
-  color: var(--color-chalk-50);
+  background: var(--color-ink);
+  color: var(--color-cream);
 }
 
 .scanner-header h2 {
-  font-family: var(--font-headline-md);
+  font-family: var(--font-display);
   font-size: 22px;
-  font-weight: 700;
   margin: 0 0 6px 0;
   padding: 0 40px; /* deja libre el botón de cerrar (48px) en pantallas angostas */
-  color: var(--color-chalk-50);
+  color: var(--color-cream);
+  text-transform: uppercase;
 }
 
 .scanner-header p {
   font-size: 16px;
   line-height: 24px;
-  color: var(--color-chalk-50);
+  color: var(--color-cream);
   margin: 0;
 }
 
@@ -232,8 +232,8 @@
   width: clamp(140px, calc(100dvh - 420px), 240px);
   max-width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: var(--color-iron-950);
-  border: 1px solid var(--color-iron-700);
+  background-color: var(--color-ink);
+  border: 1px solid color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
   border-radius: 16px;
   position: relative;
   display: flex;
@@ -244,7 +244,7 @@
 
 .qr-icon-center {
   font-size: 64px;
-  color: var(--color-iron-700);
+  color: var(--color-cream-dark);
 }
 
 /* Esquinas Rojas de Neón */
@@ -252,7 +252,7 @@
   position: absolute;
   width: 24px;
   height: 24px;
-  border-color: var(--color-signal-red);
+  border-color: var(--color-cream);
   border-style: solid;
 }
 
@@ -266,8 +266,8 @@
   position: absolute;
   width: 100%;
   height: 2px;
-  background: var(--color-signal-red);
-  box-shadow: 0 0 12px var(--color-signal-red);
+  background: var(--color-cream);
+  box-shadow: 0 0 12px var(--color-cream);
   animation: scanning 2.5s infinite ease-in-out;
 }
 
@@ -280,15 +280,15 @@
 .scan-status-text {
   font-size: 14px;
   font-weight: 700;
-  color: var(--color-chalk-50); /* signal-red sobre iron-900 no alcanza contraste AA en texto chico */
+  color: var(--color-cream); /* accent sobre ink no alcanza contraste (1.28:1) */
   letter-spacing: 1.5px;
   margin-bottom: 24px;
 }
 
 .btn-upload-gallery {
   width: 100%;
-  background-color: var(--color-signal-red);
-  color: var(--color-chalk-50);
+  background-color: var(--color-cream);
+  color: var(--color-ink);
   border: none;
   min-height: 48px;
   padding: 14px;
@@ -304,7 +304,7 @@
 }
 
 .btn-upload-gallery:hover {
-  background-color: var(--color-signal-red-hover);
+  background-color: color-mix(in srgb, var(--color-cream) 90%, transparent);
 }
 
 .btn-upload-gallery:active {
@@ -320,8 +320,8 @@
   width: 100%;
   min-height: 60px;
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background-color: var(--color-iron-950);
-  border-top: 1px solid var(--color-iron-700);
+  background-color: var(--color-ink);
+  border-top: 1px solid color-mix(in srgb, var(--color-cream) 10%, var(--color-ink));
   justify-content: space-around;
   align-items: center;
   z-index: 50;
@@ -341,9 +341,9 @@
   flex: 1 1 0;
   min-width: 48px;
   min-height: 48px;
-  color: var(--color-chalk-200);
+  color: var(--color-cream-dark);
   text-decoration: none;
-  font-family: var(--font-utility-mono);
+  font-family: var(--font-body);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -351,7 +351,7 @@
 }
 
 .mobile-nav-item.active {
-  color: var(--color-signal-red);
+  color: var(--color-cream);
   font-weight: 700;
 }
 @media (min-width: 480px) {
