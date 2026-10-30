@@ -7,7 +7,7 @@
 
 .circle-bg {
   fill: none;
-  stroke: theme('colors.chalk-200');
+  stroke: theme('colors.cream-dark');
   stroke-width: 3.8;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .circle.primary {
-  stroke: theme('colors.steel-500');
+  stroke: theme('colors.track-green');
 }
 
 @keyframes progress {

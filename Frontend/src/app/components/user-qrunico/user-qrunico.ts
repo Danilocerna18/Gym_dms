@@ -16,12 +16,12 @@ export class UserQrunico {
     navigator.clipboard.writeText(code).then(() => {
       copyIcon.textContent = 'check';
       copyText.textContent = 'LISTO';
-      copyBtn.classList.add('bg-track-green', 'text-chalk-50');
+      copyBtn.classList.add('bg-track-green', 'text-cream');
 
       setTimeout(() => {
         copyIcon.textContent = 'content_copy';
         copyText.textContent = 'COPIAR';
-        copyBtn.classList.remove('bg-track-green', 'text-chalk-50');
+        copyBtn.classList.remove('bg-track-green', 'text-cream');
       }, 2000);
     }).catch(() => {
       copyText.textContent = 'GS-9821';

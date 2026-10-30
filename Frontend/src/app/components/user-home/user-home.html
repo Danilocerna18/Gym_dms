@@ -2,8 +2,7 @@
   <!-- Header Móvil -->
   <header class="mobile-header">
     <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-signal-red text-2xl">fitness_center</span>
-      <span class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</span>
+      <span class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</span>
     </div>
   </header>
 
@@ -11,8 +10,7 @@
   <aside class="desktop-sidebar">
     <div class="sidebar-top">
       <div class="brand-logo">
-        <span class="material-symbols-outlined text-signal-red text-3xl">fitness_center</span>
-        <span class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</span>
+        <span class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</span>
       </div>
 
       <nav class="sidebar-nav">
@@ -49,9 +47,9 @@
       <!-- Encabezado de pantalla (mismo patrón que el admin) -->
       <section class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
-          <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider block mb-2">Catálogo Interactivo</span>
-          <h1 class="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl font-bold text-iron-950 mb-2 uppercase">Biblioteca de Máquinas</h1>
-          <p class="font-body-md text-body-md text-iron-700">Selecciona una máquina por su grupo muscular para ver su guía interactiva e instrucciones de uso.</p>
+          <span class="font-body text-body-sm text-ink-soft uppercase tracking-wider block mb-2">Catálogo Interactivo</span>
+          <h1 class="font-display md:font-display text-display-lg md:text-display-xl text-ink mb-2 uppercase">Biblioteca de Máquinas</h1>
+          <p class="font-body text-body-md text-ink-soft">Selecciona una máquina por su grupo muscular para ver su guía interactiva e instrucciones de uso.</p>
         </div>
         <button routerLink="/user-escaner" class="btn-primary-red">
           <span class="material-symbols-outlined">qr_code_scanner</span>
@@ -62,7 +60,7 @@
       <!-- Secciones por Músculo -->
       <section *ngFor="let category of muscleCategories" class="muscle-section">
         <h2 class="section-title">
-          <span class="material-symbols-outlined text-signal-red">fitness_center</span>
+          <span class="material-symbols-outlined text-accent">fitness_center</span>
           {{ category.title }}
         </h2>
 
