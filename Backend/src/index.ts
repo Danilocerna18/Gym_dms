@@ -41,7 +41,9 @@ import { webhooksRouter } from "./routes/webhooks.route";
 
 import "./config/passport";
 
+import { requireSession } from "./middleware/authorization";
 import authRouter from "./routes/auth";
+import machineRoutes from "./routes/machine.routes";
 import userRoutes from "./routes/user.routes";
 
 const app = express();
@@ -62,6 +64,8 @@ app.use(
   })
 );
 
+// Verificar la firma sobre los bytes originales, antes de interpretar JSON.
+app.use("/api/webhooks", express.raw({ type: "application/json" }));
 app.use(express.json());
 
 app.use(sessionMiddleware);
@@ -70,23 +74,25 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-app.use("/api/auth", authRateLimit);
+app.use(["/api/auth/login", "/api/auth/register", "/api/auth/google"], authRateLimit);
+app.use("/api/auth", (_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
 
 app.use("/api/scan", scanRateLimit);
 
-app.use("/api/scan", scanRouter);
+app.use("/api/scan", requireSession("admin"), scanRouter);
 
-app.use("/api/access", accessRouter);
+app.use("/api/access", requireSession("admin"), accessRouter);
 
-app.use("/api/clientes", clientesRouter);
+app.use("/api/clientes", requireSession("admin"), clientesRouter);
 
-app.use("/api/dashboard", dashboardRouter);
+app.use("/api/dashboard", requireSession("admin"), dashboardRouter);
 
 app.use("/api/webhooks", webhooksRouter);
 
 app.use("/api/auth", authRouter);
 
 app.use("/api", userRoutes);
+app.use("/api", machineRoutes);
 
 app.use(errorHandler);
 

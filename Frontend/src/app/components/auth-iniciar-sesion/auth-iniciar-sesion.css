@@ -229,6 +229,7 @@
 }
 
 .google-button {
+  text-decoration: none;
   width: 100%;
   min-height: 48px;
   padding: 0 16px;
@@ -443,59 +444,6 @@
 
 .submit-button .material-symbols-outlined {
   font-size: 20px;
-}
-
-/* quitar estos estilos cuando exista login real (botón temporal demo Sprint 2) */
-.demo-separador {
-  position: relative;
-  height: 20px;
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.demo-separador span {
-  position: absolute;
-  padding: 0 12px;
-  background: var(--color-cream);
-  color: var(--color-ink-soft);
-  font-family: var(--font-body);
-  font-size: 11px;
-  line-height: 16px;
-  letter-spacing: 0.05em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.demo-admin-button {
-  align-self: center;
-  min-width: 200px;
-  height: 44px;
-  padding: 0 24px;
-  border: 1px solid var(--color-cream-dark);
-  border-radius: 12px;
-  background: transparent;
-  color: var(--color-ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-family: var(--font-body);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-}
-
-.demo-admin-button:hover {
-  background: color-mix(in srgb, var(--color-cream-dark) 50%, transparent);
-}
-
-.demo-admin-button .material-symbols-outlined {
-  font-size: 18px;
 }
 
 .registro {

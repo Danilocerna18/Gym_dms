@@ -1,3 +1,4 @@
+import { requireSession } from '../middleware/authorization';
 import { Router } from 'express';
 import { getMachineById, createMachine } from '../controllers/machine.controller';
 
@@ -7,6 +8,6 @@ const router = Router();
 router.get('/machines/:id', getMachineById);
 
 // Endpoint para que el Administrador registre una nueva máquina con su video
-router.post('/machines', createMachine);
+router.post('/machines', requireSession('admin'), createMachine);
 
 export default router;

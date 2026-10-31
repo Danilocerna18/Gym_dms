@@ -26,7 +26,7 @@ export class Acceso {
     return this.http.post<RespuestaEscaneo>(`${environment.apiUrl}/api/scan`, { qrCode }, { withCredentials: true });
   }
 
-  validateAccess(userId: string, scannedBy: string, type: 'entry' | 'exit'): Observable<RespuestaValidacion> { // registra la entrada (valida membresía) o la salida en AccessLog
-    return this.http.post<RespuestaValidacion>(`${environment.apiUrl}/api/access/validate`, { userId, scannedBy, type }, { withCredentials: true });
+  validateAccess(userId: string, type: 'entry' | 'exit'): Observable<RespuestaValidacion> { // registra la entrada (valida membresía) o la salida en AccessLog
+    return this.http.post<RespuestaValidacion>(`${environment.apiUrl}/api/access/validate`, { userId, type }, { withCredentials: true });
   }
 }

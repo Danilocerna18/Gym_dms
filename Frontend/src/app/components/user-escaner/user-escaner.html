@@ -31,10 +31,10 @@
 
     <a routerLink="/user-perfil" class="user-card-bottom">
       <div class="avatar-circle">
-        <span>SB</span>
+        <span>{{ auth.initials() }}</span>
       </div>
       <div class="user-info">
-        <span class="user-name">Sofia Bilbao</span>
+        <span class="user-name">{{ auth.profile()?.name }}</span>
       </div>
     </a>
   </aside>

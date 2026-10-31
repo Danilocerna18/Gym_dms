@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth';
+import { inject, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -23,6 +24,8 @@ interface MuscleCategory {
   styleUrl: './user-home.css'
 })
 export class UserHomeComponent {
+  readonly auth = inject(AuthService);
+
 
   muscleCategories: MuscleCategory[] = [
     {

@@ -1,3 +1,4 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { Router } from "express";
 import { prisma } from "../lib/prisma";
 
@@ -7,29 +8,36 @@ export const webhooksRouter = Router();
 // con POST /api/payments/initiate
 webhooksRouter.post("/recurrente", async (req, res, next) => {
   try {
-    const signature = req.header("x-recurrente-signature");
     const secret = process.env.RECURRENTE_WEBHOOK_SECRET;
-
-    // Rechaza si falta cualquiera de los dos, sin secreto configurado no
-    // hay forma de verificar nada y sin firma en el header el request no
-    // viene realmente de Recurrente (o vino mal formado)
-
-    if (!secret || !signature) {
-      return res.status(401).json({
-        error: "FIRMA_INVALIDA",
-        message: "No se pudo verificar el origen del webhook.",
-      });
+    const id = req.header("svix-id");
+    const timestamp = req.header("svix-timestamp");
+    const signatures = req.header("svix-signature");
+    if (!secret?.startsWith("whsec_") || !id || !timestamp || !signatures ||
+        !Buffer.isBuffer(req.body) || !/^\d+$/.test(timestamp) ||
+        Math.abs(Date.now() / 1000 - Number(timestamp)) > 300) {
+      return res.status(401).json({ message: "Firma de webhook inválida." });
     }
+    const expected = createHmac("sha256", Buffer.from(secret.slice(6), "base64"))
+      .update(id + "." + timestamp + ".").update(req.body).digest();
+    const valid = signatures.split(" ").some(signature => {
+      const [version, value] = signature.split(",");
+      const actual = Buffer.from(value ?? "", "base64");
+      return version === "v1" && actual.length === expected.length && timingSafeEqual(actual, expected);
+    });
+    if (!valid) return res.status(401).json({ message: "Firma de webhook inválida." });
+    const payload = JSON.parse(req.body.toString("utf8"));
 
-    // aún no tenemos credenciales reales de Recurrente. Cuando existan,
-    // validar `signature` contra un HMAC calculado con `secret` sobre el
-    // body crudo de la request, en vez de solo comprobar que ambos existan.
-
-    const { recurrentePaymentId, status, paidAt } = req.body as {
+    const { recurrentePaymentId, status, paidAt } = payload as {
       recurrentePaymentId?: string;
       status?: "completed" | "failed";
       paidAt?: string;
     };
+
+    if (typeof recurrentePaymentId !== "string" || !recurrentePaymentId ||
+        !["completed", "failed"].includes(status ?? "") ||
+        (paidAt !== undefined && (typeof paidAt !== "string" || !Number.isFinite(Date.parse(paidAt))))) {
+      return res.status(400).json({ message: "Datos de pago inválidos." });
+    }
 
      // Se trae membership + plan en la misma consulta porque los vamos a
     // necesitar más abajo para calcular endDate, evita una segunda ida a la base de datos.

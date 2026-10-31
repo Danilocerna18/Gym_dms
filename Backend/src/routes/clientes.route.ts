@@ -12,9 +12,6 @@ export const clientesRouter = Router();
 // Agregar skip/take con parámetros cuando haya más miembros que eso.
 const LIMITE_CLIENTES = 50;
 
-// TODO(seguridad): este endpoint expone datos personales y debe ser solo
-// para admin (PRD sección 6, Privacidad). Hoy no hay sesión de admin, así
-// que está abierto hasta que exista el login de Danilo.
 clientesRouter.get("/", async (_req, res, next) => {
   try {
     const ahora = new Date();

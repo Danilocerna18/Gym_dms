@@ -20,6 +20,7 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
         callbackURL: CALLBACK_URL,
+        state: true,
       },
 
       async (accessToken, refreshToken, profile, done) => {
@@ -32,7 +33,7 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
           
           const email = profile.emails?.[0]?.value?.trim().toLowerCase();
 
-          if (!email) {
+          if (!email || profile.emails?.[0]?.verified !== true) {
             return done(new Error("Google no devolvió un email"), undefined);
           }
 
@@ -65,6 +66,8 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
             });
 
             console.log("Cuenta Google vinculada:", user.id);
+          } else if (user.googleId !== profile.id) {
+            return done(null, false);
           } else {
             console.log("Usuario Google encontrado:", user.id);
           }
@@ -86,9 +89,8 @@ passport.serializeUser((user: any, done) => {
 passport.deserializeUser(async (id: string, done) => {
   try {
     const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
+      select: { id: true, role: true, name: true, email: true, qrCode: true, createdAt: true },
     });
 
     done(null, user ?? false);

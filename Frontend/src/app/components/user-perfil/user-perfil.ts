@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth';
+import { inject, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -9,4 +10,6 @@ import { RouterLink } from '@angular/router';
   templateUrl: './user-perfil.html',
   styleUrl: './user-perfil.css'
 })
-export class UserPerfil {}
+export class UserPerfil {
+  readonly auth = inject(AuthService);
+}

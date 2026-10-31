@@ -41,8 +41,7 @@ export class AdminEscanerAcceso {
     this.acceso.scan(codigo).pipe(
       switchMap(respuesta => {
         if (respuesta.type === 'membership') {
-          // reemplazar por el id de sesión del admin autenticado cuando Danilo termine el Google Sign-In
-          return this.acceso.validateAccess(respuesta.userId, '000', modo);
+          return this.acceso.validateAccess(respuesta.userId, modo);
         }
 
         // conectar con el flujo de video de la máquina cuando esté listo

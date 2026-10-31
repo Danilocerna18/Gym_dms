@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth';
+import { inject, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -10,6 +11,8 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './user-escaner.css'
 })
 export class UserEscanerComponent {
+  readonly auth = inject(AuthService);
+
 
   constructor(private router: Router) {}
 

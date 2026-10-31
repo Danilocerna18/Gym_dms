@@ -7,9 +7,8 @@ export const accessRouter = Router();
 // del frontend para conceder acceso
 accessRouter.post("/validate", async (req, res, next) => {
   try {
-    const { userId, scannedBy, type = "entry" } = req.body as {
+    const { userId, type = "entry" } = req.body as {
       userId?: string;
-      scannedBy?: string;
       type?: string;
     };
 
@@ -19,18 +18,7 @@ accessRouter.post("/validate", async (req, res, next) => {
         message: "Falta el identificador del usuario.",
       });
     }
-    // seguridad: scannedBy viene del body como stopgap temporal mientras
-    // no existe sesión de admin autenticada. Es falsificable por el cliente 
-    // no sirve como auditoría real hasta que se reemplace por
-    // req.session.user.id (o equivalente) cuando exista login de admin. No
-    // confiar en este campo para auditoría hasta ese cambio.
-
-    if (!scannedBy) {
-      return res.status(400).json({
-        error: "SCANNED_BY_REQUERIDO",
-        message: "Falta identificar al administrador que escaneó el código.",
-      });
-    }
+    const scannedBy = req.user!.id;
 
     // Si no viene type se asume "entry" para no romper a los clientes que
     // todavía no lo mandan. Cualquier otro valor se rechaza en vez de

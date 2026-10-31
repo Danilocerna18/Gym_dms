@@ -1,3 +1,5 @@
+import { autenticacionGuard } from './guards/autenticacion-guard';
+import { rolGuard } from './guards/rol-guard';
 import { Routes } from '@angular/router';
 
 // Componentes del grupo
@@ -27,6 +29,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
+    canActivate: [autenticacionGuard],
     component: AuthIniciarSesionComponent
   },
   {
@@ -35,10 +38,12 @@ export const routes: Routes = [
   },
   {
     path: 'admin/maquinas',
+    canActivate: [rolGuard], data: { role: 'admin' },
     component: AdminListaMaquinasComponent
   },
   {
     path: 'admin/maquinas/nueva',
+    canActivate: [rolGuard], data: { role: 'admin' },
     component: AdminFormularioMaquinaComponent
   },
   // path anterior de la lista de máquinas
@@ -49,16 +54,16 @@ export const routes: Routes = [
   },
 
   // Módulo de usuario Migue
-  { path: 'user-home', component: UserHomeComponent },
-  { path: 'user-perfil', component: UserPerfil },
-  { path: 'user-qrunico', component: UserQrunico },
-  { path: 'user-escaner', component: UserEscanerComponent },
-  { path: 'user-maquinadet', component: UserMaquinadetComponent },
+  { path: 'user-home', canActivate: [rolGuard], data: { role: 'member' }, component: UserHomeComponent },
+  { path: 'user-perfil', canActivate: [rolGuard], data: { role: 'member' }, component: UserPerfil },
+  { path: 'user-qrunico', canActivate: [rolGuard], data: { role: 'member' }, component: UserQrunico },
+  { path: 'user-escaner', canActivate: [rolGuard], data: { role: 'member' }, component: UserEscanerComponent },
+  { path: 'user-maquinadet', canActivate: [rolGuard], data: { role: 'member' }, component: UserMaquinadetComponent },
 
   // Módulo de admin Sofia
-  { path: 'admin/dashboard', component: AdminPanel },
-  { path: 'admin/clientes', component: AdminListaClientes },
-  { path: 'admin/clientes/nuevo', component: AdminFormularioCliente },
-  { path: 'admin/clientes/:id/editar', component: AdminFormularioCliente },
-  { path: 'admin/escaner', component: AdminEscanerAcceso }
+  { path: 'admin/dashboard', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminPanel },
+  { path: 'admin/clientes', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminListaClientes },
+  { path: 'admin/clientes/nuevo', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminFormularioCliente },
+  { path: 'admin/clientes/:id/editar', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminFormularioCliente },
+  { path: 'admin/escaner', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminEscanerAcceso }
 ];

@@ -1,17 +1,32 @@
-import { Component } from '@angular/core';
+import qrcode from 'qrcode-generator';
+import { DatePipe } from '@angular/common';
+import { AuthService } from '../../services/auth';
+import { inject, Component } from '@angular/core';
 
 @Component({
   selector: 'app-user-qrunico',
   standalone: true,
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './user-qrunico.html',
   styleUrl: './user-qrunico.css',
 })
 export class UserQrunico {
+  readonly auth = inject(AuthService);
+
+
+  readonly qrImage = this.createQr();
+
+  private createQr(): string {
+    const qr = qrcode(0, 'M');
+    qr.addData(this.auth.profile()?.qrCode ?? '');
+    qr.make();
+    return qr.createDataURL(6);
+  }
 
   // Lógica para copiar el código manual al portapapeles
   copyAccessCode(copyBtn: HTMLButtonElement, copyIcon: HTMLElement, copyText: HTMLElement): void {
-    const code = 'GS-9821-ENT';
+    const code = this.auth.profile()?.qrCode;
+    if (!code) return;
 
     navigator.clipboard.writeText(code).then(() => {
       copyIcon.textContent = 'check';
@@ -24,7 +39,7 @@ export class UserQrunico {
         copyBtn.classList.remove('bg-track-green', 'text-cream');
       }, 2000);
     }).catch(() => {
-      copyText.textContent = 'GS-9821';
+      copyText.textContent = 'No se pudo copiar';
     });
   }
 

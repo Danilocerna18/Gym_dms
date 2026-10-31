@@ -1,3 +1,4 @@
+import { AuthService } from '../../services/auth';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -12,6 +13,8 @@ const MENSAJE_SIN_CONEXION = 'Sin conexión. Intenta de nuevo.';
   styleUrl: './admin-panel.css',
 })
 export class AdminPanel implements OnInit {
+  readonly auth = inject(AuthService);
+
   private panel = inject(Panel);
 
   cargando = signal(true); // mientras llega la respuesta del backend

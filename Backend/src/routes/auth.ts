@@ -5,8 +5,10 @@ import express, {
   NextFunction,
 } from "express";
 
+import { promisify } from "node:util";
 import passport from "passport";
 import {
+  timingSafeEqual,
   randomBytes,
   randomUUID,
   scrypt as scryptCallback,
@@ -185,6 +187,36 @@ router.post(
   }
 );
 
+const derivarClave = promisify(scryptCallback) as (password: string, salt: string, size: number) => Promise<Buffer>;
+
+router.post("/login", async (req, res, next) => {
+  const { email, password } = req.body ?? {};
+  const correo = typeof email === "string" ? email.trim().toLowerCase() : "";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo) || correo.length > 254 ||
+      typeof password !== "string" || !password.length || password.length > 128) {
+    return res.status(400).json({ message: "Ingresa un correo y una contraseña válidos." });
+  }
+
+  try {
+    const usuario = await prisma.user.findFirst({
+      where: { email: { equals: correo, mode: "insensitive" } },
+      select: { id: true, name: true, email: true, role: true, passwordHash: true },
+    });
+    const partes = /^scrypt\$([a-f0-9]{32})\$([a-f0-9]{128})$/.exec(usuario?.passwordHash ?? "");
+    // También derivar una clave para cuentas desconocidas o exclusivas de Google.
+    const clave = await derivarClave(password, partes?.[1] ?? "0".repeat(32), 64);
+    const coincide = timingSafeEqual(clave, Buffer.from(partes?.[2] ?? "0".repeat(128), "hex"));
+    if (!usuario || !partes || !coincide) {
+      return res.status(401).json({ message: "Correo o contraseña incorrectos." });
+    }
+
+    const { passwordHash, ...user } = usuario;
+    req.logIn(user, err => err ? next(err) : res.json({ user }));
+  } catch (err) {
+    next(err);
+  }
+});
+
 // INICIAR AUTENTICACIÓN CON GOOGLE
 router.get(
   "/google",
@@ -229,7 +261,8 @@ router.get(
           }
 
           return res.redirect(
-            process.env.FRONTEND_URL ?? "http://localhost:4200"
+            new URL(user.role === "admin" ? "/admin/dashboard" : "/user-home",
+              process.env.FRONTEND_URL ?? "http://localhost:4200").href
           );
         });
       }

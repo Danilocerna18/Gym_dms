@@ -44,7 +44,7 @@
 
     <div class="login-card">
 
-      <button class="google-button" type="button" (click)="loginWithGoogle()">
+      <a class="google-button" [href]="googleUrl">
         <svg class="google-icon" viewBox="0 0 24 24">
           <path
             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -68,7 +68,7 @@
         </svg>
 
         <span>Continuar con Google</span>
-      </button>
+      </a>
 
       <div class="separador">
         <div class="linea"></div>
@@ -139,33 +139,18 @@
         <button
           class="submit-button"
           type="submit"
-          [disabled]="formulario.invalid"
+          [disabled]="formulario.invalid || cargando()"
         >
-          <span>INGRESAR</span>
+          <span>{{ cargando() ? 'Validando…' : 'INGRESAR' }}</span>
 
           <span class="material-symbols-outlined">
             arrow_forward
           </span>
         </button>
 
+        @if (error()) { <p role="alert">{{ error() }}</p> }
       </form>
 
-      <!-- quitar este bloque cuando exista login real -->
-      <!-- Botón temporal solo para revisión del demo Sprint 2 -->
-      <!-- TODO(seguridad): entra como admin sin credenciales. Eliminarlo o protegerlo con una variable de entorno antes de producción. -->
-      <div class="demo-separador">
-        <div class="linea"></div>
-        <span>Solo para revisión</span>
-      </div>
-
-      <button
-        class="demo-admin-button"
-        type="button"
-        (click)="verDemoAdmin()"
-      >
-        <span>Ver Demo Admin</span>
-        <span class="material-symbols-outlined">admin_panel_settings</span>
-      </button>
     </div>
 
     <div class="registro">

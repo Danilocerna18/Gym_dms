@@ -20,7 +20,7 @@ export class MachineService {
 
   // Petición POST enviada desde admin-formulario-maquina
   createMachine(data: CreateMachineDto): Observable<any> {
-    return this.http.post<any>(this.baseUrl, data);
+    return this.http.post<any>(this.baseUrl, data, { withCredentials: true });
   }
 
   // Petición GET consultada por el usuario

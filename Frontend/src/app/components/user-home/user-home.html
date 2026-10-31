@@ -32,10 +32,10 @@
     <!-- Perfil de usuario abajo a la izquierda -->
     <a routerLink="/user-perfil" class="user-card-bottom">
       <div class="avatar-circle">
-        <span>SB</span>
+        <span>{{ auth.initials() }}</span>
       </div>
       <div class="user-info">
-        <span class="user-name">Sofia Bilbao</span>
+        <span class="user-name">{{ auth.profile()?.name }}</span>
       </div>
     </a>
   </aside>
@@ -43,6 +43,7 @@
   <!-- Contenido Principal -->
   <main class="main-content">
     <div class="content-container">
+      <p>Hola, {{ auth.profile()?.name }} · {{ auth.status() }}</p>
       
       <!-- Encabezado de pantalla (mismo patrón que el admin) -->
       <section class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">

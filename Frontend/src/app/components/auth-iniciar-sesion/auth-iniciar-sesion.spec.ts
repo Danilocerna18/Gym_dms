@@ -1,3 +1,7 @@
+import { provideRouter, Router } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthIniciarSesionComponent } from './auth-iniciar-sesion';
 
@@ -7,7 +11,8 @@ describe('AuthIniciarSesionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthIniciarSesionComponent]
+      imports: [AuthIniciarSesionComponent],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AuthIniciarSesionComponent);
@@ -20,13 +25,13 @@ describe('AuthIniciarSesionComponent', () => {
   });
 
   it('debería iniciar con la contraseña oculta', () => {
-    expect(component.mostrarPassword).toBeFalse();
+    expect(component.mostrarPassword).toBe(false);
   });
 
   it('debería permitir cambiar la visibilidad de la contraseña', () => {
     component.mostrarPassword = false;
     component.mostrarPassword = true;
-    expect(component.mostrarPassword).toBeTrue();
+    expect(component.mostrarPassword).toBe(true);
   });
 
   it('debería guardar el correo', () => {
@@ -40,13 +45,22 @@ describe('AuthIniciarSesionComponent', () => {
   });
 
   it('debería redirigir al backend para login con Google', () => {
-    spyOnProperty(window, 'location', 'get').and.returnValue({ href: '' } as any);
-    spyOnProperty(window, 'location', 'set').and.callFake((val: string) => {
-      (window as any)._href = val;
-    });
-
-    component.loginWithGoogle();
-
-    expect((window as any)._href).toBe('http://localhost:3000/api/auth/google');
+    expect(fixture.nativeElement.querySelector('.google-button').href)
+      .toBe('http://localhost:3000/api/auth/google');
   });
+
+  it.each([['admin', '/admin/dashboard'], ['member', '/user-home']])(
+    'redirige al rol %s confirmado por el servidor', (role, home) => {
+      const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+      component.email = 'miembro@example.com';
+      component.password = 'clave de prueba';
+      component.iniciarSesion();
+      component.iniciarSesion();
+      const req = TestBed.inject(HttpTestingController).expectOne('http://localhost:3000/api/auth/login');
+      expect(req.request.withCredentials).toBe(true);
+      expect(req.request.body).toEqual({ email: component.email, password: component.password });
+      req.flush({ user: { role } });
+      expect(navigate).toHaveBeenCalledWith(home);
+    }
+  );
 });

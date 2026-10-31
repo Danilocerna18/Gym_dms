@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+import { provideRouter } from '@angular/router';
 
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { of, throwError } from "rxjs";
@@ -10,7 +12,7 @@ describe("AuthRegistroComponent", () => {
   let component: AuthRegistroComponent;
   let fixture: ComponentFixture<AuthRegistroComponent>;
   
-  let registroService: jasmine.SpyObj<RegistroService>;
+  let registroService: { registrarUsuario: ReturnType<typeof vi.fn> };
 
   const respuestaPrueba = {
     ok: true,
@@ -26,18 +28,15 @@ describe("AuthRegistroComponent", () => {
   };
 
   beforeEach(async () => {
-    registroService = jasmine.createSpyObj<RegistroService>(
-      "RegistroService",
-      ["registrarUsuario"]
-    );
+    registroService = { registrarUsuario: vi.fn() };
 
-    registroService.registrarUsuario.and.returnValue(
+    registroService.registrarUsuario.mockReturnValue(
       of(respuestaPrueba)
     );
 
     await TestBed.configureTestingModule({
       imports: [AuthRegistroComponent],
-      providers: [
+      providers: [provideRouter([]),
         {
           provide: RegistroService,
           useValue: registroService,
@@ -90,7 +89,7 @@ describe("AuthRegistroComponent", () => {
 
   it("debería cambiar la visibilidad de la contraseña", () => {
     component.mostrarPassword = true;
-    expect(component.mostrarPassword).toBeTrue();
+    expect(component.mostrarPassword).toBe(true);
   });
 
   it("debería enviar los datos al backend", () => {
@@ -106,14 +105,14 @@ describe("AuthRegistroComponent", () => {
       password: "12345678",
     });
 
-    expect(component.cuentaCreada).toBeTrue();
+    expect(component.cuentaCreada).toBe(true);
     expect(component.mensajeExito).toBe(
       "Tu cuenta fue creada correctamente."
     );
   });
 
   it("debería mostrar un error si el correo ya existe", () => {
-    registroService.registrarUsuario.and.returnValue(
+    registroService.registrarUsuario.mockReturnValue(
       throwError(
         () =>
           new HttpErrorResponse({
@@ -132,7 +131,7 @@ describe("AuthRegistroComponent", () => {
 
     component.crearCuenta();
 
-    expect(component.cuentaCreada).toBeFalse();
+    expect(component.cuentaCreada).toBe(false);
     expect(component.mensajeError).toBe(
       "Este correo ya está registrado."
     );
