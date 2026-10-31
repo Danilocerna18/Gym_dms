@@ -32,8 +32,4 @@ export class AdminListaMaquinasComponent {
   seleccionarFiltro(filtro: string) {
     this.filtroActual = filtro;
   }
-
-  exportarQR() {
-    alert('Preparando exportación de códigos QR...');
-  }
 }

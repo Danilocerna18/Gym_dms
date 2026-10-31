@@ -5,8 +5,7 @@
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
       <div class="logo">
-        <span class="material-symbols-outlined">fitness_center</span>
-        <span>GymSync</span>
+        <span class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</span>
       </div>
     </div>
     <div class="usuario">
@@ -139,18 +138,18 @@
 
         <div class="qr">
           <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="160" fill="white"/>
-            <rect x="10" y="10" width="40" height="40" fill="#16181C"/>
-            <rect x="16" y="16" width="28" height="28" fill="white"/>
-            <rect x="22" y="22" width="16" height="16" fill="#16181C"/>
-            <rect x="110" y="10" width="40" height="40" fill="#16181C"/>
-            <rect x="116" y="16" width="28" height="28" fill="white"/>
-            <rect x="122" y="22" width="16" height="16" fill="#16181C"/>
-            <rect x="10" y="110" width="40" height="40" fill="#16181C"/>
-            <rect x="16" y="116" width="28" height="28" fill="white"/>
-            <rect x="22" y="122" width="16" height="16" fill="#16181C"/>
-            <circle cx="80" cy="80" r="16" fill="#E13438"/>
-            <path d="M74 77H86M77 74V86M83 74V86" stroke="#F3F1EC" stroke-width="2.5" stroke-linecap="round"/>
+            <rect width="160" height="160" fill="var(--color-cream)"/>
+            <rect x="10" y="10" width="40" height="40" fill="var(--color-ink)"/>
+            <rect x="16" y="16" width="28" height="28" fill="var(--color-cream)"/>
+            <rect x="22" y="22" width="16" height="16" fill="var(--color-ink)"/>
+            <rect x="110" y="10" width="40" height="40" fill="var(--color-ink)"/>
+            <rect x="116" y="16" width="28" height="28" fill="var(--color-cream)"/>
+            <rect x="122" y="22" width="16" height="16" fill="var(--color-ink)"/>
+            <rect x="10" y="110" width="40" height="40" fill="var(--color-ink)"/>
+            <rect x="16" y="116" width="28" height="28" fill="var(--color-cream)"/>
+            <rect x="22" y="122" width="16" height="16" fill="var(--color-ink)"/>
+            <circle cx="80" cy="80" r="16" fill="var(--color-accent)"/>
+            <path d="M74 77H86M77 74V86M83 74V86" stroke="var(--color-cream)" stroke-width="2.5" stroke-linecap="round"/>
           </svg>
         </div>
 
@@ -173,7 +172,7 @@
     </section>
 
     <!-- MENSAJE DE ERROR -->
-    <div *ngIf="errorMensaje" style="color: #E13438; font-weight: bold; margin-bottom: 12px; text-align: center;">
+    <div *ngIf="errorMensaje" style="color: var(--color-alert-red); font-weight: bold; margin-bottom: 12px; text-align: center;">
       {{ errorMensaje }}
     </div>
 

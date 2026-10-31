@@ -1,66 +1,37 @@
 @import "tailwindcss";
 
 @theme {
-   /* Colores */
-  --color-iron-950: #16181C;
-  --color-iron-700: #3A3F47;
-  --color-chalk-50: #F3F1EC;
-  --color-chalk-200: #E4E1D8;
-  --color-signal-red: #E13438;
-  --color-steel-500: #3E6E8E;
-  --color-track-green: #2F9E52;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container: #f0eee9;
-  --color-surface-container-highest: #e4e2dd;
-  --color-iron-900: #202328;
-  --color-iron-500: #646B77;
-  --color-iron-300: #9BA1AB;
-  --color-chalk-100: #EBE8E0;
-  --color-chalk-300: #D6D1C4;
-  --color-signal-red-hover: #C82B2F;
+  /* Colores (design guide §2 / §11) */
+  --color-cream: #F1EBD6;
+  --color-cream-dark: #DDD5BF;
+  --color-ink: #1B345C;
+  --color-accent: #1B345C;
+  --color-ink-soft: #4A5878;
+  --color-track-green: #075D36;
+  --color-alert-red: #B3261E;
   --radius-custom: 12px;
 
-  /* Tipografía */
-  --font-headline-md: "Oswald", sans-serif;
-  --font-body-md: "Inter", sans-serif;
-  --font-body-sm: "Inter", sans-serif;
-  --font-display-xl: "Oswald", sans-serif;
-  --font-display-xl-mobile: "Oswald", sans-serif;
-  --font-utility-mono: "IBM Plex Mono", monospace;
-  --font-display-lg: "Oswald", sans-serif;
-  --font-display: "Oswald", sans-serif;
-  --font-sans: "Inter", sans-serif;
+  /* Tipografía (design guide §3 / §11) */
+  --font-display: "Graduate", serif;
+  --font-body: "Montserrat", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
-
-  --text-headline-md: 24px;
-  --text-headline-md--line-height: 28px;
-  --text-headline-md--font-weight: 600;
-
-  --text-body-md: 16px;
-  --text-body-md--line-height: 24px;
-  --text-body-md--font-weight: 400;
-
-  --text-body-sm: 14px;
-  --text-body-sm--line-height: 20px;
-  --text-body-sm--font-weight: 400;
 
   --text-display-xl: 40px;
   --text-display-xl--line-height: 44px;
   --text-display-xl--letter-spacing: 0.02em;
-  --text-display-xl--font-weight: 700;
-
-  --text-display-xl-mobile: 32px;
-  --text-display-xl-mobile--line-height: 36px;
-  --text-display-xl-mobile--font-weight: 700;
-
-  --text-utility-mono: 13px;
-  --text-utility-mono--line-height: 18px;
-  --text-utility-mono--letter-spacing: 0.05em;
-  --text-utility-mono--font-weight: 500;
 
   --text-display-lg: 28px;
   --text-display-lg--line-height: 32px;
-  --text-display-lg--font-weight: 700;
+  --text-display-lg--letter-spacing: 0.02em;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+
+  --text-mono-sm: 13px;
+  --text-mono-sm--line-height: 18px;
 
   /* Espaciado */
   --spacing-gutter: 16px;
@@ -88,11 +59,11 @@
 
 /* Clases genéricas de tarjeta (se reutilizan en Gestión de Miembros y Nuevo Cliente) */
 .inner-glow {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(241, 235, 214, 0.5);
 }
 
 .data-card {
-  border: 1px solid theme('colors.chalk-200');
+  border: 1px solid theme('colors.cream-dark');
   position: relative;
 }
 .data-card::before {
@@ -104,14 +75,14 @@
   width: 4px;
 }
 .data-card.performance::before {
-  background-color: theme('colors.steel-500');
+  background-color: theme('colors.ink-soft');
 }
 .data-card.finance::before {
   background-color: theme('colors.track-green');
 }
 
 .sharp-shadow {
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 4px 12px rgba(27, 52, 92, 0.05);
 }
 
 /* Layout general de pantallas admin */
@@ -121,8 +92,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: theme('colors.chalk-50');
-  color: theme('colors.iron-950');
+  background-color: theme('colors.cream');
+  color: theme('colors.ink');
+  font-family: var(--font-body);
 }
 
 .app-container {
@@ -140,7 +112,7 @@ body {
 
 
 .data-card.alert::before {
-  background-color: theme('colors.steel-500');
+  background-color: theme('colors.ink-soft');
   border-top-left-radius: theme('borderRadius.lg');
   border-bottom-left-radius: theme('borderRadius.lg');
 }
@@ -153,6 +125,7 @@ body {
     padding: theme('spacing.margin-desktop');
     padding-bottom: theme('spacing.margin-desktop');
   }
+}
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -168,13 +141,13 @@ body {
   100% { top: 100%; opacity: 0; }
 }
 
-.corner-tl { border-top: 4px solid var(--color-signal-red); border-left: 4px solid var(--color-signal-red); }
-.corner-tr { border-top: 4px solid var(--color-signal-red); border-right: 4px solid var(--color-signal-red); }
-.corner-bl { border-bottom: 4px solid var(--color-signal-red); border-left: 4px solid var(--color-signal-red); }
-.corner-br { border-bottom: 4px solid var(--color-signal-red); border-right: 4px solid var(--color-signal-red); }
+.corner-tl { border-top: 4px solid var(--color-cream); border-left: 4px solid var(--color-cream); }
+.corner-tr { border-top: 4px solid var(--color-cream); border-right: 4px solid var(--color-cream); }
+.corner-bl { border-bottom: 4px solid var(--color-cream); border-left: 4px solid var(--color-cream); }
+.corner-br { border-bottom: 4px solid var(--color-cream); border-right: 4px solid var(--color-cream); }
 
 .glass-panel {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px rgba(241, 235, 214, 0.05);
 }
 
 .resultado-overlay {
@@ -186,8 +159,6 @@ body {
   20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-}
-
 }
 
 

@@ -1,9 +1,9 @@
 .detail-page-layout {
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: #f5f5f3;
-  color: #1a1a1a;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
   padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
@@ -14,15 +14,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e5e0;
+  background-color: var(--color-cream);
+  border-bottom: 1px solid var(--color-cream-dark);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
 .btn-back-home {
-  background: #f5f5f3;
+  background: var(--color-cream);
   border: none;
   border-radius: 50%;
   width: 48px;
@@ -31,12 +31,12 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #1a1a1a;
+  color: var(--color-ink);
   transition: background-color 0.2s ease;
 }
 
 .btn-back-home:hover {
-  background-color: #e5e5e0;
+  background-color: var(--color-cream-dark);
 }
 
 .topbar-brand {
@@ -46,15 +46,14 @@
 }
 
 .brand-title {
-  font-weight: 800;
-  font-size: 18px;
-  color: #1a1a1a;
-  letter-spacing: -0.5px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent);
 }
 
-.text-signal-red {
-  color: #e13438;
-}
 
 /* Contenido Principal */
 .detail-main-content {
@@ -70,11 +69,11 @@
 .video-container-card {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background-color: #111111;
+  background-color: var(--color-ink);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e5e5e0;
+  box-shadow: 0 8px 24px rgba(27, 52, 92, 0.08);
+  border: 1px solid var(--color-cream-dark);
 }
 
 .video-container-card iframe {
@@ -91,29 +90,29 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: var(--color-cream);
 }
 
 .play-placeholder-icon {
   font-size: 64px;
-  color: #e13438;
+  color: var(--color-cream);
   margin-bottom: 12px;
   opacity: 0.9;
 }
 
 .placeholder-text {
   font-size: 14px;
-  color: #888888;
+  color: var(--color-cream-dark);
   margin: 0;
 }
 
 /* Card de Información de la Máquina */
 .machine-details-card {
-  background-color: #ffffff;
-  border: 1px solid #e5e5e0;
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-cream-dark);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 16px rgba(27, 52, 92, 0.03);
 }
 
 .details-header-row {
@@ -130,14 +129,14 @@
   margin: 0;
   min-width: 0;
   overflow-wrap: anywhere;
-  color: #1a1a1a;
+  color: var(--color-ink);
   letter-spacing: -0.5px;
 }
 
 .badge-muscle {
-  background-color: rgba(225, 52, 56, 0.1);
-  color: #e13438;
-  border: 1px solid rgba(225, 52, 56, 0.3);
+  background-color: rgba(27, 52, 92, 0.1);
+  color: var(--color-accent);
+  border: 1px solid rgba(27, 52, 92, 0.3);
   font-size: 12px;
   font-weight: 700;
   padding: 4px 12px;
@@ -147,14 +146,14 @@
 
 .divider-line {
   height: 1px;
-  background-color: #e5e5e0;
+  background-color: var(--color-cream-dark);
   margin: 20px 0;
 }
 
 .instructions-block h2 {
   font-size: 14px;
   font-weight: 700;
-  color: #666666;
+  color: var(--color-ink-soft);
   margin: 0 0 8px 0;
   letter-spacing: 0.8px;
 }
@@ -162,7 +161,7 @@
 .instructions-block p {
   font-size: 15px;
   line-height: 1.6;
-  color: #333333;
+  color: var(--color-ink);
   margin: 0;
 }
 @media (min-width: 768px) {

@@ -1,60 +1,58 @@
-<header class="md:hidden w-full top-0 sticky bg-chalk-50 border-b border-chalk-200 shadow-sm z-40 flex justify-between items-center px-gutter py-unit">
+<header class="md:hidden w-full top-0 sticky bg-cream border-b border-cream-dark shadow-sm z-40 flex justify-between items-center px-gutter py-unit">
   <div class="flex items-center gap-2">
-    <span class="material-symbols-outlined text-signal-red text-2xl">fitness_center</span>
-    <span class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</span>
+    <span class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</span>
   </div>
-  <div class="h-8 w-8 rounded-full overflow-hidden bg-signal-red border border-chalk-200 flex items-center justify-center">
-    <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold text-sm">SB</span>
+  <div class="h-8 w-8 rounded-full overflow-hidden bg-ink-soft border border-cream-dark flex items-center justify-center">
+    <span class="font-body text-body-sm text-cream font-semibold text-sm">SB</span>
   </div>
 </header>
 
-<aside class="hidden md:flex flex-col w-[240px] bg-chalk-50 border-r border-chalk-200 fixed h-full z-40 p-margin-desktop top-0 left-0 justify-between">
+<aside class="hidden md:flex flex-col w-[240px] bg-cream border-r border-cream-dark fixed h-full z-40 p-margin-desktop top-0 left-0 justify-between">
   <div class="flex flex-col gap-8">
     <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-signal-red text-3xl">fitness_center</span>
-      <span class="font-headline-md text-headline-md font-extrabold text-iron-950 tracking-tighter uppercase">GymSync</span>
+      <span class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</span>
     </div>
     
     <!-- Navegación con routerLink -->
     <nav class="flex flex-col gap-2">
-      <a routerLink="/user-home" class="flex items-center gap-3 p-3 min-h-12 rounded-lg text-iron-700 hover:bg-surface-container hover:text-signal-red transition-colors font-utility-mono text-utility-mono cursor-pointer">
+      <a routerLink="/user-home" class="flex items-center gap-3 p-3 min-h-12 rounded-lg text-ink-soft hover:bg-cream-dark/50 hover:text-accent transition-colors font-body text-body-sm cursor-pointer">
         <span class="material-symbols-outlined">dashboard</span> Inicio
       </a>
-      <a routerLink="/user-escaner" class="flex items-center gap-3 p-3 min-h-12 rounded-lg text-iron-700 hover:bg-surface-container hover:text-signal-red transition-colors font-utility-mono text-utility-mono cursor-pointer">
+      <a routerLink="/user-escaner" class="flex items-center gap-3 p-3 min-h-12 rounded-lg text-ink-soft hover:bg-cream-dark/50 hover:text-accent transition-colors font-body text-body-sm cursor-pointer">
         <span class="material-symbols-outlined">qr_code_scanner</span> Escanear
       </a>
       <!-- Al hacer clic en Perfil se mantiene en la misma ruta sin recargar -->
-      <a routerLink="/user-perfil" aria-current="page" class="flex items-center gap-3 p-3 min-h-12 rounded-lg bg-surface-container text-signal-red font-bold transition-colors font-utility-mono text-utility-mono cursor-pointer">
+      <a routerLink="/user-perfil" aria-current="page" class="flex items-center gap-3 p-3 min-h-12 rounded-lg bg-cream-dark/50 text-accent font-bold transition-colors font-body text-body-sm cursor-pointer">
         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span> Perfil
       </a>
     </nav>
   </div>
 
   <!-- Tarjeta inferior de la foto/nombre corregida con routerLink -->
-  <a routerLink="/user-perfil" class="flex items-center gap-3 mt-auto p-3 bg-surface-container rounded-lg inner-glow cursor-pointer">
-    <div class="h-10 w-10 rounded-full bg-signal-red flex items-center justify-center flex-shrink-0">
-      <span class="font-utility-mono text-utility-mono text-chalk-50 font-semibold text-sm">SB</span>
+  <a routerLink="/user-perfil" class="flex items-center gap-3 mt-auto p-3 bg-cream-dark/50 rounded-lg inner-glow cursor-pointer">
+    <div class="h-10 w-10 rounded-full bg-ink-soft flex items-center justify-center flex-shrink-0">
+      <span class="font-body text-body-sm text-cream font-semibold text-sm">SB</span>
     </div>
     <div>
-      <div class="font-body-sm text-body-sm text-iron-950">Sofia Bilbao</div>
+      <div class="font-body text-body-sm text-ink">Sofia Bilbao</div>
     </div>
   </a>
 </aside>
 
-<main class="md:ml-[240px] bg-chalk-50 text-iron-950 font-body-md min-h-screen min-h-dvh pb-[calc(60px_+_env(safe-area-inset-bottom)_+_24px)] md:pb-0 overflow-x-hidden">
+<main class="md:ml-[240px] bg-cream text-ink font-body min-h-screen min-h-dvh pb-[calc(60px_+_env(safe-area-inset-bottom)_+_24px)] md:pb-0 overflow-x-hidden">
 <div class="w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop py-8 flex flex-col gap-8">
   <section class="flex flex-col gap-4 md:flex-row md:items-end justify-between w-full">
     <div class="flex items-center gap-gutter min-w-0">
-      <div class="relative shrink-0 w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-chalk-200 bg-signal-red inner-glow flex items-center justify-center">
-        <span class="font-display-lg text-display-lg text-chalk-50 font-semibold">SB</span>
+      <div class="relative shrink-0 w-20 h-20 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-cream-dark bg-ink-soft inner-glow flex items-center justify-center">
+        <span class="font-display text-display-lg text-cream uppercase">SB</span>
       </div>
       <div class="flex flex-col min-w-0">
-        <h1 class="font-display-xl-mobile md:font-display-xl text-display-xl-mobile md:text-display-xl font-bold text-iron-950 uppercase">Sofia Bilbao</h1>
+        <h1 class="font-display md:font-display text-display-lg md:text-display-xl text-ink uppercase">Sofia Bilbao</h1>
         <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-2">
-          <span class="inline-flex items-center px-3 py-1 rounded-full bg-track-green/10 text-track-green font-utility-mono text-utility-mono uppercase tracking-wider border border-track-green/20 backdrop-blur-sm">
+          <span class="inline-flex items-center px-3 py-1 rounded-full bg-track-green/10 text-track-green font-body text-body-sm uppercase tracking-wider border border-track-green/20 backdrop-blur-sm">
             <span class="w-2 h-2 rounded-full bg-track-green mr-2"></span> Activa
           </span>
-          <span class="text-iron-700 font-utility-mono text-utility-mono uppercase tracking-wider flex items-center gap-1">
+          <span class="text-ink-soft font-mono text-mono-sm uppercase tracking-wider flex items-center gap-1">
             <span class="material-symbols-outlined text-[16px]">calendar_month</span> Venc: 12 Nov 2024
           </span>
         </div>
@@ -62,7 +60,7 @@
     </div>
     <div class="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
       <!-- Botón VER MI QR agregado -->
-      <button routerLink="/user-qrunico" class="w-full md:w-auto justify-center px-5 py-2 min-h-12 rounded-custom bg-signal-red text-chalk-50 font-body-sm text-body-sm font-bold hover:bg-signal-red-hover transition-colors flex items-center gap-2 active:scale-95">
+      <button routerLink="/user-qrunico" class="w-full md:w-auto justify-center px-5 py-2 min-h-12 rounded-custom bg-accent text-cream font-body text-body-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2 active:scale-95">
         <span class="material-symbols-outlined text-[18px]">qr_code_2</span>
         <span>VER MI QR</span>
       </button>
@@ -70,36 +68,36 @@
   </section>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mt-4">
-    <section class="lg:col-span-1 bg-surface-container-lowest inner-glow sharp-shadow rounded-lg p-6 border border-chalk-200 flex flex-col gap-4">
-      <h2 class="font-headline-md text-headline-md text-iron-950 mb-2 uppercase">Detalles</h2>
+    <section class="lg:col-span-1 bg-cream inner-glow sharp-shadow rounded-lg p-6 border border-cream-dark flex flex-col gap-4">
+      <h2 class="font-display text-display-lg text-ink mb-2 uppercase">Detalles</h2>
       <div class="flex flex-col gap-4 md:flex-row md:gap-12">
         <div class="flex items-start gap-3 min-w-0">
-          <span class="material-symbols-outlined text-iron-700 mt-0.5">mail</span>
+          <span class="material-symbols-outlined text-ink-soft mt-0.5">mail</span>
           <div class="flex flex-col min-w-0">
-            <span class="font-utility-mono text-utility-mono text-iron-700 uppercase tracking-wider">Correo electrónico</span>
-            <span class="font-utility-mono text-utility-mono text-iron-950 truncate">sofia.b@example.com</span>
+            <span class="font-body text-body-sm text-ink-soft uppercase tracking-wider">Correo electrónico</span>
+            <span class="font-body text-body-sm text-ink truncate">sofia.b@example.com</span>
           </div>
         </div>
       </div>
-      <div class="mt-auto pt-4 border-t border-chalk-200">
-        <button class="w-full min-h-12 py-3 rounded-md bg-transparent border-2 border-chalk-200 text-iron-950 font-body-sm text-body-sm hover:bg-chalk-50 transition-colors">
+      <div class="mt-auto pt-4 border-t border-cream-dark">
+        <button class="w-full min-h-12 py-3 rounded-md bg-transparent border-2 border-cream-dark text-ink font-body text-body-sm hover:bg-cream-dark/50 transition-colors">
           Ver Historial Completo
         </button>
       </div>
     </section>
 
-    <section class="lg:col-span-1 bg-iron-950 rounded-lg inner-glow sharp-shadow overflow-hidden relative group cursor-pointer border border-chalk-200 transition-colors duration-300">
+    <section class="lg:col-span-1 bg-ink rounded-lg inner-glow sharp-shadow overflow-hidden relative group cursor-pointer border border-cream-dark transition-colors duration-300">
       <div class="absolute inset-0 z-0">
-        <div class="w-full h-full bg-gradient-to-br from-iron-800 to-iron-950 opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-iron-950 via-iron-950/80 to-transparent"></div>
+        <div class="w-full h-full bg-gradient-to-br from-cream/5 to-ink opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-transparent"></div>
       </div>
       <div class="relative z-10 p-6 md:p-10 flex flex-col justify-between items-start gap-6">
         <div class="flex flex-col max-w-lg">
-          <h2 class="font-display-xl text-display-xl-mobile md:text-display-xl text-chalk-50 tracking-tighter leading-none mb-3">Guías de Video de Máquinas</h2>
-          <p class="font-body-md text-body-md text-chalk-200">Domina tu técnica con nuestros tutoriales en video de alta definición, paso a paso, para cada equipo en la sala. Escanea códigos QR.</p>
+          <h2 class="font-display text-display-lg md:text-display-xl text-cream leading-none mb-3 uppercase">Guías de Video de Máquinas</h2>
+          <p class="font-body text-body-md text-cream-dark">Domina tu técnica con nuestros tutoriales en video de alta definición, paso a paso, para cada equipo en la sala. Escanea códigos QR.</p>
         </div>
         <!-- CÓDIGO NUEVO -->
-        <button routerLink="/user-escaner" class="shrink-0 w-full sm:w-auto justify-center px-8 py-4 min-h-12 bg-signal-red text-chalk-50 font-body-sm text-body-sm font-bold uppercase tracking-wider rounded-custom hover:bg-signal-red-hover transition-all active:scale-95 flex items-center gap-2 shadow-[0_4px_14px_rgba(225,52,56,0.39)] cursor-pointer">
+        <button routerLink="/user-escaner" class="shrink-0 w-full sm:w-auto justify-center px-8 py-4 min-h-12 bg-cream text-ink font-body text-body-sm font-bold uppercase tracking-wider rounded-custom hover:bg-accent/90 transition-all active:scale-95 flex items-center gap-2 shadow-[0_4px_14px_rgba(27,52,92,0.39)] cursor-pointer">
           <span class="material-symbols-outlined">qr_code_scanner</span>
           <span>Escanear Máquina</span>
         </button>
@@ -109,16 +107,16 @@
 </div>
 </main>
 
-<nav class="md:hidden fixed bottom-0 left-0 w-full min-h-[60px] pb-[env(safe-area-inset-bottom)] flex justify-around items-center bg-chalk-50 border-t border-chalk-200 z-50">
-  <a routerLink="/user-home" class="flex flex-1 flex-col items-center justify-center min-w-12 min-h-12 gap-0.5 text-iron-700 font-utility-mono text-[10px] uppercase tracking-wider no-underline">
+<nav class="md:hidden fixed bottom-0 left-0 w-full min-h-[60px] pb-[env(safe-area-inset-bottom)] flex justify-around items-center bg-cream border-t border-cream-dark z-50">
+  <a routerLink="/user-home" class="flex flex-1 flex-col items-center justify-center min-w-12 min-h-12 gap-0.5 text-ink-soft font-body text-[10px] uppercase tracking-wider no-underline">
     <span class="material-symbols-outlined">dashboard</span>
     <span>Inicio</span>
   </a>
-  <a routerLink="/user-escaner" class="flex flex-1 flex-col items-center justify-center min-w-12 min-h-12 gap-0.5 text-iron-700 font-utility-mono text-[10px] uppercase tracking-wider no-underline">
+  <a routerLink="/user-escaner" class="flex flex-1 flex-col items-center justify-center min-w-12 min-h-12 gap-0.5 text-ink-soft font-body text-[10px] uppercase tracking-wider no-underline">
     <span class="material-symbols-outlined">qr_code_scanner</span>
     <span>Escanear</span>
   </a>
-  <a routerLink="/user-perfil" aria-current="page" class="flex flex-1 flex-col items-center justify-center min-w-12 min-h-12 gap-0.5 text-signal-red font-bold font-utility-mono text-[10px] uppercase tracking-wider no-underline">
+  <a routerLink="/user-perfil" aria-current="page" class="flex flex-1 flex-col items-center justify-center min-w-12 min-h-12 gap-0.5 text-accent font-bold font-body text-[10px] uppercase tracking-wider no-underline">
     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
     <span>Perfil</span>
   </a>
