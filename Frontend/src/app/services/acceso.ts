@@ -11,7 +11,7 @@ export type RespuestaEscaneo =
 // respuesta de POST /api/access/validate (los rechazos llegan con HTTP 200 y granted: false)
 export interface RespuestaValidacion {
   granted: boolean;
-  result: 'granted' | 'denied_expired' | 'denied_duplicate' | 'no_entry';
+  result: 'granted' | 'denied_expired' | 'denied_duplicate' | 'denied_pending' | 'no_entry';
   message: string;
 }
 

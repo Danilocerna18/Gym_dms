@@ -50,9 +50,7 @@
           <span class="material-symbols-outlined text-xl">qr_code_scanner</span> Escáner
         </a>
       </nav>
-      <div class="w-10 h-10 rounded-full bg-ink-soft overflow-hidden inner-glow border border-cream-dark flex items-center justify-center">
-        <span class="font-body text-body-sm text-cream font-semibold">AD</span>
-      </div>
+      <app-admin-menu-perfil tamano="md"></app-admin-menu-perfil>
     </div>
   </header>
 
@@ -61,9 +59,7 @@
     <div class="flex items-center gap-3">
       <h1 class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</h1>
     </div>
-    <div class="w-8 h-8 rounded-full bg-ink-soft overflow-hidden inner-glow border border-cream-dark flex items-center justify-center">
-      <span class="font-body text-body-sm text-cream font-semibold text-sm">AD</span>
-    </div>
+    <app-admin-menu-perfil tamano="sm"></app-admin-menu-perfil>
   </header>
 
   <!-- Main Content Canvas -->
@@ -73,7 +69,6 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
             <h2 class="font-display md:font-display text-display-lg md:text-display-xl text-ink mb-2 uppercase">Resumen General</h2>
-        <button type="button" (click)="auth.logout()">Cerrar sesión</button>
             <p class="font-body text-body-md text-ink-soft">Rendimiento actual del gimnasio y alertas activas.</p>
           </div>
         </div>
@@ -146,18 +141,6 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="grid grid-cols-2 md:max-w-md md:mx-auto gap-4 mt-8">
-          <button routerLink="/admin/clientes/nuevo" class="bg-cream sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-cream-dark/50 transition-all border border-cream-dark hover:border-ink-soft group">
-            <span class="material-symbols-outlined text-ink-soft group-hover:text-ink-soft transition-colors text-[32px]">person_add</span>
-            <span class="font-body text-body-sm text-ink uppercase">Nuevo Miembro</span>
-          </button>
-          <button class="bg-cream sharp-shadow p-4 rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-cream-dark/50 transition-all border border-cream-dark hover:border-ink-soft group">
-            <span class="material-symbols-outlined text-ink-soft group-hover:text-ink-soft transition-colors text-[32px]">settings</span>
-            <span class="font-body text-body-sm text-ink uppercase">Ajustes</span>
-          </button>
         </div>
     </div>
   </main>

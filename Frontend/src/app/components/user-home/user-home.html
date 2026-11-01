@@ -43,8 +43,39 @@
   <!-- Contenido Principal -->
   <main class="main-content">
     <div class="content-container">
-      <p>Hola, {{ auth.profile()?.name }} @if (auth.membership(); as m) { · {{ m.plan.name }} } · {{ auth.status() }}</p>
-      
+      <!-- Estado de la membresía: siempre texto además de color (design guide §6) -->
+      <section aria-label="Estado de tu membresía" class="w-full md:w-fit mb-6 bg-cream border border-cream-dark rounded-custom px-5 py-4 flex flex-col gap-1 font-body">
+        @switch (estadoMembresia()) {
+          @case ('activa') {
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span class="text-body-sm font-semibold uppercase tracking-wider text-track-green">● Activa</span>
+              <span class="text-body-sm text-ink">
+                Plan {{ auth.membership()?.plan?.name }} · Vence el
+                <span class="font-mono text-mono-sm">{{ auth.membership()?.endDate | date:'dd/MM/yyyy' }}</span>
+              </span>
+            </div>
+          }
+          @case ('pendiente') {
+            <span class="text-body-sm font-semibold uppercase tracking-wider text-ink-soft">Pendiente de activación</span>
+            <p class="text-body-sm text-ink">Paga en recepción para activar tu membresía.</p>
+          }
+          @case ('vencida') {
+            <span class="text-body-sm font-semibold uppercase tracking-wider text-ink-soft">Vencida</span>
+            <p class="text-body-sm text-ink">
+              Tu membresía venció. Renuévala para entrar.
+              <a routerLink="/user-perfil" class="font-semibold text-accent underline underline-offset-2 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">Ver planes</a>
+            </p>
+          }
+          @default {
+            <p class="text-body-sm text-ink">
+              Aún no tienes membresía.
+              <a routerLink="/user-perfil" class="font-semibold text-accent underline underline-offset-2 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">Escoger plan</a>
+            </p>
+          }
+        }
+      </section>
+
+
       <!-- Encabezado de pantalla (mismo patrón que el admin) -->
       <section class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>

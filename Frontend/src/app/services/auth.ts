@@ -8,8 +8,8 @@ export type Role = 'member' | 'admin';
 interface Account { id: string; name: string; email: string; role: Role }
 interface Membership {
   status: 'pending' | 'active' | 'expired' | 'cancelled';
-  startDate: string;
-  endDate: string;
+  startDate: string | null; // null mientras está pendiente: las fechas se calculan al activar
+  endDate: string | null;
   plan: { name: string };
 }
 interface Profile extends Account { qrCode: string; memberships: Membership[] }
@@ -29,15 +29,16 @@ export class AuthService {
   readonly membership = computed<Membership | undefined>(() => {
     const list = this.profile()?.memberships ?? [];
     const now = Date.now();
-    return list.find(m => m.status === 'active' && Date.parse(m.startDate) <= now && Date.parse(m.endDate) >= now) ?? list[0];
+    return list.find(m => m.status === 'active' && m.startDate && m.endDate
+      && Date.parse(m.startDate) <= now && Date.parse(m.endDate) >= now) ?? list[0];
   });
   readonly status = computed(() => {
     const m = this.membership();
     if (!m) return 'Sin membresía';
-    if (m.status === 'pending') return 'Pendiente de pago';
+    if (m.status === 'pending') return 'Pendiente de activación';
     if (m.status === 'cancelled') return 'Cancelada';
-    if (m.status === 'expired' || Date.parse(m.endDate) < Date.now()) return 'Vencida';
-    return Date.parse(m.startDate) > Date.now() ? 'Próxima' : 'Activa';
+    if (m.status === 'expired' || !m.endDate || Date.parse(m.endDate) < Date.now()) return 'Vencida';
+    return m.startDate && Date.parse(m.startDate) > Date.now() ? 'Próxima' : 'Activa';
   });
   login(email: string, password: string) {
     return this.http.post<{user: Account}>(this.api + '/auth/login', { email, password }, this.options);

@@ -1,5 +1,5 @@
 import { AuthService } from '../../services/auth';
-import { inject, Component } from '@angular/core';
+import { inject, Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
@@ -25,6 +25,22 @@ interface MuscleCategory {
 })
 export class UserHomeComponent {
   readonly auth = inject(AuthService);
+
+  // Qué cuadro de membresía se muestra. Sale de auth.status(), que ya cargó el
+  // rolGuard con auth.session(), así que no hace falta otra llamada al backend.
+  readonly estadoMembresia = computed<'activa' | 'pendiente' | 'vencida' | 'sin'>(() => {
+    switch (this.auth.status()) {
+      case 'Activa':
+      case 'Próxima':
+        return 'activa';
+      case 'Pendiente de activación':
+        return 'pendiente';
+      case 'Vencida':
+        return 'vencida';
+      default: // "Sin membresía" o "Cancelada": puede escoger un plan nuevo
+        return 'sin';
+    }
+  });
 
 
   muscleCategories: MuscleCategory[] = [

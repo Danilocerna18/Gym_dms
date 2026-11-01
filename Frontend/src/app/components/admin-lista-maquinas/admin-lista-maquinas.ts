@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AdminMenuPerfil } from '../admin-menu-perfil/admin-menu-perfil';
 
 @Component({
   selector: 'app-admin-lista-maquinas',
@@ -8,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     FormsModule,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive, AdminMenuPerfil
   ],
   templateUrl: './admin-lista-maquinas.html',
   styleUrl: './admin-lista-maquinas.css'

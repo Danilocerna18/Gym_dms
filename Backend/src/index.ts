@@ -41,6 +41,7 @@ import { webhooksRouter } from "./routes/webhooks.route";
 import { plansRouter } from "./routes/plans.route";
 import { membershipsRouter } from "./routes/memberships.route";
 import { adminMembershipsRouter } from "./routes/admin-memberships.route";
+import { aforoRouter } from "./routes/aforo.route";
 
 import "./config/passport";
 
@@ -95,6 +96,9 @@ app.use("/api/plans", plansRouter);
 app.use("/api/memberships", requireSession("member"), membershipsRouter);
 
 app.use("/api/admin/memberships", requireSession("admin"), adminMembershipsRouter);
+
+// requireSession() sin rol: basta con tener sesión, sea miembro o admin.
+app.use("/api/aforo", requireSession(), aforoRouter);
 
 app.use("/api/webhooks", webhooksRouter);
 

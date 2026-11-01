@@ -63,7 +63,6 @@ export const routes: Routes = [
   // Módulo de admin Sofia
   { path: 'admin/dashboard', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminPanel },
   { path: 'admin/clientes', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminListaClientes },
-  { path: 'admin/clientes/nuevo', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminFormularioCliente },
   { path: 'admin/clientes/:id/editar', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminFormularioCliente },
   { path: 'admin/escaner', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminEscanerAcceso }
 ];

@@ -48,25 +48,110 @@
       </div>
       <div class="flex flex-col min-w-0">
         <h1 class="font-display md:font-display text-display-lg md:text-display-xl text-ink uppercase">{{ auth.profile()?.name }}</h1>
-        <button type="button" (click)="auth.logout()">Cerrar sesión</button>
         <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-2">
-          <span class="inline-flex items-center px-3 py-1 rounded-full bg-track-green/10 text-track-green font-body text-body-sm uppercase tracking-wider border border-track-green/20 backdrop-blur-sm">
-            <span class="w-2 h-2 rounded-full bg-track-green mr-2"></span> {{ auth.status() }} · {{ auth.membership()?.plan?.name }}
-          </span>
-          <span class="text-ink-soft font-mono text-mono-sm uppercase tracking-wider flex items-center gap-1">
-            <span class="material-symbols-outlined text-[16px]">calendar_month</span> @if (auth.membership(); as m) { @if (m.status !== 'pending') { {{ m.endDate | date:'dd/MM/yyyy' }} } }
-          </span>
-        </div>
+          <!-- track-green solo si está activa; pendiente, vencida o sin membresía van en ink-soft (design guide §6) -->
+          <span class="inline-flex items-center px-3 py-1 rounded-full font-body text-body-sm uppercase tracking-wider border backdrop-blur-sm"
+            [ngClass]="auth.status() === 'Activa' ? 'bg-track-green/10 text-track-green border-track-green/20' : 'bg-ink-soft/10 text-ink-soft border-ink-soft/20'">
+            <span class="w-2 h-2 rounded-full mr-2" [ngClass]="auth.status() === 'Activa' ? 'bg-track-green' : 'bg-ink-soft'"></span>
+            {{ auth.status() }}
+          </span>        </div>
       </div>
     </div>
-    <div class="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
-      <!-- Botón VER MI QR agregado -->
-      <button routerLink="/user-qrunico" class="w-full md:w-auto justify-center px-5 py-2 min-h-12 rounded-custom bg-accent text-cream font-body text-body-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2 active:scale-95">
+    <!-- En móvil uno debajo del otro a todo el ancho; desde md, lado a lado -->
+    <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto mt-4 md:mt-0">
+      <!-- Primario -->
+      <button routerLink="/user-qrunico" class="w-full md:w-auto justify-center px-5 py-2 min-h-12 rounded-custom bg-accent text-cream font-body text-body-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
         <span class="material-symbols-outlined text-[18px]">qr_code_2</span>
         <span>VER MI QR</span>
       </button>
+      <!-- Secundario: mismo tamaño que el primario, borde ink y fondo transparente -->
+      <button type="button" (click)="auth.logout()" class="w-full md:w-auto justify-center px-5 py-2 min-h-12 rounded-custom bg-transparent border border-ink text-ink font-body text-body-sm font-bold hover:bg-cream-dark/50 transition-colors flex items-center gap-2 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+        <span class="material-symbols-outlined text-[18px]">logout</span>
+        <span>CERRAR SESIÓN</span>
+      </button>
     </div>
   </section>
+
+  <!-- Mi membresía: el contenido depende de GET /api/memberships/me -->
+  <section aria-labelledby="titulo-membresia" class="bg-cream inner-glow sharp-shadow rounded-custom p-6 border border-cream-dark flex flex-col gap-4">
+    <h2 id="titulo-membresia" class="font-display text-display-lg text-ink uppercase">Mi membresía</h2>
+
+    @switch (vista()) {
+      @case ('cargando') {
+        <p class="font-body text-body-md text-ink-soft">Cargando tu membresía...</p>
+      }
+      @case ('error') {
+        <div class="flex flex-col items-start gap-3">
+          <p class="font-body text-body-md text-ink-soft">{{ mensajeSinConexion }}</p>
+          <button type="button" (click)="cargar()" class="min-h-12 px-5 rounded-custom border border-cream-dark bg-transparent text-ink font-body text-body-sm font-semibold hover:bg-cream-dark/50 transition-colors">
+            Reintentar
+          </button>
+        </div>
+      }
+      @case ('pendiente') {
+        @if (membresia(); as m) {
+          <div class="flex flex-col gap-3">
+            <span class="self-start inline-flex items-center px-3 py-1 rounded-full bg-ink-soft/10 text-ink-soft border border-ink-soft/20 font-body text-body-sm uppercase tracking-wider">
+              <span class="w-2 h-2 rounded-full bg-ink-soft mr-2"></span> Pendiente de activación
+            </span>
+            <p class="font-body text-body-md text-ink">Plan <span class="font-semibold">{{ m.plan.name }}</span> · {{ precio(m.plan) }}</p>
+            <p class="font-body text-body-md text-ink-soft">Paga en recepción para activar tu membresía.</p>
+          </div>
+        }
+      }
+      @case ('activa') {
+        @if (membresia(); as m) {
+          <div class="flex flex-col gap-3">
+            <span class="self-start inline-flex items-center px-3 py-1 rounded-full bg-track-green/10 text-track-green border border-track-green/20 font-body text-body-sm uppercase tracking-wider">
+              <span class="w-2 h-2 rounded-full bg-track-green mr-2"></span> Activa
+            </span>
+            <p class="font-body text-body-md text-ink">Plan <span class="font-semibold">{{ m.plan.name }}</span></p>
+            <p class="font-body text-body-md text-ink-soft flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">calendar_month</span>
+              Vence el <span class="font-mono text-mono-sm text-ink">{{ m.endDate | date:'dd/MM/yyyy' }}</span>
+            </p>
+          </div>
+        }
+      }
+      @case ('vencida') {
+        <div class="flex flex-col gap-3">
+          <span class="self-start inline-flex items-center px-3 py-1 rounded-full bg-ink-soft/10 text-ink-soft border border-ink-soft/20 font-body text-body-sm uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-ink-soft mr-2"></span> Vencida
+          </span>
+          <p class="font-body text-body-md text-ink">Tu membresía venció. Renuévala para entrar.</p>
+        </div>
+        <ng-container *ngTemplateOutlet="listaPlanes"></ng-container>
+      }
+      @case ('sin') {
+        <p class="font-body text-body-md text-ink-soft">Escoge tu plan. Lo pagas en recepción.</p>
+        <ng-container *ngTemplateOutlet="listaPlanes"></ng-container>
+      }
+    }
+
+    @if (errorEnvio()) {
+      <p role="alert" class="font-body text-body-sm text-alert-red">{{ errorEnvio() }}</p>
+    }
+  </section>
+
+  <!-- Tarjetas de planes: se usan sin membresía y con la membresía vencida -->
+  <ng-template #listaPlanes>
+    @if (planes().length === 0) {
+      <p class="font-body text-body-md text-ink-soft">Aún no hay planes disponibles.</p>
+    } @else {
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+        @for (plan of planes(); track plan.id) {
+          <article class="rounded-custom border border-cream-dark bg-cream p-5 flex flex-col gap-2">
+            <h3 class="font-display text-[20px] leading-tight tracking-[0.02em] uppercase text-ink">{{ plan.name }}</h3>
+            <p class="font-body text-body-sm text-ink-soft">{{ duracion(plan) }}</p>
+            <p class="font-display text-display-lg text-ink">{{ precio(plan) }}</p>
+            <button type="button" (click)="escoger(plan)" class="mt-2 w-full min-h-12 rounded-custom bg-accent text-cream font-body text-body-sm font-semibold hover:bg-accent/90 transition-colors active:scale-95">
+              Escoger plan
+            </button>
+          </article>
+        }
+      </div>
+    }
+  </ng-template>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mt-4">
     <section class="lg:col-span-1 bg-cream inner-glow sharp-shadow rounded-lg p-6 border border-cream-dark flex flex-col gap-4">
@@ -81,8 +166,8 @@
         </div>
       </div>
       <div class="mt-auto pt-4 border-t border-cream-dark">
-        <button class="w-full min-h-12 py-3 rounded-md bg-transparent border-2 border-cream-dark text-ink font-body text-body-sm hover:bg-cream-dark/50 transition-colors">
-          Ver Historial Completo
+        <button type="button" (click)="abrirHistorial()" class="w-full min-h-12 py-3 rounded-md bg-transparent border-2 border-cream-dark text-ink font-body text-body-sm hover:bg-cream-dark/50 transition-colors">
+          Ver historial de membresías
         </button>
       </div>
     </section>
@@ -107,6 +192,93 @@
   </div>
 </div>
 </main>
+
+<!-- Historial de membresías (reemplaza al historial de pagos: PRD decisiones 11 y 12) -->
+@if (historialAbierto()) {
+  <div class="fixed inset-0 bg-ink/50 backdrop-blur-sm z-[100] flex items-end sm:items-center justify-center sm:p-gutter" (click)="cerrarHistorial()">
+    <div role="dialog" aria-modal="true" aria-labelledby="titulo-historial" (click)="$event.stopPropagation()"
+      class="bg-cream text-ink rounded-t-custom sm:rounded-custom w-full sm:max-w-lg max-h-[85dvh] sharp-shadow border border-cream-dark flex flex-col">
+      <div class="px-6 py-4 border-b border-cream-dark flex items-center justify-between gap-4">
+        <h2 id="titulo-historial" class="font-display text-display-lg text-ink uppercase">Historial</h2>
+        <button type="button" (click)="cerrarHistorial()" aria-label="Cerrar historial"
+          class="min-w-12 min-h-12 flex items-center justify-center rounded-custom text-ink-soft hover:text-ink hover:bg-cream-dark/50 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="overflow-y-auto px-6 py-4">
+        @if (historialCargando()) {
+          <div class="flex items-center gap-3 py-6 text-ink-soft font-body text-body-md">
+            <span class="material-symbols-outlined animate-spin" aria-hidden="true">progress_activity</span>
+            Cargando historial...
+          </div>
+        } @else if (historialError()) {
+          <div class="flex flex-col items-start gap-3 py-4">
+            <p class="font-body text-body-md text-ink-soft">{{ mensajeSinConexion }}</p>
+            <button type="button" (click)="cargarHistorial()" class="min-h-12 px-5 rounded-custom border border-cream-dark bg-transparent text-ink font-body text-body-sm font-semibold hover:bg-cream-dark/50 transition-colors">
+              Reintentar
+            </button>
+          </div>
+        } @else if (historial().length === 0) {
+          <p class="py-6 font-body text-body-md text-ink-soft">Aún no tienes membresías.</p>
+        } @else {
+          <ul class="flex flex-col gap-3">
+            @for (m of historial(); track m.id) {
+              <li class="rounded-custom border border-cream-dark bg-cream p-4 flex flex-col gap-2">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <span class="font-body text-body-md font-semibold text-ink">{{ m.plan.name }} · {{ precio(m.plan) }}</span>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full font-body text-body-sm uppercase tracking-wider border"
+                    [ngClass]="m.status === 'active' ? 'bg-track-green/10 text-track-green border-track-green/20' : 'bg-ink-soft/10 text-ink-soft border-ink-soft/20'">
+                    {{ etiquetaEstado(m.status) }}
+                  </span>
+                </div>
+                <dl class="flex flex-col gap-1 font-body text-body-sm text-ink-soft">
+                  <div>
+                    <dt class="inline">Solicitada el</dt>
+                    <dd class="inline font-mono text-mono-sm text-ink">{{ m.createdAt | date:'dd/MM/yyyy':zonaGuatemala }}</dd>
+                  </div>
+                  @if (m.activatedAt) {
+                    <div>
+                      <dt class="inline">Activada el</dt>
+                      <dd class="inline font-mono text-mono-sm text-ink">{{ m.activatedAt | date:'dd/MM/yyyy':zonaGuatemala }}</dd>
+                    </div>
+                  }
+                  @if (m.startDate && m.endDate) {
+                    <div>
+                      <dt class="inline">Vigencia:</dt>
+                      <dd class="inline font-mono text-mono-sm text-ink">{{ m.startDate | date:'dd/MM/yyyy':zonaGuatemala }} – {{ m.endDate | date:'dd/MM/yyyy':zonaGuatemala }}</dd>
+                    </div>
+                  }
+                </dl>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Confirmación antes de escoger plan -->
+@if (planPorConfirmar(); as plan) {
+  <div class="fixed inset-0 bg-ink/50 backdrop-blur-sm z-[100] flex items-center justify-center p-gutter" (click)="cancelarConfirmacion()">
+    <div role="dialog" aria-modal="true" aria-labelledby="titulo-confirmar-plan" (click)="$event.stopPropagation()"
+      class="bg-cream rounded-custom w-full max-w-sm sharp-shadow border border-cream-dark p-6 flex flex-col gap-5">
+      <h2 id="titulo-confirmar-plan" class="font-display text-display-lg text-ink uppercase">Confirmar plan</h2>
+      <p class="font-body text-body-md text-ink">Vas a escoger el plan {{ plan.name }}, {{ precio(plan) }}. Lo pagas en recepción.</p>
+      <div class="flex flex-col-reverse sm:flex-row gap-3">
+        <button type="button" (click)="cancelarConfirmacion()" [disabled]="enviando()"
+          class="flex-1 min-h-12 rounded-custom border border-cream-dark bg-transparent text-ink font-body text-body-sm font-semibold hover:bg-cream-dark/50 transition-colors disabled:opacity-60">
+          Cancelar
+        </button>
+        <button type="button" (click)="confirmar()" [disabled]="enviando()"
+          class="flex-1 min-h-12 rounded-custom bg-accent text-cream font-body text-body-sm font-semibold hover:bg-accent/90 transition-colors disabled:opacity-60">
+          {{ enviando() ? 'Enviando...' : 'Confirmar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
 
 <nav class="md:hidden fixed bottom-0 left-0 w-full min-h-[60px] pb-[env(safe-area-inset-bottom)] flex justify-around items-center bg-cream border-t border-cream-dark z-50">
   <a routerLink="/user-home" class="flex flex-1 flex-col items-center justify-center min-w-12 min-h-12 gap-0.5 text-ink-soft font-body text-[10px] uppercase tracking-wider no-underline">

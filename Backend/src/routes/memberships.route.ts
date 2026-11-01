@@ -35,6 +35,40 @@ membershipsRouter.get("/me", async (req, res, next) => {
   }
 });
 
+// Historial de membresías del miembro, de la más reciente a la más antigua.
+// Reemplaza al historial de pagos: en el MVP el pago es en recepción y no se
+// registra en Payment (PRD decisiones 11 y 12). No expone activatedById.
+membershipsRouter.get("/me/history", async (req, res, next) => {
+  try {
+    const membresias = await prisma.membership.findMany({
+      where: { userId: req.user!.id },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        status: true,
+        createdAt: true,
+        activatedAt: true,
+        startDate: true,
+        endDate: true,
+        plan: { select: { name: true, price: true } },
+      },
+    });
+
+    const ahora = new Date();
+    return res.json({
+      memberships: membresias.map((m) => ({
+        ...m,
+        // Todavía no existe el cron de vencimiento: una "active" cuya endDate
+        // ya pasó se reporta como vencida, que es su estado real.
+        status: m.status === "active" && m.endDate && m.endDate < ahora ? "expired" : m.status,
+        plan: { ...m.plan, price: Number(m.plan.price) },
+      })),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 membershipsRouter.post("/", async (req, res, next) => {
   try {
     const { planId } = (req.body ?? {}) as { planId?: unknown };

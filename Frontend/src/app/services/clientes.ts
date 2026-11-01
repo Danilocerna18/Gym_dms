@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-export type EstadoCliente = 'activo' | 'por_vencer' | 'vencido';
+export type EstadoCliente = 'activo' | 'por_vencer' | 'vencido' | 'pendiente';
 
 export interface Cliente {
   id: string;
@@ -11,6 +11,7 @@ export interface Cliente {
   email: string;
   qrCode: string;
   estado: EstadoCliente;
+  membresiaPendienteId: string | null; // id para activar la membresía; null si no tiene una pendiente
   fechaVencimiento: string | null; // ISO
   ultimaEntrada: string | null; // ISO
   ultimaSalida: string | null; // ISO

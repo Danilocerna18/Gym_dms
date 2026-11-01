@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TimeoutError, switchMap, timeout, of } from 'rxjs';
 import { Acceso, RespuestaValidacion } from '../../services/acceso';
+import { AdminMenuPerfil } from '../admin-menu-perfil/admin-menu-perfil';
 
 type ResultadoEscaneo = 'concedido' | 'denegado' | 'error'; // tipo de resultado que puede mostrar el escáner
 type ModoAcceso = 'entry' | 'exit'; // lo elige el recepcionista antes de escanear
@@ -15,7 +16,7 @@ const DURACION_RESULTADO_MS = 2500; // auto-dismiss 2-3 segundos
 @Component({
   selector: 'app-admin-escaner-acceso',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, AdminMenuPerfil],
   templateUrl: './admin-escaner-acceso.html',
   styleUrl: './admin-escaner-acceso.css'
 })

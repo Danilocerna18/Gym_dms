@@ -74,27 +74,37 @@
       </div>
     </div>
 
-    <!-- Widget de Aforo en Tiempo Real -->
+    <!-- Widget de Aforo en Tiempo Real: datos de GET /api/aforo, se actualiza cada 15 s -->
     <div class="w-full bg-cream inner-glow sharp-shadow rounded-lg p-4 sm:p-6 border border-cream-dark flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div class="flex items-center gap-3.5">
         <div class="relative w-12 h-12 flex items-center justify-center flex-shrink-0">
-          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36" aria-hidden="true">
+            <!-- pista del anillo -->
             <path class="text-cream-dark" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
-            <path class="text-track-green" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="62, 100" stroke-linecap="round" stroke-width="3.5"></path>
+            @if (aforo()) {
+              <!-- trazo: mismo color que la etiqueta del estado (design guide §5) -->
+              <path class="anillo-trazo" [ngClass]="estiloAforo().texto" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" [attr.stroke-dasharray]="trazoAnillo()" stroke-linecap="round" stroke-width="3.5"></path>
+            }
           </svg>
-          <span class="absolute font-mono text-mono-sm text-[11px] font-bold text-ink">62%</span>
+          @if (aforo(); as a) {
+            <span class="absolute font-mono text-mono-sm text-[11px] font-bold text-ink">{{ a.porcentaje }}%</span>
+          }
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col" aria-live="polite">
           <div class="flex flex-wrap items-center gap-1.5">
             <span class="font-display text-display-lg text-ink uppercase leading-none">SALA PRINCIPAL</span>
-            <span class="px-1.5 py-0.5 rounded bg-track-green/15 text-track-green font-body text-[10px] font-bold">ÓPTIMO</span>
+            @if (aforo()) {
+              <span class="px-1.5 py-0.5 rounded font-body text-[10px] font-bold" [ngClass]="[estiloAforo().fondo, estiloAforo().texto]">{{ estiloAforo().etiqueta }}</span>
+            }
           </div>
-          <span class="font-body text-body-sm text-ink-soft mt-0.5">Aforo en vivo: 34 / 55 personas</span>
+          @if (aforo(); as a) {
+            <span class="font-body text-body-sm text-ink-soft mt-0.5">Aforo en vivo: {{ a.personasAdentro }} / {{ a.capacidad }} personas</span>
+          } @else if (aforoNoDisponible()) {
+            <span class="font-body text-body-sm text-ink-soft mt-0.5">Aforo no disponible</span>
+          } @else {
+            <span class="font-body text-body-sm text-ink-soft mt-0.5">Cargando aforo...</span>
+          }
         </div>
-      </div>
-      <div class="flex flex-col sm:items-end">
-        <span class="font-body text-body-sm text-ink-soft uppercase tracking-wider">TIEMPO ESPERA</span>
-        <span class="font-display text-display-lg text-ink leading-none uppercase">0 MIN</span>
       </div>
     </div>
 
