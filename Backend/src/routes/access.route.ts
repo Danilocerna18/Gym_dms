@@ -84,6 +84,24 @@ accessRouter.post("/validate", async (req, res, next) => {
     });
 
     if (!activeMembership) {
+      // Escogió plan pero todavía no pagó en recepción: se distingue de
+      // "vencida" para que el admin sepa que solo falta activarla.
+      const pendingMembership = await prisma.membership.findFirst({
+        where: { userId, status: "pending" },
+        select: { id: true },
+      });
+
+      if (pendingMembership) {
+        await prisma.accessLog.create({
+          data: { userId, type: "entry", result: "denied_pending", scannedBy },
+        });
+        return res.json({
+          granted: false,
+          result: "denied_pending",
+          message: "Tu membresía aún no está activa. Pasa a recepción.",
+        });
+      }
+
       await prisma.accessLog.create({
         data: { userId, type: "entry", result: "denied_expired", scannedBy },
       });

@@ -53,6 +53,14 @@ clientesRouter.get("/", async (_req, res, next) => {
       _max: { createdAt: true },
     });
 
+    // Membresías pendientes de activar, también en una sola consulta. El id
+    // es el que el admin manda a PATCH /api/admin/memberships/:id/activate.
+    const pendientes = await prisma.membership.findMany({
+      where: { userId: { in: miembros.map((m) => m.id) }, status: "pending" },
+      select: { id: true, userId: true },
+    });
+    const pendientePorUsuario = new Map(pendientes.map((p) => [p.userId, p.id]));
+
     const ultimoPorUsuario = new Map<string, { entry: Date | null; exit: Date | null }>();
     for (const fila of ultimosAccesos) {
       const actual = ultimoPorUsuario.get(fila.userId) ?? { entry: null, exit: null };
@@ -83,11 +91,14 @@ clientesRouter.get("/", async (_req, res, next) => {
 
     const clientes = miembros.map((m) => {
       const fechaVencimiento = m.memberships[0]?.endDate ?? null;
-      const estado = !fechaVencimiento
-        ? "vencido"
-        : fechaVencimiento <= limiteAviso
+      const membresiaPendienteId = pendientePorUsuario.get(m.id) ?? null;
+      const estado = fechaVencimiento
+        ? fechaVencimiento <= limiteAviso
           ? "por_vencer"
-          : "activo";
+          : "activo"
+        : membresiaPendienteId
+          ? "pendiente"
+          : "vencido";
       const accesos = ultimoPorUsuario.get(m.id);
 
       return {
@@ -96,6 +107,7 @@ clientesRouter.get("/", async (_req, res, next) => {
         email: m.email,
         qrCode: m.qrCode,
         estado,
+        membresiaPendienteId,
         fechaVencimiento: fechaVencimiento?.toISOString() ?? null,
         ultimaEntrada: accesos?.entry?.toISOString() ?? null,
         ultimaSalida: accesos?.exit?.toISOString() ?? null,

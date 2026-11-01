@@ -38,6 +38,9 @@ import { accessRouter } from "./routes/access.route";
 import { clientesRouter } from "./routes/clientes.route";
 import { dashboardRouter } from "./routes/dashboard.route";
 import { webhooksRouter } from "./routes/webhooks.route";
+import { plansRouter } from "./routes/plans.route";
+import { membershipsRouter } from "./routes/memberships.route";
+import { adminMembershipsRouter } from "./routes/admin-memberships.route";
 
 import "./config/passport";
 
@@ -86,6 +89,12 @@ app.use("/api/access", requireSession("admin"), accessRouter);
 app.use("/api/clientes", requireSession("admin"), clientesRouter);
 
 app.use("/api/dashboard", requireSession("admin"), dashboardRouter);
+
+app.use("/api/plans", plansRouter);
+
+app.use("/api/memberships", requireSession("member"), membershipsRouter);
+
+app.use("/api/admin/memberships", requireSession("admin"), adminMembershipsRouter);
 
 app.use("/api/webhooks", webhooksRouter);
 
