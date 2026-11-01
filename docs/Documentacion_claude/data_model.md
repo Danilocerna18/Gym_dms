@@ -65,9 +65,11 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 | id | UUID (PK) | |
 | user_id | UUID (FK → User) | |
 | plan_id | UUID (FK → MembershipPlan) | |
-| status | Enum: `pending`, `active`, `expired`, `cancelled` | |
-| start_date | Date | |
-| end_date | Date | calculada al crear/renovar según `duration_days` |
+| status | Enum: `pending`, `active`, `expired`, `cancelled` | nace en `pending` cuando el miembro escoge su plan; pasa a `active` cuando el admin la activa tras el pago en recepción |
+| start_date | Date, nullable | null mientras está `pending`; se fija al activar |
+| end_date | Date, nullable | null mientras está `pending`; calculada al activar/renovar según `duration_days` |
+| activated_at | Timestamp, nullable | momento en que el admin activó la membresía |
+| activated_by_id | UUID (FK → User), nullable | admin que activó la membresía (auditoría del pago en recepción) |
 | notified_before_expiration | Boolean | evita reenviar el aviso de los 5 días |
 | created_at | Timestamp | |
 
@@ -108,7 +110,7 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 | type | Enum: `entry`, `exit`, `machine_scan` | |
 | machine_id | UUID (FK → Machine), nullable | solo aplica si `type = machine_scan` |
 | scanned_by | UUID (FK → User), nullable | admin que operó el escaneo; null en `machine_scan` (lo hace el propio miembro) |
-| result | Enum: `granted`, `denied_expired`, `denied_duplicate`, `denied_offline` | soporta las reglas de negocio del PRD (bloqueo por vencimiento, QR duplicado, sin conexión) |
+| result | Enum: `granted`, `denied_expired`, `denied_duplicate`, `denied_offline`, `denied_pending` | soporta las reglas de negocio del PRD (bloqueo por vencimiento, QR duplicado, sin conexión, membresía aún no activada) |
 | created_at | Timestamp | |
 
 ### Announcement
@@ -137,6 +139,8 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 ## 5. Reglas de Integridad
 
 - Un `Membership` con `status = active` no puede coexistir con otro `active` del mismo `user_id` (constraint a nivel aplicación + verificación antes de crear uno nuevo).
+- Un usuario no puede escoger un plan nuevo si ya tiene una membresía `active` o `pending`; la verificación y la creación ocurren dentro de una misma transacción.
+- Solo una membresía `pending` puede activarse. Al activarla, `start_date`, `end_date`, `activated_at` y `activated_by_id` se llenan en la misma operación; la activación no crea un `Payment` (el pago en recepción queda auditado por `activated_at` y `activated_by_id`).
 - `Payment.membership_id` es obligatorio — no se permiten pagos huérfanos.
 - Al vencer `Membership.end_date`, un job programado (cron) cambia `status` a `expired` automáticamente; no depende de que el usuario intente entrar.
 - `AccessLog` nunca se edita ni se borra — es un log de auditoría append-only, útil también para detectar el caso de QR duplicado (buscar el último `entry` sin `exit` correspondiente antes de conceder uno nuevo).
@@ -192,6 +196,7 @@ enum AccessResult {
   denied_expired
   denied_duplicate
   denied_offline
+  denied_pending
 }
 
 enum AnnouncementStatusFilter {
@@ -210,10 +215,11 @@ model User {
   qrCode       String   @unique
   createdAt    DateTime @default(now())
 
-  memberships       Membership[]
-  accessLogs        AccessLog[]     @relation("MemberAccessLogs")
-  scannedAccessLogs AccessLog[]     @relation("AdminScannedLogs")
-  announcements     Announcement[]
+  memberships          Membership[]    @relation("MembershipOwner")
+  activatedMemberships Membership[]    @relation("MembershipActivatedBy")
+  accessLogs           AccessLog[]     @relation("MemberAccessLogs")
+  scannedAccessLogs    AccessLog[]     @relation("AdminScannedLogs")
+  announcements        Announcement[]
 }
 
 model MembershipPlan {
@@ -232,14 +238,17 @@ model Membership {
   userId                    String
   planId                    String
   status                    MembershipStatus
-  startDate                 DateTime
-  endDate                   DateTime
+  startDate                 DateTime?
+  endDate                   DateTime?
+  activatedAt               DateTime?
+  activatedById             String?
   notifiedBeforeExpiration  Boolean           @default(false)
   createdAt                 DateTime          @default(now())
 
-  user     User            @relation(fields: [userId], references: [id])
-  plan     MembershipPlan  @relation(fields: [planId], references: [id])
-  payments Payment[]
+  user        User            @relation("MembershipOwner", fields: [userId], references: [id])
+  activatedBy User?           @relation("MembershipActivatedBy", fields: [activatedById], references: [id])
+  plan        MembershipPlan  @relation(fields: [planId], references: [id])
+  payments    Payment[]
 
   @@index([userId, status])
 }
@@ -311,5 +320,18 @@ model Announcement {
   plan  MembershipPlan? @relation(fields: [planIdFilter], references: [id])
 
   @@index([sentAt])
+}
+
+// Tabla de sesiones de express-session. La crea connect-pg-simple
+// (createTableIfMissing) con node_modules/connect-pg-simple/table.sql; se
+// declara aquí con los mismos tipos y nombres para que Prisma no la detecte
+// como drift. No es una entidad del dominio y el código no la usa con Prisma.
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+  @@map("session")
 }
 ```

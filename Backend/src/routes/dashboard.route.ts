@@ -26,9 +26,6 @@ interface Alerta {
   fecha: string;
 }
 
-// TODO(seguridad): este endpoint expone datos personales y datos de pagos
-// y debe ser solo para admin (PRD sección 6, Privacidad). Hoy no hay sesión
-// de admin, así que está abierto hasta que exista el login de Danilo.
 dashboardRouter.get("/", async (_req, res, next) => {
   try {
     const ahora = new Date();
@@ -137,17 +134,21 @@ dashboardRouter.get("/", async (_req, res, next) => {
       miembro: m.user,
       plan: m.plan.name,
       detalle: "Membresía vencida",
-      fecha: m.endDate.toISOString(),
+      // Una membresía marcada "expired" sin haber sido activada no tiene
+      // endDate; en ese caso se usa la fecha en que se creó.
+      fecha: (m.endDate ?? m.createdAt).toISOString(),
     }));
 
     const porCaducar: Alerta[] = membresiasPorCaducar.map((m) => {
-      const dias = Math.ceil((m.endDate.getTime() - ahora.getTime()) / MS_POR_DIA);
+      // El where (endDate entre ahora y limiteAviso) ya descarta los null.
+      const endDate = m.endDate!;
+      const dias = Math.ceil((endDate.getTime() - ahora.getTime()) / MS_POR_DIA);
       return {
         tipo: "por_caducar" as const,
         miembro: m.user,
         plan: m.plan.name,
         detalle: dias <= 1 ? "Caduca hoy o mañana" : `Caduca en ${dias} días`,
-        fecha: m.endDate.toISOString(),
+        fecha: endDate.toISOString(),
       };
     });
 
