@@ -15,6 +15,7 @@ import {
 } from "node:crypto";
 
 import { prisma } from "../config/prisma";
+import { crearMembresiaPendiente } from "../services/membership.service";
 
 const router = express.Router();
 
@@ -138,20 +139,20 @@ router.post(
         });
         if (!elegido) return null;
 
-        const startDate = new Date();
-        const endDate = new Date(startDate);
-        endDate.setUTCDate(endDate.getUTCDate() + elegido.durationDays);
-        return tx.user.create({
+        const creado = await tx.user.create({
           data: {
             name: nombre, email: correo, passwordHash, role: "member",
             qrCode: `USER-${randomUUID()}`,
-            memberships: { create: {
-              planId: elegido.id, status: "pending", startDate, endDate,
-              payments: { create: { amount: elegido.price, status: "pending" } },
-            } },
           },
           select: { id: true, name: true, email: true, role: true, qrCode: true, createdAt: true },
         });
+        // La membresía nace "pending", sin fechas ni Payment: el miembro paga
+        // en recepción y el admin la activa. Misma regla que POST /api/memberships.
+        const resultado = await crearMembresiaPendiente(tx, creado.id, elegido.id);
+        // Un usuario recién creado no tiene membresías, así que esto solo
+        // fallaría por un error inesperado; se lanza para deshacer el usuario.
+        if (!resultado.ok) throw new Error(resultado.message);
+        return creado;
       });
       if (!usuario) {
         return res.status(409).json({ message: "El plan seleccionado no está disponible." });

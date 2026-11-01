@@ -44,6 +44,7 @@ enum AccessResult {
   denied_expired
   denied_duplicate
   denied_offline
+  denied_pending
 }
 
 enum AnnouncementStatusFilter {
@@ -62,10 +63,11 @@ model User {
   qrCode       String   @unique
   createdAt    DateTime @default(now())
 
-  memberships       Membership[]
-  accessLogs        AccessLog[]     @relation("MemberAccessLogs")
-  scannedAccessLogs AccessLog[]     @relation("AdminScannedLogs")
-  announcements     Announcement[]
+  memberships          Membership[]    @relation("MembershipOwner")
+  activatedMemberships Membership[]    @relation("MembershipActivatedBy")
+  accessLogs           AccessLog[]     @relation("MemberAccessLogs")
+  scannedAccessLogs    AccessLog[]     @relation("AdminScannedLogs")
+  announcements        Announcement[]
 }
 
 model MembershipPlan {
@@ -84,14 +86,17 @@ model Membership {
   userId                    String
   planId                    String
   status                    MembershipStatus
-  startDate                 DateTime
-  endDate                   DateTime
+  startDate                 DateTime?
+  endDate                   DateTime?
+  activatedAt               DateTime?
+  activatedById             String?
   notifiedBeforeExpiration  Boolean           @default(false)
   createdAt                 DateTime          @default(now())
 
-  user     User            @relation(fields: [userId], references: [id])
-  plan     MembershipPlan  @relation(fields: [planId], references: [id])
-  payments Payment[]
+  user        User            @relation("MembershipOwner", fields: [userId], references: [id])
+  activatedBy User?           @relation("MembershipActivatedBy", fields: [activatedById], references: [id])
+  plan        MembershipPlan  @relation(fields: [planId], references: [id])
+  payments    Payment[]
 
   @@index([userId, status])
 }
@@ -163,4 +168,17 @@ model Announcement {
   plan  MembershipPlan? @relation(fields: [planIdFilter], references: [id])
 
   @@index([sentAt])
+}
+
+// Tabla de sesiones de express-session. La crea connect-pg-simple
+// (createTableIfMissing) con node_modules/connect-pg-simple/table.sql; se
+// declara aquí con los mismos tipos y nombres para que Prisma no la detecte
+// como drift. No es una entidad del dominio y el código no la usa con Prisma.
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+  @@map("session")
 }
