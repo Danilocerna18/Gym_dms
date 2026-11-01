@@ -103,6 +103,7 @@ describe("AuthRegistroComponent", () => {
       name: "Carlos Rivera",
       email: "carlos@ejemplo.com",
       password: "12345678",
+      plan: "mensual",
     });
 
     expect(component.cuentaCreada).toBe(true);

@@ -52,7 +52,7 @@ function obtenerCodigoError(error: unknown): string | undefined {
 router.post(
   "/register",
   async (req: Request, res: Response) => {
-    const { name, email, password } = req.body ?? {};
+    const { name, email, password, plan } = req.body ?? {};
 
     // 1. Validar que los datos sean cadenas de texto.
     if (
@@ -98,6 +98,10 @@ router.post(
       });
     }
 
+    if (plan !== "mensual" && plan !== "anual") {
+      return res.status(400).json({ message: "Selecciona un plan mensual o anual." });
+    }
+
     try {
       // 5. Buscar también coincidencias que solo cambien
       // mayúsculas y minúsculas.
@@ -123,24 +127,35 @@ router.post(
       // 6. Cifrar la contraseña.
       const passwordHash = await generarPasswordHash(password);
 
-      // 7. Crear al usuario en PostgreSQL mediante Prisma.
-      const usuario = await prisma.user.create({
-        data: {
-          name: nombre,
-          email: correo,
-          passwordHash,
-          role: "member",
-          qrCode: `USER-${randomUUID()}`,
-        },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true,
-          qrCode: true,
-          createdAt: true,
-        },
+      const usuario = await prisma.$transaction(async tx => {
+        const anual = plan === "anual";
+        const elegido = await tx.membershipPlan.findFirst({
+          where: {
+            name: { equals: anual ? "Anual" : "Mensual", mode: "insensitive" },
+            active: true, durationDays: anual ? 365 : 30, price: anual ? 2400 : 250,
+          },
+          orderBy: { id: "asc" },
+        });
+        if (!elegido) return null;
+
+        const startDate = new Date();
+        const endDate = new Date(startDate);
+        endDate.setUTCDate(endDate.getUTCDate() + elegido.durationDays);
+        return tx.user.create({
+          data: {
+            name: nombre, email: correo, passwordHash, role: "member",
+            qrCode: `USER-${randomUUID()}`,
+            memberships: { create: {
+              planId: elegido.id, status: "pending", startDate, endDate,
+              payments: { create: { amount: elegido.price, status: "pending" } },
+            } },
+          },
+          select: { id: true, name: true, email: true, role: true, qrCode: true, createdAt: true },
+        });
       });
+      if (!usuario) {
+        return res.status(409).json({ message: "El plan seleccionado no está disponible." });
+      }
 
       // 8. Responder sin revelar la contraseña ni su hash.
       return res.status(201).json({

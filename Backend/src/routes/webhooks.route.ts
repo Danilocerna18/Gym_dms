@@ -76,7 +76,9 @@ webhooksRouter.post("/recurrente", async (req, res, next) => {
 
       await prisma.membership.update({
         where: { id: payment.membershipId },
-        data: { status: "active", endDate },
+        data: { status: "active", endDate,
+          ...(payment.membership.status === "pending" ? { startDate: new Date() } : {}),
+        },
       });
     }
      // Recurrente espera una respuesta rápida, no se agrega lógica

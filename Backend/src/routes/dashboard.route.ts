@@ -89,6 +89,7 @@ dashboardRouter.get("/", async (_req, res, next) => {
       prisma.membership.findMany({
         where: {
           user: { role: "member", memberships: { none: vigente } },
+          status: { not: "pending" },
           OR: [{ endDate: { lt: ahora } }, { status: "expired" }],
         },
         orderBy: { endDate: "desc" },

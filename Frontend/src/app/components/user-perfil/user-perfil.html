@@ -54,7 +54,7 @@
             <span class="w-2 h-2 rounded-full bg-track-green mr-2"></span> {{ auth.status() }} · {{ auth.membership()?.plan?.name }}
           </span>
           <span class="text-ink-soft font-mono text-mono-sm uppercase tracking-wider flex items-center gap-1">
-            <span class="material-symbols-outlined text-[16px]">calendar_month</span> {{ auth.membership()?.endDate | date:'dd/MM/yyyy' }}
+            <span class="material-symbols-outlined text-[16px]">calendar_month</span> @if (auth.membership(); as m) { @if (m.status !== 'pending') { {{ m.endDate | date:'dd/MM/yyyy' }} } }
           </span>
         </div>
       </div>

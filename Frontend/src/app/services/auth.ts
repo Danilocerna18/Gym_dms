@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 export type Role = 'member' | 'admin';
 interface Account { id: string; name: string; email: string; role: Role }
 interface Membership {
-  status: 'active' | 'expired' | 'cancelled';
+  status: 'pending' | 'active' | 'expired' | 'cancelled';
   startDate: string;
   endDate: string;
   plan: { name: string };
@@ -34,6 +34,7 @@ export class AuthService {
   readonly status = computed(() => {
     const m = this.membership();
     if (!m) return 'Sin membresía';
+    if (m.status === 'pending') return 'Pendiente de pago';
     if (m.status === 'cancelled') return 'Cancelada';
     if (m.status === 'expired' || Date.parse(m.endDate) < Date.now()) return 'Vencida';
     return Date.parse(m.startDate) > Date.now() ? 'Próxima' : 'Activa';

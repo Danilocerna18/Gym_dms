@@ -45,7 +45,7 @@
           <span class="material-symbols-outlined text-[16px] text-track-green">verified_user</span>
           <span class="font-body text-body-sm text-cream">{{ auth.membership()?.plan?.name }}</span>
         </div>
-        <span class="font-body text-body-sm uppercase tracking-wider text-cream-dark">{{ auth.membership()?.endDate | date:'dd/MM/yyyy' }}</span>
+        <span class="font-body text-body-sm uppercase tracking-wider text-cream-dark">@if (auth.membership(); as m) { @if (m.status !== 'pending') { {{ m.endDate | date:'dd/MM/yyyy' }} } }</span>
       </div>
 
       <!-- Contenedor del Código QR -->

@@ -13,6 +13,10 @@ async function main() {
       create: async ({data,select})=>{const u={...data,id:crypto.randomUUID(),memberships:[]};rows.push(u);return Object.fromEntries(Object.keys(select).map(k=>[k,u[k]]))},
       findUnique: async ({where,select})=>{const u=rows.find(u=>u.id===where.id);return u && Object.fromEntries(Object.keys(select).map(k=>[k,u[k]]))}
     }};
+    config.prisma.$transaction = callback => callback({
+      user: config.prisma.user,
+      membershipPlan: { findFirst: async () => ({ id: 'mensual', price: 250, durationDays: 30 }) }
+    });
     const session=require('express-session');
     const sessionPath=require.resolve('../dist/config/session');
     require.cache[sessionPath]={loaded:true,exports:{sessionMiddleware:session({secret:crypto.randomUUID(),resave:false,saveUninitialized:false})}};
@@ -38,7 +42,7 @@ async function main() {
     const password=crypto.randomBytes(24).toString('hex');
     await call('dashboard',401);
     await call('auth/google',302);
-    const {user}=await call('auth/register',201,{name:'Prueba de sesión',email,password,role:'admin'});
+    const {user}=await call('auth/register',201,{name:'Prueba de sesión',email,password,plan:'mensual',role:'admin'});
     assert.equal(user.role,'member');
     await call('auth/login',401,{email,password:'incorrecta'});
     const login=await call('auth/login',200,{email:' '+email.toUpperCase()+' ',password,role:'admin'});

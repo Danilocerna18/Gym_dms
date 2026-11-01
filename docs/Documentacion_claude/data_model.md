@@ -65,7 +65,7 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 | id | UUID (PK) | |
 | user_id | UUID (FK → User) | |
 | plan_id | UUID (FK → MembershipPlan) | |
-| status | Enum: `active`, `expired`, `cancelled` | |
+| status | Enum: `pending`, `active`, `expired`, `cancelled` | |
 | start_date | Date | |
 | end_date | Date | calculada al crear/renovar según `duration_days` |
 | notified_before_expiration | Boolean | evita reenviar el aviso de los 5 días |
@@ -164,6 +164,7 @@ enum Role {
 }
 
 enum MembershipStatus {
+  pending
   active
   expired
   cancelled
@@ -248,7 +249,7 @@ model Payment {
   membershipId         String
   amount               Decimal
   status               PaymentStatus
-  recurrentePaymentId  String
+  recurrentePaymentId  String?
   triggeredBy          PaymentTrigger @default(member)
   paidAt               DateTime?
   createdAt            DateTime       @default(now())

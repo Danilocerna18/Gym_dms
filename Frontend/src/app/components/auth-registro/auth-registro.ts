@@ -6,7 +6,7 @@ import { RouterModule } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
 import { finalize } from "rxjs";
 
-import { RegistroService } from "../../services/registro.service";
+import { RegistroService, PlanRegistro } from "../../services/registro.service";
 
 @Component({
   selector: "app-auth-registro",
@@ -21,7 +21,7 @@ export class AuthRegistroComponent {
   telefono: string = "";
 
   password: string = "";
-  plan: string = "mensual";
+  plan: PlanRegistro = "mensual";
 
   mostrarPassword: boolean = false;
   cuentaCreada: boolean = false;
@@ -35,7 +35,7 @@ export class AuthRegistroComponent {
     private detector: ChangeDetectorRef
   ) {}
 
-  seleccionarPlan(plan: string): void {
+  seleccionarPlan(plan: PlanRegistro): void {
     this.plan = plan;
   }
 
@@ -52,6 +52,7 @@ export class AuthRegistroComponent {
       name: this.nombre.trim(),
       email: this.email.trim().toLowerCase(),
       password: this.password,
+      plan: this.plan,
     };
 
     this.detector.markForCheck();

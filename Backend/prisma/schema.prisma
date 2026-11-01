@@ -16,6 +16,7 @@ enum Role {
 }
 
 enum MembershipStatus {
+  pending
   active
   expired
   cancelled
@@ -100,7 +101,7 @@ model Payment {
   membershipId         String
   amount               Decimal
   status               PaymentStatus
-  recurrentePaymentId  String
+  recurrentePaymentId  String?
   triggeredBy          PaymentTrigger @default(member)
   paidAt               DateTime?
   createdAt            DateTime       @default(now())

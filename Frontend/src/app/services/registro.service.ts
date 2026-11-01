@@ -4,10 +4,13 @@ import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { Observable } from "rxjs";
 
+export type PlanRegistro = "mensual" | "anual";
+
 export interface DatosRegistro {
   name: string;
   email: string;
   password: string;
+  plan: PlanRegistro;
 }
 
 export interface RespuestaRegistro {
