@@ -1,6 +1,7 @@
 
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment";
 import { Observable } from "rxjs";
 
 export interface DatosRegistro {
@@ -26,7 +27,7 @@ export interface RespuestaRegistro {
   providedIn: "root",
 })
 export class RegistroService {
-  private apiUrl = "http://localhost:3000/api/auth";
+  private apiUrl = environment.apiUrl + "/api/auth";
 
   constructor(private http: HttpClient) {}
 

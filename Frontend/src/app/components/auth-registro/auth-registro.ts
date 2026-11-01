@@ -62,14 +62,16 @@ export class AuthRegistroComponent {
         finalize(() => {
           this.registrando = false;
 
-          console.log("FINALIZE EJECUTADO");
-
           this.detector.markForCheck();
         })
       )
       .subscribe({
         next: (respuesta) => {
-          console.log("REGISTRO EXITOSO:", respuesta);
+          if (respuesta?.ok !== true || !respuesta.user?.id) {
+            this.mensajeError = "El servidor no confirmó la creación de la cuenta.";
+            return;
+          }
+          this.password = "";
 
           this.cuentaCreada = true;
           this.mensajeExito =
@@ -79,11 +81,11 @@ export class AuthRegistroComponent {
         },
 
         error: (error: HttpErrorResponse) => {
-          console.error("ERROR AL REGISTRAR:", error);
-
           this.mensajeError =
             error.error?.message ||
-            "No se pudo crear la cuenta. Inténtalo nuevamente.";
+            (error.status === 0
+              ? "No se pudo contactar con GymSync. Comprueba que el backend esté en ejecución."
+              : "No se pudo crear la cuenta. Inténtalo nuevamente.");
 
           this.detector.markForCheck();
         },
