@@ -336,3 +336,17 @@ model Session {
   @@map("session")
 }
 ```
+
+## 8. Seguridad de la Conexión a la Base de Datos
+
+La base corre en AWS RDS PostgreSQL. `DATABASE_URL` termina en `?sslmode=require` y la comparten Prisma y el session store (`connect-pg-simple` sobre `pg`), pero cada uno verifica el certificado de forma distinta:
+
+- **`pg` (session store, `Backend/src/config/session.ts`):** cifra la conexión y **verifica** el certificado del servidor contra el bundle público de CAs de RDS (`Backend/certs/global-bundle.pem`, descargado de `truststore.pki.rds.amazonaws.com`), con `rejectUnauthorized: true`. Solo aplica cuando el host termina en `.rds.amazonaws.com`. Para eso se quitan los parámetros SSL de la URL antes de crear la `Pool`, porque `pg` les da prioridad sobre la opción `ssl`. Con una base local sin `sslmode`, la conexión sigue sin SSL.
+- **Prisma:** cifra la conexión pero **no verifica** el certificado del servidor. Con `sslmode=require`, el engine de Prisma acepta cualquier certificado.
+  - **Decisión técnica (Sprint 3):** Prisma se queda con `sslmode=require` por una limitación del engine en macOS:
+    - Prisma ignora `sslrootcert`: con una CA equivocada también conecta.
+    - Con `sslcert` + `sslaccept=strict`, el bundle completo no carga (`P1011 ... parameters invalid`).
+    - Con la raíz exacta de la instancia (`Amazon RDS us-east-2 Root CA RSA2048 G1`) o con la intermedia, el engine responde "The certificate was not trusted", aunque `openssl` y Node validan esa cadena sin problema.
+
+    Como el equipo desarrolla en macOS, activarlo rompería la conexión local. No se usa `sslmode=no-verify` ni `rejectUnauthorized: false` en ningún lado.
+  - **Pendiente (Sprint 5, INFRA-01):** en el contenedor Linux (Docker `node:20-alpine`, TLS con OpenSSL), probar `sslcert` con la raíz de la región de la instancia (un solo certificado, no el bundle) y `sslaccept=strict`. La prueba también debe ser negativa: con una CA de otra región, la conexión tiene que fallar. Si funciona, activarlo en la `DATABASE_URL` de producción y dejar la de desarrollo con `sslmode=require`.
