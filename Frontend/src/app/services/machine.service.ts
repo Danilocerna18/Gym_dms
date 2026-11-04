@@ -1,30 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
-export interface CreateMachineDto {
+export interface Machine {
   id: string;
   name: string;
-  qrCode?: string;
-  youtubeUrl: string;
+  qrCode: string;
+  youtubeUrl?: string;
   videoTitle?: string;
+  group?: string;
+  instructions?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class MachineService {
-  private baseUrl = 'http://localhost:3000/api/machines';
+  private apiUrl = `${environment.apiUrl}/api/machines`;
+  private options = { withCredentials: true };
 
   constructor(private http: HttpClient) {}
 
-  // Petición POST enviada desde admin-formulario-maquina
-  createMachine(data: CreateMachineDto): Observable<any> {
-    return this.http.post<any>(this.baseUrl, data, { withCredentials: true });
+  getMachines(): Observable<Machine[]> {
+    return this.http.get<Machine[]>(this.apiUrl, this.options);
   }
 
-  // Petición GET consultada por el usuario
-  getMachineById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${id}`);
+  getMachineById(id: string): Observable<Machine> {
+    return this.http.get<Machine>(`${this.apiUrl}/${id}`, this.options);
+  }
+
+  createMachine(machineData: any): Observable<Machine> {
+    return this.http.post<Machine>(this.apiUrl, machineData, this.options);
   }
 }

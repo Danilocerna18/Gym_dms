@@ -6,13 +6,24 @@
   -ms-overflow-style: none;  
   scrollbar-width: none; 
 }
+
+/* Ajuste específico para el visor de la cámara ZXing */
+zxing-scanner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 /* Layout Unificado */
 .app-layout {
   display: flex;
-  flex-direction: column; /* móvil: cabecera arriba y contenido debajo, no en fila */
+  flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--color-ink); /* pantalla de escaneo: fondo ink */
+  background-color: var(--color-ink);
   color: var(--color-cream);
   font-family: var(--font-body);
 }
@@ -122,8 +133,7 @@
 .main-content {
   flex: 1;
   width: 100%;
-  min-width: 0; /* evita que el contenido ensanche la página */
-  /* la barra inferior fija (60px) más el safe-area del iPhone nunca tapa el último elemento */
+  min-width: 0;
   padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px) + 24px);
 }
 
@@ -138,7 +148,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* móvil: pantalla menos cabecera (56px) y barra inferior (60px + safe-area) */
   min-height: calc(100vh - 116px);
   min-height: calc(100dvh - 116px - env(safe-area-inset-bottom, 0px));
   padding: 16px;
@@ -208,7 +217,7 @@
   font-family: var(--font-display);
   font-size: 22px;
   margin: 0 0 6px 0;
-  padding: 0 40px; /* deja libre el botón de cerrar (48px) en pantallas angostas */
+  padding: 0 40px;
   color: var(--color-cream);
   text-transform: uppercase;
 }
@@ -227,7 +236,6 @@
 }
 
 .qr-viewfinder {
-  /* el visor se achica con la altura disponible para que la tarjeta quepa en pantalla */
   width: clamp(140px, calc(100vh - 420px), 240px);
   width: clamp(140px, calc(100dvh - 420px), 240px);
   max-width: 100%;
@@ -254,6 +262,7 @@
   height: 24px;
   border-color: var(--color-cream);
   border-style: solid;
+  z-index: 10;
 }
 
 .corner-tl { top: 12px; left: 12px; border-width: 3px 0 0 3px; border-top-left-radius: 8px; }
@@ -269,6 +278,7 @@
   background: var(--color-cream);
   box-shadow: 0 0 12px var(--color-cream);
   animation: scanning 2.5s infinite ease-in-out;
+  z-index: 5;
 }
 
 @keyframes scanning {
@@ -280,7 +290,7 @@
 .scan-status-text {
   font-size: 14px;
   font-weight: 700;
-  color: var(--color-cream); /* accent sobre ink no alcanza contraste (1.28:1) */
+  color: var(--color-cream);
   letter-spacing: 1.5px;
   margin-bottom: 24px;
 }
@@ -354,6 +364,7 @@
   color: var(--color-cream);
   font-weight: 700;
 }
+
 @media (min-width: 480px) {
   .scanner-card {
     padding: 32px 24px;
@@ -367,7 +378,6 @@
   }
 }
 
-/* Respeta la preferencia de menos movimiento */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

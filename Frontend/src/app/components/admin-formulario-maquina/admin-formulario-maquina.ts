@@ -65,44 +65,38 @@ export class AdminFormularioMaquinaComponent implements OnInit {
   }
 
   guardarMaquina(): void {
-    this.errorMensaje = '';
-
-    if (!this.nombreMaquina.trim()) {
-      this.errorMensaje = 'Por favor ingresa el nombre de la máquina.';
-      return;
-    }
-
-    if (!this.youtubeUrl.trim()) {
-      this.errorMensaje = 'Por favor ingresa la URL del video de YouTube.';
-      return;
-    }
-
-    this.guardando = true;
-
-    const payload = {
-      id: this.idMaquina,
-      name: this.nombreMaquina,
-      qrCode: this.idMaquina,
-      youtubeUrl: this.youtubeUrl,
-      videoTitle: `Tutorial de ${this.nombreMaquina}`
-    };
-
-    this.machineService.createMachine(payload).subscribe({
-      next: () => {
-        this.guardando = false;
-        this.mostrarToast = true;
-
-        setTimeout(() => {
-          this.mostrarToast = false;
-          this.resetFormulario();
-        }, 3000);
-      },
-      error: (err) => {
-        this.guardando = false;
-        this.errorMensaje = err.error?.message || 'Error al guardar la máquina en la base de datos.';
-      }
-    });
+  if (!this.nombreMaquina.trim() || !this.youtubeUrl.trim()) {
+    this.errorMensaje = 'Ingresa el nombre y la URL de YouTube.';
+    return;
   }
+
+  this.guardando = true;
+
+  const payload = {
+    id: this.idMaquina,
+    name: this.nombreMaquina,
+    qrCode: this.idMaquina,
+    youtubeUrl: this.youtubeUrl,
+    videoTitle: `Tutorial de ${this.nombreMaquina}`,
+    group: this.grupoMuscular,
+    instructions: this.instrucciones
+  };
+
+  this.machineService.createMachine(payload).subscribe({
+    next: () => {
+      this.guardando = false;
+      this.mostrarToast = true;
+      setTimeout(() => {
+        this.mostrarToast = false;
+        this.router.navigate(['/user-home']);
+      }, 1500);
+    },
+    error: (err) => {
+      this.guardando = false;
+      this.errorMensaje = 'Error al guardar en la base de datos.';
+    }
+  });
+}
 
   resetFormulario(): void {
     this.nombreMaquina = '';

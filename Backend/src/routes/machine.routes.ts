@@ -1,13 +1,16 @@
 import { requireSession } from '../middleware/authorization';
 import { Router } from 'express';
-import { getMachineById, createMachine } from '../controllers/machine.controller';
+import { getMachineById, createMachine, getAllMachines } from '../controllers/machine.controller';
 
 const router = Router();
 
-// Endpoint para que el cliente consulte la máquina por ID
+// 1. Obtener TODAS las máquinas (para la biblioteca/home del usuario)
+router.get('/machines', getAllMachines);
+
+// 2. Obtener una máquina por su ID (para el escáner o detalle)
 router.get('/machines/:id', getMachineById);
 
-// Endpoint para que el Administrador registre una nueva máquina con su video
+// 3. Crear máquina (exclusivo Administrador)
 router.post('/machines', requireSession('admin'), createMachine);
 
 export default router;

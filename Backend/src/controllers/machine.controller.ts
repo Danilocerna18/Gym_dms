@@ -3,7 +3,22 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Obtener máquina con sus InstructionVideo asociados
+// 1. NUEVA FUNCIÓN: Obtener TODAS las máquinas para el catálogo del usuario
+export const getAllMachines = async (req: Request, res: Response) => {
+  try {
+    const machines = await prisma.machine.findMany({
+      include: {
+        videos: true
+      }
+    });
+    return res.json(machines);
+  } catch (error) {
+    console.error('Error al obtener máquinas:', error);
+    return res.status(500).json({ error: 'Error al obtener la lista de máquinas' });
+  }
+};
+
+// Obtener máquina con sus InstructionVideo asociados por ID
 export const getMachineById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -28,7 +43,7 @@ export const getMachineById = async (req: Request, res: Response) => {
 // Crear máquina e insertar la URL del video de YouTube en una sola transacción
 export const createMachine = async (req: Request, res: Response) => {
   try {
-    const { id, name, qrCode, youtubeUrl, videoTitle } = req.body;
+    const { id, name, qrCode, youtubeUrl, videoTitle, group } = req.body;
 
     if (!id || !name || !youtubeUrl) {
       return res.status(400).json({ message: 'Los campos ID, Nombre y URL de YouTube son obligatorios.' });
@@ -38,6 +53,7 @@ export const createMachine = async (req: Request, res: Response) => {
       data: {
         id,
         name,
+        group: group || 'General',
         qrCode: qrCode || id,
         videos: {
           create: [

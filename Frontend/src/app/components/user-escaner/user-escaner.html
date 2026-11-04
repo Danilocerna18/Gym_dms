@@ -34,7 +34,7 @@
         <span>{{ auth.initials() }}</span>
       </div>
       <div class="user-info">
-        <span class="user-name">{{ auth.profile()?.name }}</span>
+        <span class="user-name">{{ auth.profile().name }}</span>
       </div>
     </a>
   </aside>
@@ -52,19 +52,30 @@
           <p>Escanea el código de la máquina para abrir su guía de entrenamiento</p>
         </div>
 
-        <!-- Marco del Visor QR -->
-        <div class="qr-frame-wrapper" (click)="onScanSuccess()">
+        <!-- Marco del Visor QR con Cámara Operativa -->
+        <div class="qr-frame-wrapper">
           <div class="qr-viewfinder">
-            <span class="material-symbols-outlined qr-icon-center">qr_code_2</span>
+
+            <!-- Lector de Cámara Angular ZXing -->
+            <zxing-scanner
+              *ngIf="scannerHabilitado"
+              [formats]="allowedFormats"
+              (scanSuccess)="onScanSuccess($event)">
+            </zxing-scanner>
+
+            <!-- Elementos de tu diseño visual de enfoque -->
             <div class="scan-corner corner-tl"></div>
             <div class="scan-corner corner-tr"></div>
             <div class="scan-corner corner-bl"></div>
             <div class="scan-corner corner-br"></div>
-            <div class="scan-laser"></div>
+            <div class="scan-laser" *ngIf="!cargando"></div>
           </div>
         </div>
 
-        <p class="scan-status-text">ESCANEANDO MÁQUINA...</p>
+        <!-- Mensajes de estado -->
+        <p class="scan-status-text" *ngIf="!cargando && !errorMensaje">ESCANEANDO MÁQUINA...</p>
+        <p class="scan-status-text" *ngIf="cargando" style="color: #E13438;">CONSULTANDO BASE DE DATOS...</p>
+        <p class="scan-status-text" *ngIf="errorMensaje" style="color: #ff8b8e;">{{ errorMensaje }}</p>
 
         <button class="btn-upload-gallery" (click)="onScanSuccess()">
           <span class="material-symbols-outlined">upload_file</span>

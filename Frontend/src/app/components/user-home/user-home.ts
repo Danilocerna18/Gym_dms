@@ -1,17 +1,9 @@
-import { AuthService } from '../../services/auth';
-import { inject, Component, computed } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { MachineService, Machine } from '../../services/machine.service';
 
-interface Machine {
-  id: string;
-  name: string;
-  imageUrl: string;
-  description: string;
-  muscleGroup: string;
-}
-
-interface MuscleCategory {
+export interface MuscleCategory {
   title: string;
   machines: Machine[];
 }
@@ -19,98 +11,70 @@ interface MuscleCategory {
 @Component({
   selector: 'app-user-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterModule],
   templateUrl: './user-home.html',
   styleUrl: './user-home.css'
 })
-export class UserHomeComponent {
-  readonly auth = inject(AuthService);
+export class UserHomeComponent implements OnInit {
 
-  // Qué cuadro de membresía se muestra. Sale de auth.status(), que ya cargó el
-  // rolGuard con auth.session(), así que no hace falta otra llamada al backend.
-  readonly estadoMembresia = computed<'activa' | 'pendiente' | 'vencida' | 'sin'>(() => {
-    switch (this.auth.status()) {
-      case 'Activa':
-      case 'Próxima':
-        return 'activa';
-      case 'Pendiente de activación':
-        return 'pendiente';
-      case 'Vencida':
-        return 'vencida';
-      default: // "Sin membresía" o "Cancelada": puede escoger un plan nuevo
-        return 'sin';
-    }
-  });
+  auth = {
+    initials: () => 'US',
+    profile: () => ({ name: 'Usuario Gym' }),
+    membership: () => ({
+      plan: { name: 'Mensual VIP' },
+      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+    })
+  };
 
+  estadoMembresia = signal<string>('pendiente');
+  maquinas: Machine[] = [];
+  muscleCategories: MuscleCategory[] = [];
+  cargando: boolean = true;
 
-  muscleCategories: MuscleCategory[] = [
-    {
-      title: 'Pierna & Glúteo',
-      machines: [
-        {
-          id: 'm1',
-          name: 'Prensa de Pierna 45°',
-          imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=500&auto=format&fit=crop',
-          description: 'Enfocada en cuadriceps y glúteos. Ajusta el respaldo a tu medida y mantén la espalda apoyada.',
-          muscleGroup: 'Pierna & Glúteo'
-        },
-        {
-          id: 'm2',
-          name: 'Extensión de Cuádriceps',
-          imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=500&auto=format&fit=crop',
-          description: 'Aislamiento directo para cuadriceps. Controla el peso en el ascenso y descenso.',
-          muscleGroup: 'Pierna'
-        },
-        {
-          id: 'm3',
-          name: 'Femoral Sentado',
-          imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500&auto=format&fit=crop',
-          description: 'Enfoque en isquiotibiales. Ajusta el rodillo justo arriba de los tobillos.',
-          muscleGroup: 'Pierna'
-        }
-      ]
-    },
-    {
-      title: 'Pecho & Tríceps',
-      machines: [
-        {
-          id: 'm4',
-          name: 'Press de Pecho Sentado',
-          imageUrl: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=500&auto=format&fit=crop',
-          description: 'Excelente opción para trabajar el pectoral mayor de forma guiada y segura.',
-          muscleGroup: 'Pecho'
-        },
-        {
-          id: 'm5',
-          name: 'Peck Deck / Apertura',
-          imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500&auto=format&fit=crop',
-          description: 'Aislamiento para la parte central del pecho con contracción sostenida.',
-          muscleGroup: 'Pecho'
-        }
-      ]
-    },
-    {
-      title: 'Espalda & Bíceps',
-      machines: [
-        {
-          id: 'm6',
-          name: 'Jalón al Pecho (Polea)',
-          imageUrl: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=500&auto=format&fit=crop',
-          description: 'Trabajo integral de dorsales y zona superior de la espalda.',
-          muscleGroup: 'Espalda'
-        },
-        {
-          id: 'm7',
-          name: 'Remo Gironda (Polea Baja)',
-          imageUrl: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=500&auto=format&fit=crop',
-          description: 'Enfocado en la densidad de la espalda media y baja.',
-          muscleGroup: 'Espalda'
-        }
-      ]
-    }
-  ];
+  constructor(
+    private machineService: MachineService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    this.cargarMaquinas();
+  }
+
+  cargarMaquinas(): void {
+    this.cargando = true;
+    this.machineService.getMachines().subscribe({
+      next: (data) => {
+        this.maquinas = Array.isArray(data) ? data : (data as any).machines || [];
+        this.organizarCategorias();
+        this.cargando = false;
+        this.cdr.detectChanges(); // Forzar renderizado inmediato
+      },
+      error: (err) => {
+        console.error('Error al obtener catálogo de máquinas:', err);
+        this.organizarCategorias();
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  organizarCategorias(): void {
+    const gruposMap = new Map<string, Machine[]>();
+
+    this.maquinas.forEach((m) => {
+      const g = (m.group || 'GENERAL').toUpperCase();
+      if (!gruposMap.has(g)) {
+        gruposMap.set(g, []);
+      }
+      gruposMap.get(g)!.push(m);
+    });
+
+    this.muscleCategories = Array.from(gruposMap.entries()).map(([title, machines]) => ({
+      title,
+      machines
+    }));
+  }
 
   openMachineDetail(machine: Machine): void {
     this.router.navigate(['/user-maquinadet'], {
