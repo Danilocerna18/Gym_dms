@@ -120,6 +120,7 @@ model Machine {
   id        String   @id @default(uuid())
   name      String
   qrCode    String   @unique
+  group     String?
   createdAt DateTime @default(now())
 
   videos     InstructionVideo[]

@@ -53,7 +53,7 @@ export const createMachine = async (req: Request, res: Response) => {
       data: {
         id,
         name,
-        group: group || 'General',
+        group: group || 'General', // <-- Persiste el grupo muscular seleccionado
         qrCode: qrCode || id,
         videos: {
           create: [
@@ -75,9 +75,6 @@ export const createMachine = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error('Error al crear máquina:', error);
-    if (error.code === 'P2002') {
-      return res.status(400).json({ message: 'Ya existe una máquina registrada con este ID o Código QR.' });
-    }
-    return res.status(500).json({ error: 'Error interno del servidor al crear la máquina.' });
+    return res.status(500).json({ error: 'Error interno al crear máquina' });
   }
 };

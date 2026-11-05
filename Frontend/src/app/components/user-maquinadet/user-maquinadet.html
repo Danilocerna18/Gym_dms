@@ -42,6 +42,11 @@
         <h2>INSTRUCCIONES DE USO</h2>
         <p>{{ machine.description || 'Consulta al entrenador de turno para sugerencias de peso e intensidad.' }}</p>
       </div>
+      <!-- Muestra la imagen del QR generado para la máquina -->
+      <div class="qr-container text-center my-4">
+        <img [src]="qrImage" alt="Código QR de la máquina" class="w-48 h-48 mx-auto rounded-lg shadow" />
+        <p class="text-xs text-slate-500 mt-2">Código: {{ machine.qrCode || machine.id }}</p>
+      </div>
     </section>
   </main>
 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import qrcode from 'qrcode-generator';
 
 interface InstructionVideo {
   id?: string;
@@ -32,6 +33,7 @@ export class UserMaquinadetComponent implements OnInit {
   machine: Machine | null = null;
   safeVideoUrl: SafeResourceUrl | null = null;
   videoTitle: string = '';
+  qrImage: string = '';
 
   constructor(
     private router: Router,
@@ -44,7 +46,6 @@ export class UserMaquinadetComponent implements OnInit {
     if (stateData) {
       this.machine = stateData;
     } else {
-      // Fallback si recargas la página directamente
       this.machine = {
         id: '001',
         name: 'Prensa de Pierna',
@@ -60,23 +61,27 @@ export class UserMaquinadetComponent implements OnInit {
     }
 
     this.processMachineVideo();
+    this.generateMachineQr();
+  }
+
+  private generateMachineQr(): void {
+    const code = this.machine?.qrCode || this.machine?.id || 'MAC-000';
+    const qr = qrcode(0, 'M');
+    qr.addData(code);
+    qr.make();
+    this.qrImage = qr.createDataURL(6);
   }
 
   private processMachineVideo(): void {
     let rawUrl = '';
 
-    // 1. Revisa la relación de Prisma (videos[])
     if (this.machine?.videos && this.machine.videos.length > 0 && this.machine.videos[0].youtubeUrl) {
       rawUrl = this.machine.videos[0].youtubeUrl;
       this.videoTitle = this.machine.videos[0].title || this.machine.name;
-    } 
-    // 2. Revisa la propiedad directa
-    else if (this.machine?.youtubeUrl) {
+    } else if (this.machine?.youtubeUrl) {
       rawUrl = this.machine.youtubeUrl;
       this.videoTitle = this.machine.name;
-    } 
-    // 3. Video de respaldo garantizado (Libre de restricciones de incrustación)
-    else {
+    } else {
       rawUrl = 'https://www.youtube.com/watch?v=IZxyjW7MPJQ';
       this.videoTitle = this.machine?.name || 'Tutorial de Máquina';
     }
@@ -88,7 +93,6 @@ export class UserMaquinadetComponent implements OnInit {
     const videoId = this.extractYouTubeId(url);
     if (!videoId) return null;
 
-    // Genera el enlace embed oficial
     const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
   }
@@ -96,12 +100,10 @@ export class UserMaquinadetComponent implements OnInit {
   private extractYouTubeId(url: string): string | null {
     if (!url) return null;
     
-    // Si metiste solo el ID en Prisma Studio (ej: "IZxyjW7MPJQ")
     if (url.length === 11 && !url.includes('/') && !url.includes('.')) {
       return url;
     }
 
-    // Expresión regular para parsear cualquier formato de URL de YouTube
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
 

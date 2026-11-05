@@ -60,21 +60,24 @@ export class UserHomeComponent implements OnInit {
   }
 
   organizarCategorias(): void {
-    const gruposMap = new Map<string, Machine[]>();
+  const gruposMap = new Map<string, Machine[]>();
 
-    this.maquinas.forEach((m) => {
-      const g = (m.group || 'GENERAL').toUpperCase();
-      if (!gruposMap.has(g)) {
-        gruposMap.set(g, []);
-      }
-      gruposMap.get(g)!.push(m);
-    });
+  this.maquinas.forEach((m) => {
+    // Normalizar la etiqueta del grupo muscular
+    const g = (m.group || 'GENERAL').trim().toUpperCase();
 
-    this.muscleCategories = Array.from(gruposMap.entries()).map(([title, machines]) => ({
-      title,
-      machines
-    }));
-  }
+    if (!gruposMap.has(g)) {
+      gruposMap.set(g, []);
+    }
+    gruposMap.get(g)!.push(m);
+  });
+
+  // Mapear cada grupo a su respectiva categoría para la vista HTML
+  this.muscleCategories = Array.from(gruposMap.entries()).map(([title, machines]) => ({
+    title,
+    machines
+  }));
+}
 
   openMachineDetail(machine: Machine): void {
     this.router.navigate(['/user-maquinadet'], {
