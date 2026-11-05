@@ -65,38 +65,40 @@ export class AdminFormularioMaquinaComponent implements OnInit {
   }
 
   guardarMaquina(): void {
-  if (!this.nombreMaquina.trim() || !this.youtubeUrl.trim()) {
-    this.errorMensaje = 'Ingresa el nombre y la URL de YouTube.';
-    return;
-  }
-
-  this.guardando = true;
-
-  const payload = {
-    id: this.idMaquina,
-    name: this.nombreMaquina,
-    qrCode: this.idMaquina,
-    youtubeUrl: this.youtubeUrl,
-    videoTitle: `Tutorial de ${this.nombreMaquina}`,
-    group: this.grupoMuscular,
-    instructions: this.instrucciones
-  };
-
-  this.machineService.createMachine(payload).subscribe({
-    next: () => {
-      this.guardando = false;
-      this.mostrarToast = true;
-      setTimeout(() => {
-        this.mostrarToast = false;
-        this.router.navigate(['/user-home']);
-      }, 1500);
-    },
-    error: (err) => {
-      this.guardando = false;
-      this.errorMensaje = 'Error al guardar en la base de datos.';
+    if (!this.nombreMaquina.trim() || !this.youtubeUrl.trim()) {
+      this.errorMensaje = 'Ingresa el nombre y la URL de YouTube.';
+      return;
     }
-  });
-}
+
+    this.guardando = true;
+
+    const payload = {
+      id: this.idMaquina,
+      name: this.nombreMaquina.trim(),
+      qrCode: this.idMaquina,
+      youtubeUrl: this.youtubeUrl.trim(),
+      videoTitle: `Tutorial de ${this.nombreMaquina.trim()}`,
+      group: this.grupoMuscular || 'Piernas',
+      instructions: this.instrucciones
+    };
+
+    this.machineService.createMachine(payload).subscribe({
+      next: () => {
+        this.guardando = false;
+        this.mostrarToast = true;
+        setTimeout(() => {
+          this.mostrarToast = false;
+          this.generarNuevoId();
+          this.router.navigate(['/user-home']);
+        }, 1500);
+      },
+      error: (err) => {
+        this.guardando = false;
+        console.error('Error al guardar máquina:', err);
+        this.errorMensaje = 'Error al guardar en la base de datos.';
+      }
+    });
+  }
 
   resetFormulario(): void {
     this.nombreMaquina = '';

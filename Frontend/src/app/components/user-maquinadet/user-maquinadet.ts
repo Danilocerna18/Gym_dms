@@ -65,12 +65,15 @@ export class UserMaquinadetComponent implements OnInit {
   }
 
   private generateMachineQr(): void {
-    const code = this.machine?.qrCode || this.machine?.id || 'MAC-000';
-    const qr = qrcode(0, 'M');
-    qr.addData(code);
-    qr.make();
-    this.qrImage = qr.createDataURL(6);
-  }
+  // Toma el qrCode único que viene de NeonDB
+  const code = this.machine?.qrCode || this.machine?.id;
+  if (!code) return;
+
+  const qr = qrcode(0, 'M');
+  qr.addData(code);
+  qr.make();
+  this.qrImage = qr.createDataURL(6);
+}
 
   private processMachineVideo(): void {
     let rawUrl = '';
