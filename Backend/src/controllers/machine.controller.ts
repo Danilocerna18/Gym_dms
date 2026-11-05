@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -96,5 +96,25 @@ export const createMachine = async (req: Request, res: Response) => {
   } catch (error: any) {
     console.error('Error al crear máquina:', error);
     return res.status(500).json({ error: 'Error interno al crear máquina' });
+  }
+};
+
+export const deleteMachine = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+
+    // 1. Eliminar primero los videos de instrucción asociados para evitar fallos de llaves foráneas
+    await prisma.instructionVideo.deleteMany({
+      where: { machineId: id }
+    });
+
+    // 2. Eliminar la máquina de Prisma
+    await prisma.machine.delete({
+      where: { id }
+    });
+
+    return res.json({ message: "Máquina eliminada correctamente" });
+  } catch (err) {
+    next(err);
   }
 };

@@ -11,6 +11,7 @@ export interface Machine {
   videoTitle?: string;
   group?: string;
   instructions?: string;
+  videos?: Array<{ id: string; youtubeUrl: string; title: string }>;
 }
 
 @Injectable({
@@ -32,5 +33,9 @@ export class MachineService {
 
   createMachine(machineData: any): Observable<Machine> {
     return this.http.post<Machine>(this.apiUrl, machineData, this.options);
+  }
+
+  deleteMachine(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`, this.options);
   }
 }
