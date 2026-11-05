@@ -1,14 +1,13 @@
 import qrcode from 'qrcode-generator';
-import { DatePipe, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { AuthService } from '../../services/auth';
 import { Aforo, RespuestaAforo } from '../../services/aforo';
 import { inject, Component, DestroyRef, OnInit, computed, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, map, of, switchMap, timer } from 'rxjs';
 
-const INTERVALO_AFORO_MS = 15000; // cada cuánto se vuelve a pedir el aforo
+const INTERVALO_AFORO_MS = 15000;
 
-// texto y color de la etiqueta y del trazo del anillo según el estado
 const ESTILO_AFORO = {
   optimo: { etiqueta: 'ÓPTIMO', texto: 'text-track-green', fondo: 'bg-track-green/15' },
   concurrido: { etiqueta: 'CONCURRIDO', texto: 'text-ink', fondo: 'bg-ink/10' },
@@ -18,7 +17,7 @@ const ESTILO_AFORO = {
 @Component({
   selector: 'app-user-qrunico',
   standalone: true,
-  imports: [DatePipe, NgClass],
+  imports: [NgClass],
   templateUrl: './user-qrunico.html',
   styleUrl: './user-qrunico.css',
 })
@@ -27,16 +26,12 @@ export class UserQrunico implements OnInit {
   private aforoService = inject(Aforo);
   private destroyRef = inject(DestroyRef);
 
-  aforo = signal<RespuestaAforo | null>(null); // null mientras carga o si la última llamada falló
+  aforo = signal<RespuestaAforo | null>(null);
   aforoNoDisponible = signal(false);
   estiloAforo = computed(() => ESTILO_AFORO[this.aforo()?.estado ?? 'optimo']);
-  // el anillo no pasa de lleno aunque haya más personas que la capacidad
   trazoAnillo = computed(() => `${Math.min(this.aforo()?.porcentaje ?? 0, 100)}, 100`);
 
   ngOnInit() {
-    // Pide el aforo al entrar y luego cada 15 s. takeUntilDestroyed detiene el
-    // intervalo al salir de la pantalla. Un error no corta el polling: se
-    // muestra "Aforo no disponible" y el siguiente intento puede recuperarse.
     timer(0, INTERVALO_AFORO_MS).pipe(
       switchMap(() => this.aforoService.obtener().pipe(
         map(respuesta => ({ respuesta })),
@@ -49,19 +44,18 @@ export class UserQrunico implements OnInit {
     });
   }
 
-
   readonly qrImage = this.createQr();
 
   private createQr(): string {
+    const code = this.auth.profile()?.qrCode || this.auth.profile()?.id || 'GYMSYNC-USER';
     const qr = qrcode(0, 'M');
-    qr.addData(this.auth.profile()?.qrCode ?? '');
+    qr.addData(code);
     qr.make();
     return qr.createDataURL(6);
   }
 
-  // Lógica para copiar el código manual al portapapeles
   copyAccessCode(copyBtn: HTMLButtonElement, copyIcon: HTMLElement, copyText: HTMLElement): void {
-    const code = this.auth.profile()?.qrCode;
+    const code = this.auth.profile()?.qrCode || this.auth.profile()?.id;
     if (!code) return;
 
     navigator.clipboard.writeText(code).then(() => {
@@ -75,11 +69,10 @@ export class UserQrunico implements OnInit {
         copyBtn.classList.remove('bg-track-green', 'text-cream');
       }, 2000);
     }).catch(() => {
-      copyText.textContent = 'No se pudo copiar';
+      copyText.textContent = 'Error';
     });
   }
 
-  // Navegación hacia atrás
   goBack(): void {
     history.back();
   }
