@@ -86,7 +86,7 @@ export class AdminListaMaquinasComponent implements OnInit {
   }
 
   nuevaMaquina() {
-    this.router.navigate(['/admin-formulario-maquina']);
+    this.router.navigate(['/admin/maquinas/nueva']);
   }
 
   seleccionarFiltro(filtro: string) {
