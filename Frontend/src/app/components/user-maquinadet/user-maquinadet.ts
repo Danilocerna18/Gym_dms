@@ -15,7 +15,9 @@ interface Machine {
   id: string;
   name: string;
   qrCode?: string;
+  instructions?: string;
   description?: string;
+  group?: string;
   muscleGroup?: string;
   youtubeUrl?: string;
   videos?: InstructionVideo[];
@@ -41,7 +43,7 @@ export class UserMaquinadetComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const stateData = history.state?.machineData;
+    const stateData = history.state?.machineData || window.history.state?.machineData;
 
     if (stateData) {
       this.machine = stateData;
@@ -49,8 +51,8 @@ export class UserMaquinadetComponent implements OnInit {
       this.machine = {
         id: '001',
         name: 'Prensa de Pierna',
-        description: 'Ajusta el respaldo y empuja con la planta completa de los pies. No bloquees las rodillas al extender.',
-        muscleGroup: 'Pierna & Glúteo',
+        instructions: 'Ajusta el respaldo y empuja con la planta completa de los pies. No bloquees las rodillas al extender.',
+        group: 'Piernas',
         videos: [
           {
             youtubeUrl: 'https://www.youtube.com/watch?v=IZxyjW7MPJQ',
@@ -65,52 +67,58 @@ export class UserMaquinadetComponent implements OnInit {
   }
 
   private generateMachineQr(): void {
-  // Toma el qrCode único que viene de NeonDB
-  const code = this.machine?.qrCode || this.machine?.id;
-  if (!code) return;
+    const code = this.machine?.qrCode || this.machine?.id;
+    if (!code) return;
 
-  const qr = qrcode(0, 'M');
-  qr.addData(code);
-  qr.make();
-  this.qrImage = qr.createDataURL(6);
-}
+    try {
+      const qr = qrcode(0, 'M');
+      qr.addData(code);
+      qr.make();
+      this.qrImage = qr.createDataURL(6);
+    } catch (e) {
+      console.error('Error generando QR:', e);
+    }
+  }
 
   private processMachineVideo(): void {
     let rawUrl = '';
 
-    if (this.machine?.videos && this.machine.videos.length > 0 && this.machine.videos[0].youtubeUrl) {
-      rawUrl = this.machine.videos[0].youtubeUrl;
-      this.videoTitle = this.machine.videos[0].title || this.machine.name;
-    } else if (this.machine?.youtubeUrl) {
+    if (this.machine?.youtubeUrl) {
       rawUrl = this.machine.youtubeUrl;
       this.videoTitle = this.machine.name;
-    } else {
-      rawUrl = 'https://www.youtube.com/watch?v=IZxyjW7MPJQ';
-      this.videoTitle = this.machine?.name || 'Tutorial de Máquina';
+    } else if (this.machine?.videos && this.machine.videos.length > 0 && this.machine.videos[0]?.youtubeUrl) {
+      rawUrl = this.machine.videos[0].youtubeUrl;
+      this.videoTitle = this.machine.videos[0].title || this.machine.name;
     }
 
-    this.safeVideoUrl = this.getSafeEmbedUrl(rawUrl);
+    if (rawUrl && rawUrl.trim()) {
+      this.safeVideoUrl = this.getSafeEmbedUrl(rawUrl.trim());
+    } else {
+      this.safeVideoUrl = null;
+    }
   }
 
   private getSafeEmbedUrl(url: string): SafeResourceUrl | null {
     const videoId = this.extractYouTubeId(url);
     if (!videoId) return null;
 
-    const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
   }
 
   private extractYouTubeId(url: string): string | null {
     if (!url) return null;
     
-    if (url.length === 11 && !url.includes('/') && !url.includes('.')) {
-      return url;
+    const cleanUrl = url.trim();
+
+    if (cleanUrl.length === 11 && !cleanUrl.includes('/') && !cleanUrl.includes('.')) {
+      return cleanUrl;
     }
 
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
+    const regExp = /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = cleanUrl.match(regExp);
 
-    return (match && match[2].length === 11) ? match[2] : null;
+    return (match && match[1] && match[1].length === 11) ? match[1] : null;
   }
 
   goBack(): void {

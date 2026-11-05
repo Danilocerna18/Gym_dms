@@ -19,7 +19,6 @@ export class UserEscanerComponent {
   errorMensaje: string = '';
   scannerHabilitado: boolean = true;
 
-  // Mock temporal para el usuario en pantalla si tu servicio auth no está disponible
   auth = {
     initials: () => 'US',
     profile: () => ({ name: 'Usuario Gym' })
@@ -30,34 +29,47 @@ export class UserEscanerComponent {
     private router: Router
   ) {}
 
-  // Se activa al detectar un QR en la cámara
   onScanSuccess(qrResult?: string): void {
     if (this.cargando) return;
 
-    // Si hace clic en simular o desde la galería sin string previa
-    const idFinal = qrResult ? qrResult.trim() : 'MAC-482';
+    if (!qrResult || !qrResult.trim()) {
+      return;
+    }
 
+    const idFinal = qrResult.trim();
     this.scannerHabilitado = false;
     this.cargando = true;
     this.errorMensaje = '';
 
     this.machineService.getMachineById(idFinal).subscribe({
-      next: (machineData) => {
+      next: (res: any) => {
         this.cargando = false;
-        this.router.navigate(['/user-maquinadet'], {
-          state: { machineData }
-        });
+        
+        // Extrae el objeto plano de la máquina (manejando si viene envuelto en .machine o directo)
+        const targetMachine = res?.machine ? res.machine : res;
+
+        if (targetMachine && targetMachine.id) {
+          this.router.navigate(['/user-maquinadet'], {
+            state: { machineData: targetMachine }
+          });
+        } else {
+          this.mostrarError(`No se encontró la máquina "${idFinal}".`);
+        }
       },
       error: (err) => {
+        console.error('Error al consultar máquina:', err);
         this.cargando = false;
-        this.errorMensaje = `No se encontró la máquina "${idFinal}".`;
-        
-        setTimeout(() => {
-          this.errorMensaje = '';
-          this.scannerHabilitado = true;
-        }, 3000);
+        this.mostrarError(`No existe la máquina con código "${idFinal}".`);
       }
     });
+  }
+
+  private mostrarError(msg: string): void {
+    this.errorMensaje = msg;
+    setTimeout(() => {
+      this.errorMensaje = '';
+      this.scannerHabilitado = true;
+    }, 3000);
   }
 
   closeScanner(): void {

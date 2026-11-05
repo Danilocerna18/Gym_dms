@@ -4,13 +4,13 @@ import { getMachineById, createMachine, getAllMachines } from '../controllers/ma
 
 const router = Router();
 
-// 1. Obtener TODAS las máquinas (para la biblioteca/home del usuario)
+// 1. Obtener TODAS las máquinas (GET /api/machines)
 router.get('/machines', getAllMachines);
 
-// 2. Obtener una máquina por su ID (para el escáner o detalle)
+// 2. Obtener una máquina por ID (GET /api/machines/:id)
 router.get('/machines/:id', getMachineById);
 
-// 3. Crear máquina (exclusivo Administrador)
+// 3. Crear máquina (POST /api/machines)
 router.post('/machines', requireSession('admin'), createMachine);
 
 export default router;

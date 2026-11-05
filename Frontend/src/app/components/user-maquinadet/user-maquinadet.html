@@ -33,17 +33,20 @@
     <section class="machine-details-card">
       <div class="details-header-row">
         <h1 class="machine-title">{{ machine.name }}</h1>
-        <span class="badge-muscle" *ngIf="machine.muscleGroup">{{ machine.muscleGroup }}</span>
+        <span class="badge-muscle" *ngIf="machine.group || machine.muscleGroup">
+          {{ machine.group || machine.muscleGroup }}
+        </span>
       </div>
 
       <div class="divider-line"></div>
 
       <div class="instructions-block">
         <h2>INSTRUCCIONES DE USO</h2>
-        <p>{{ machine.description || 'Consulta al entrenador de turno para sugerencias de peso e intensidad.' }}</p>
+        <p>{{ machine.instructions || machine.description || 'Consulta al entrenador de turno para sugerencias de peso e intensidad.' }}</p>
       </div>
+
       <!-- Muestra la imagen del QR generado para la máquina -->
-      <div class="qr-container text-center my-4">
+      <div class="qr-container text-center my-4" *ngIf="qrImage">
         <img [src]="qrImage" alt="Código QR de la máquina" class="w-48 h-48 mx-auto rounded-lg shadow" />
         <p class="text-xs text-slate-500 mt-2">Código: {{ machine.qrCode || machine.id }}</p>
       </div>

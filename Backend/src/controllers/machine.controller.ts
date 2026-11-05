@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// 1. NUEVA FUNCIÓN: Obtener TODAS las máquinas para el catálogo del usuario
+// 1. Obtener TODAS las máquinas (mapeando youtubeUrl en la raíz)
 export const getAllMachines = async (req: Request, res: Response) => {
   try {
     const machines = await prisma.machine.findMany({
@@ -11,20 +11,31 @@ export const getAllMachines = async (req: Request, res: Response) => {
         videos: true
       }
     });
-    return res.json(machines);
+
+    const formattedMachines = machines.map(m => ({
+      ...m,
+      youtubeUrl: m.videos?.[0]?.youtubeUrl || (m as any).youtubeUrl || null
+    }));
+
+    return res.json(formattedMachines);
   } catch (error) {
     console.error('Error al obtener máquinas:', error);
     return res.status(500).json({ error: 'Error al obtener la lista de máquinas' });
   }
 };
 
-// Obtener máquina con sus InstructionVideo asociados por ID
+// 2. Obtener máquina por ID/QR
 export const getMachineById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const machine = await prisma.machine.findUnique({
-      where: { id },
+    const machine = await prisma.machine.findFirst({
+      where: {
+        OR: [
+          { id: id },
+          { qrCode: id }
+        ]
+      },
       include: {
         videos: true
       }
@@ -34,13 +45,19 @@ export const getMachineById = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Máquina no encontrada' });
     }
 
-    return res.json(machine);
+    const youtubeUrl = machine.videos?.[0]?.youtubeUrl || (machine as any).youtubeUrl || null;
+
+    return res.json({
+      ...machine,
+      youtubeUrl
+    });
   } catch (error) {
-    return res.status(500).json({ error: 'Error al obtener la máquina' });
+    console.error('Error al obtener máquina:', error);
+    return res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
-// Crear máquina e insertar la URL del video de YouTube en una sola transacción
+// 3. Crear máquina
 export const createMachine = async (req: Request, res: Response) => {
   try {
     const { id, name, qrCode, youtubeUrl, videoTitle, group } = req.body;
@@ -53,7 +70,7 @@ export const createMachine = async (req: Request, res: Response) => {
       data: {
         id,
         name,
-        group: group || 'General', // <-- Persiste el grupo muscular seleccionado
+        group: group || 'General',
         qrCode: qrCode || id,
         videos: {
           create: [
@@ -71,7 +88,10 @@ export const createMachine = async (req: Request, res: Response) => {
 
     return res.status(201).json({
       message: 'Máquina y video guardados con éxito',
-      machine: newMachine
+      machine: {
+        ...newMachine,
+        youtubeUrl
+      }
     });
   } catch (error: any) {
     console.error('Error al crear máquina:', error);
