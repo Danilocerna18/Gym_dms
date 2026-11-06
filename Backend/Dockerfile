@@ -7,4 +7,6 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 ENV PORT=3000
-CMD ["node", "dist/index.js"]
+# Aplica las migraciones pendientes y luego arranca. Si una migración falla, el servidor no inicia.
+# `exec` deja a node como proceso principal para que reciba el SIGTERM de ECS.
+CMD ["sh", "-c", "npx prisma migrate deploy && exec node dist/index.js"]

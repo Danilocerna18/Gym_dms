@@ -52,6 +52,10 @@ import userRoutes from "./routes/user.routes";
 
 const app = express();
 
+// El balanceador termina HTTPS y reenvía por HTTP. Sin esto, Express cree que la
+// conexión es insegura y express-session no envía la cookie `secure`.
+app.set("trust proxy", 1);
+
 const PORT = Number(process.env.PORT) || 3000;
 
 app.get("/ping", (req, res) => {

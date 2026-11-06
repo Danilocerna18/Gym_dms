@@ -7,6 +7,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { finalize } from "rxjs";
 
 import { RegistroService, PlanRegistro } from "../../services/registro.service";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: "app-auth-registro",
@@ -94,7 +95,7 @@ export class AuthRegistroComponent {
   }
 
   registrarseConGoogle(): void {
-    window.location.href = "http://localhost:3000/api/auth/google";
+    window.location.href = `${environment.apiUrl}/api/auth/google`;
   }
 
   regresar(): void {
