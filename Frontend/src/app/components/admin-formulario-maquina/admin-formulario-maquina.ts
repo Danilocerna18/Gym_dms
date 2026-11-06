@@ -61,7 +61,7 @@ export class AdminFormularioMaquinaComponent implements OnInit {
   }
 
   regresar(): void {
-    this.router.navigate(['/user-home']);
+    this.router.navigate(['/admin/maquinas']);
   }
 
   guardarMaquina(): void {
@@ -79,7 +79,7 @@ export class AdminFormularioMaquinaComponent implements OnInit {
       youtubeUrl: this.youtubeUrl.trim(),
       videoTitle: `Tutorial de ${this.nombreMaquina.trim()}`,
       group: this.grupoMuscular || 'Piernas',
-      instructions: this.instrucciones
+      instructions: this.instrucciones.trim()
     };
 
     this.machineService.createMachine(payload).subscribe({
@@ -89,7 +89,7 @@ export class AdminFormularioMaquinaComponent implements OnInit {
         setTimeout(() => {
           this.mostrarToast = false;
           this.generarNuevoId();
-          this.router.navigate(['/user-home']);
+          this.router.navigate(['/admin/maquinas']);
         }, 1500);
       },
       error: (err) => {

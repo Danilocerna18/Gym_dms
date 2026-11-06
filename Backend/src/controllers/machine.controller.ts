@@ -60,18 +60,21 @@ export const getMachineById = async (req: Request, res: Response) => {
 // 3. Crear máquina
 export const createMachine = async (req: Request, res: Response) => {
   try {
-    const { id, name, qrCode, youtubeUrl, videoTitle, group } = req.body;
+    const { id, name, qrCode, youtubeUrl, videoTitle, group, instructions } = req.body;
 
-    if (!id || !name || !youtubeUrl) {
-      return res.status(400).json({ message: 'Los campos ID, Nombre y URL de YouTube son obligatorios.' });
+    if (!name || !youtubeUrl) {
+      return res.status(400).json({ message: 'Los campos Nombre y URL de YouTube son obligatorios.' });
     }
+
+    const machineId = id || `MAC-${Math.floor(100 + Math.random() * 900)}`;
 
     const newMachine = await prisma.machine.create({
       data: {
-        id,
+        id: machineId,
         name,
         group: group || 'General',
-        qrCode: qrCode || id,
+        qrCode: qrCode || machineId,
+        instructions: instructions ? instructions.trim() : null,
         videos: {
           create: [
             {
@@ -94,7 +97,12 @@ export const createMachine = async (req: Request, res: Response) => {
       }
     });
   } catch (error: any) {
-    console.error('Error al crear máquina:', error);
+    console.error('Error detallado al crear máquina:', error);
+    
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: 'El ID o código QR de la máquina ya existe en la base de datos.' });
+    }
+
     return res.status(500).json({ error: 'Error interno al crear máquina' });
   }
 };

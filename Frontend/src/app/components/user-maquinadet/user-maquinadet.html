@@ -9,7 +9,7 @@
     </div>
   </header>
 
-  <main class="detail-main-content" *ngIf="machine">
+  <main class="detail-main-content" *ngIf="machine; else stateVacio">
     <!-- Reproductor de YouTube -->
     <div class="video-container-card">
       <iframe 
@@ -40,6 +40,7 @@
 
       <div class="divider-line"></div>
 
+      <!-- INSTRUCCIONES DINÁMICAS REGISTRADAS POR EL ADMIN -->
       <div class="instructions-block">
         <h2>INSTRUCCIONES DE USO</h2>
         <p>{{ machine.instructions || machine.description || 'Consulta al entrenador de turno para sugerencias de peso e intensidad.' }}</p>
@@ -52,4 +53,11 @@
       </div>
     </section>
   </main>
+
+  <ng-template #stateVacio>
+    <div class="p-8 text-center">
+      <p>Cargando información de la máquina...</p>
+      <button (click)="goBack()" class="mt-4 text-sm text-accent underline">Volver al inicio</button>
+    </div>
+  </ng-template>
 </div>
