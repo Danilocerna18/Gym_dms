@@ -1,74 +1,74 @@
 <header class="encabezado">
-  <div class="encabezado-contenido">
-    <div class="encabezado-izquierdo">
-      <button class="boton-regresar" type="button" aria-label="Regresar" (click)="regresar()">
-        <span class="material-symbols-outlined">arrow_back</span>
+  <div class="encabezado-contenido flex justify-between items-center w-full px-6 py-4">
+    <div class="encabezado-izquierdo flex items-center gap-4">
+      <button class="boton-regresar flex items-center justify-center cursor-pointer" type="button" aria-label="Regresar" (click)="regresar()">
+        <span class="material-symbols-outlined text-ink">arrow_back</span>
       </button>
       <div class="logo">
-        <span class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</span>
+        <span class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent font-bold">GymSync</span>
       </div>
     </div>
-    <div class="usuario">
-      <span class="registro">Register</span>
-      <div class="icono-usuario">
-        <span class="material-symbols-outlined">person</span>
+    
+    <div class="usuario flex items-center gap-3">
+      <span class="registro font-body text-xs font-semibold text-ink uppercase tracking-wider">Admin Terminal</span>
+      <div class="icono-usuario w-8 h-8 rounded-full bg-cream-dark flex items-center justify-center border border-cream-dark">
+        <span class="material-symbols-outlined text-ink text-sm">person</span>
       </div>
     </div>
   </div>
 </header>
 
-<main class="contenido">
-  <div class="contenido-principal">
+<main class="contenido max-w-3xl mx-auto px-4 py-8">
+  <div class="contenido-principal space-y-6">
 
     <!-- ESTADO -->
-    <div class="estado">
-      <div class="estado-izquierdo">
-        <span class="punto-verde"></span>
+    <div class="estado flex items-center justify-between text-xs font-mono">
+      <div class="estado-izquierdo flex items-center gap-2">
+        <span class="punto-verde w-2 h-2 rounded-full bg-track-green"></span>
         <span>TERMINAL // ADMIN 04</span>
       </div>
-      <span class="estado-listo">ESTADO: LISTO</span>
+      <span class="estado-listo font-bold text-track-green">ESTADO: LISTO</span>
     </div>
 
     <!-- TITULO -->
     <section class="titulo">
-      <h1>NUEVA MÁQUINA // ENLACE Y QR</h1>
-      <p>Registra el equipo, vincula el tutorial técnico de YouTube y activa el código QR para la sala.</p>
+      <h1 class="text-3xl font-display uppercase tracking-tight text-ink">NUEVA MÁQUINA // REGISTRO TÉCNICO</h1>
+      <p class="text-sm text-ink-soft mt-1">Registra el equipo e ingresa las instrucciones de uso para los socios.</p>
     </section>
 
-    <!-- DETALLES -->
+    <!-- DETALLES DE LA MÁQUINA -->
     <section class="tarjeta">
-      <div class="tarjeta-titulo">
-        <span class="titulo-seccion">
-          <span class="material-symbols-outlined">tune</span>
+      <div class="tarjeta-titulo flex justify-between items-center mb-4">
+        <span class="titulo-seccion flex items-center gap-2 font-display uppercase text-ink">
+          <span class="material-symbols-outlined text-accent">tune</span>
           DETALLES DE LA MÁQUINA
         </span>
-        <span class="modo">MODO-EDICIÓN</span>
+        <span class="modo text-xs font-mono text-ink-soft">MODO-EDICIÓN</span>
       </div>
 
       <!-- NOMBRE -->
-      <div class="campo">
-        <label>
+      <div class="campo mb-4">
+        <label class="block text-xs font-mono uppercase mb-2">
           <span>NOMBRE DE LA MÁQUINA *</span>
-          <span class="obligatorio">OBLIGATORIO</span>
         </label>
-        <div class="input-contenedor">
-          <input type="text" [(ngModel)]="nombreMaquina" placeholder="ej. Prensa de Piernas 45°">
-          <span class="material-symbols-outlined">fitness_center</span>
+        <div class="input-contenedor flex items-center gap-2 border p-2 rounded">
+          <input type="text" class="w-full bg-transparent outline-none" [(ngModel)]="nombreMaquina" placeholder="ej. Prensa de Piernas 45°">
+          <span class="material-symbols-outlined text-ink-soft">fitness_center</span>
         </div>
       </div>
 
       <!-- GRUPO MUSCULAR -->
-      <div class="campo">
-        <label>GRUPO MUSCULAR PRINCIPAL *</label>
-        <div class="grupos">
+      <div class="campo mb-4">
+        <label class="block text-xs font-mono uppercase mb-2">GRUPO MUSCULAR PRINCIPAL *</label>
+        <div class="grupos grid grid-cols-2 md:grid-cols-3 gap-2">
           <button
             *ngFor="let grupo of gruposMusculares"
             type="button"
-            class="grupo"
+            class="grupo p-3 rounded border text-left flex justify-between items-center"
             [class.grupo-seleccionado]="grupoMuscular === grupo"
             (click)="seleccionarGrupo(grupo)">
             <span>{{ grupo }}</span>
-            <span class="material-symbols-outlined">
+            <span class="material-symbols-outlined text-sm">
               {{ grupoMuscular === grupo ? 'check_circle' : 'radio_button_unchecked' }}
             </span>
           </button>
@@ -77,11 +77,12 @@
 
       <!-- INSTRUCCIONES -->
       <div class="campo">
-        <label>
+        <label class="block text-xs font-mono uppercase mb-2">
           <span>INSTRUCCIONES RÁPIDAS DE POSTURA</span>
-          <span class="opcional">OPCIONAL</span>
+          <span class="opcional text-ink-soft ml-2">(OPCIONAL)</span>
         </label>
         <textarea
+          class="w-full p-3 rounded border outline-none bg-transparent"
           rows="3"
           [(ngModel)]="instrucciones"
           placeholder="ej. Ajustar el respaldo a 45°, mantener la zona lumbar completamente apoyada.">
@@ -91,99 +92,42 @@
 
     <!-- VIDEO YOUTUBE -->
     <section class="tarjeta">
-      <div class="tarjeta-titulo">
-        <span class="titulo-seccion">
-          <span class="material-symbols-outlined">videocam</span>
+      <div class="tarjeta-titulo flex justify-between items-center mb-4">
+        <span class="titulo-seccion flex items-center gap-2 font-display uppercase text-ink">
+          <span class="material-symbols-outlined text-accent">videocam</span>
           VIDEO INSTRUCTIVO (YOUTUBE)
         </span>
-        <span class="hd">
-          <span class="punto-verde-pequeno"></span>
-          HD 1080P
-        </span>
+        <span class="hd text-xs font-mono text-track-green">HD 1080P</span>
       </div>
 
       <div class="campo">
-        <label>
+        <label class="block text-xs font-mono uppercase mb-2">
           <span>URL DEL TUTORIAL DE YOUTUBE *</span>
-          <span class="obligatorio">OBLIGATORIO</span>
         </label>
-        <div class="input-contenedor">
+        <div class="input-contenedor flex items-center gap-2 border p-2 rounded">
           <input 
             type="text" 
+            class="w-full bg-transparent outline-none"
             [(ngModel)]="youtubeUrl" 
             placeholder="ej. https://www.youtube.com/watch?v=MqoQ_2sqiGs">
-          <span class="material-symbols-outlined">link</span>
+          <span class="material-symbols-outlined text-ink-soft">link</span>
         </div>
       </div>
-    </section>
-
-    <!-- QR -->
-    <section class="qr-tarjeta">
-      <div class="qr-header">
-        <div class="qr-titulo">
-          <span class="material-symbols-outlined">qr_code_2</span>
-          <span>CÓDIGO QR AUTOMÁTICO</span>
-        </div>
-        <span class="activo">
-          <span></span>
-          ACTIVO
-        </span>
-      </div>
-
-      <div class="qr-placa">
-        <div class="qr-info-superior">
-          <span>● GYMSYNC ID TAG</span>
-          <span>ZONE 02 - LEGS</span>
-        </div>
-
-        <div class="qr">
-          <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="160" fill="var(--color-cream)"/>
-            <rect x="10" y="10" width="40" height="40" fill="var(--color-ink)"/>
-            <rect x="16" y="16" width="28" height="28" fill="var(--color-cream)"/>
-            <rect x="22" y="22" width="16" height="16" fill="var(--color-ink)"/>
-            <rect x="110" y="10" width="40" height="40" fill="var(--color-ink)"/>
-            <rect x="116" y="16" width="28" height="28" fill="var(--color-cream)"/>
-            <rect x="122" y="22" width="16" height="16" fill="var(--color-ink)"/>
-            <rect x="10" y="110" width="40" height="40" fill="var(--color-ink)"/>
-            <rect x="16" y="116" width="28" height="28" fill="var(--color-cream)"/>
-            <rect x="22" y="122" width="16" height="16" fill="var(--color-ink)"/>
-            <circle cx="80" cy="80" r="16" fill="var(--color-accent)"/>
-            <path d="M74 77H86M77 74V86M83 74V86" stroke="var(--color-cream)" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-
-        <div class="id-contenedor">
-          <div>
-            <span>IDENTIFICADOR TÉCNICO</span>
-            <strong>{{ idMaquina }}</strong>
-          </div>
-          <button type="button" (click)="copiarId()">
-            <span class="material-symbols-outlined">content_copy</span>
-            COPIAR
-          </button>
-        </div>
-      </div>
-
-      <button class="boton-descargar" type="button" (click)="descargarQR()">
-        <span class="material-symbols-outlined">print</span>
-        DESCARGAR QR PARA IMPRIMIR (PDF / PNG)
-      </button>
     </section>
 
     <!-- MENSAJE DE ERROR -->
-    <div *ngIf="errorMensaje" style="color: var(--color-alert-red); font-weight: bold; margin-bottom: 12px; text-align: center;">
+    <div *ngIf="errorMensaje" class="text-red-600 font-bold text-center text-sm my-2">
       {{ errorMensaje }}
     </div>
 
     <!-- BOTONES -->
-    <div class="acciones">
-      <button class="boton-guardar" type="button" [disabled]="guardando" (click)="guardarMaquina()">
+    <div class="acciones flex flex-col md:flex-row gap-3 pt-4">
+      <button class="boton-guardar flex-1 py-3 px-6 rounded font-bold flex items-center justify-center gap-2" type="button" [disabled]="guardando" (click)="guardarMaquina()">
         <span class="material-symbols-outlined">save</span>
-        {{ guardando ? 'GUARDANDO...' : 'GUARDAR MÁQUINA Y ACTIVAR QR' }}
+        {{ guardando ? 'GUARDANDO...' : 'GUARDAR MÁQUINA' }}
       </button>
 
-      <button class="boton-cancelar" type="button" (click)="regresar()">
+      <button class="boton-cancelar py-3 px-6 rounded border font-semibold" type="button" (click)="regresar()">
         CANCELAR
       </button>
     </div>
@@ -191,13 +135,13 @@
   </div>
 
   <!-- TOAST -->
-  <div class="toast" [class.toast-visible]="mostrarToast">
-    <div class="toast-icono">
-      <span class="material-symbols-outlined">check</span>
+  <div class="toast fixed bottom-4 right-4 p-4 rounded shadow-lg bg-ink text-cream flex items-center gap-3 transition-opacity" [class.opacity-0]="!mostrarToast" [class.pointer-events-none]="!mostrarToast">
+    <div class="toast-icono text-track-green">
+      <span class="material-symbols-outlined">check_circle</span>
     </div>
     <div>
-      <strong>MÁQUINA VINCULADA</strong>
-      <p>{{ idMaquina }} ya está listo para sala.</p>
+      <strong>MÁQUINA REGISTRADA</strong>
+      <p class="text-xs text-ink-soft">La máquina se guardó exitosamente.</p>
     </div>
   </div>
 </main>

@@ -50,16 +50,6 @@ export class AdminFormularioMaquinaComponent implements OnInit {
     this.grupoMuscular = grupo;
   }
 
-  copiarId(): void {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(this.idMaquina);
-    }
-  }
-
-  descargarQR(): void {
-    window.print();
-  }
-
   regresar(): void {
     this.router.navigate(['/admin/maquinas']);
   }
@@ -71,6 +61,7 @@ export class AdminFormularioMaquinaComponent implements OnInit {
     }
 
     this.guardando = true;
+    this.errorMensaje = '';
 
     const payload = {
       id: this.idMaquina,
@@ -88,14 +79,13 @@ export class AdminFormularioMaquinaComponent implements OnInit {
         this.mostrarToast = true;
         setTimeout(() => {
           this.mostrarToast = false;
-          this.generarNuevoId();
           this.router.navigate(['/admin/maquinas']);
-        }, 1500);
+        }, 1200);
       },
       error: (err) => {
         this.guardando = false;
         console.error('Error al guardar máquina:', err);
-        this.errorMensaje = 'Error al guardar en la base de datos.';
+        this.errorMensaje = err.error?.message || err.error?.error || 'Error al guardar en la base de datos.';
       }
     });
   }
