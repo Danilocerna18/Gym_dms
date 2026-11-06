@@ -12,6 +12,7 @@ import { AdminFormularioMaquinaComponent } from './components/admin-formulario-m
 import { UserHomeComponent } from './components/user-home/user-home';
 import { UserPerfil } from './components/user-perfil/user-perfil';
 import { UserQrunico } from './components/user-qrunico/user-qrunico';
+
 import { UserEscanerComponent } from './components/user-escaner/user-escaner';
 import { UserMaquinadetComponent } from './components/user-maquinadet/user-maquinadet';
 
@@ -21,7 +22,11 @@ import { AdminListaClientes } from './components/admin-lista-clientes/admin-list
 import { AdminFormularioCliente } from './components/admin-formulario-cliente/admin-formulario-cliente';
 import { AdminEscanerAcceso } from './components/admin-escaner-acceso/admin-escaner-acceso';
 
+const recoveryPage = () => import('./components/auth-recuperacion/auth-recuperacion').then(m => m.AuthRecuperacion);
+
 export const routes: Routes = [
+  { path: 'recuperar-contrasena', loadComponent: recoveryPage },
+  { path: 'restablecer-contrasena', loadComponent: recoveryPage, data: { reset: true } },
   {
     path: '',
     redirectTo: 'login',

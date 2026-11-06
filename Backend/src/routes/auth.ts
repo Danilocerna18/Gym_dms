@@ -9,7 +9,6 @@ import { promisify } from "node:util";
 import passport from "passport";
 import {
   timingSafeEqual,
-  randomBytes,
   randomUUID,
   scrypt as scryptCallback,
 } from "node:crypto";
@@ -17,24 +16,11 @@ import {
 import { prisma } from "../config/prisma";
 import { crearMembresiaPendiente } from "../services/membership.service";
 
+import { generarPasswordHash } from "../lib/password";
+import { recoveryRouter } from "./recovery";
+
 const router = express.Router();
-
-// Cifrar la contraseña utilizando scrypt.
-// La contraseña original nunca se guarda en la base de datos.
-function generarPasswordHash(password: string): Promise<string> {
-  const salt = randomBytes(16).toString("hex");
-
-  return new Promise((resolve, reject) => {
-    scryptCallback(password, salt, 64, (error, resultado) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-
-      resolve(`scrypt$${salt}$${resultado.toString("hex")}`);
-    });
-  });
-}
+router.use(recoveryRouter);
 
 // Permite identificar errores de restricciones únicas de Prisma.
 function obtenerCodigoError(error: unknown): string | undefined {
