@@ -12,16 +12,19 @@ import { AdminFormularioMaquinaComponent } from './components/admin-formulario-m
 import { UserHomeComponent } from './components/user-home/user-home';
 import { UserPerfil } from './components/user-perfil/user-perfil';
 import { UserQrunico } from './components/user-qrunico/user-qrunico';
-import { UserEscanerComponent } from './components/user-escaner/user-escaner';
+
 import { UserMaquinadetComponent } from './components/user-maquinadet/user-maquinadet';
 
 // Componentes de admin Sofia
 import { AdminPanel } from './components/admin-panel/admin-panel';
 import { AdminListaClientes } from './components/admin-lista-clientes/admin-lista-clientes';
 import { AdminFormularioCliente } from './components/admin-formulario-cliente/admin-formulario-cliente';
-import { AdminEscanerAcceso } from './components/admin-escaner-acceso/admin-escaner-acceso';
+
+const recoveryPage = () => import('./components/auth-recuperacion/auth-recuperacion').then(m => m.AuthRecuperacion);
 
 export const routes: Routes = [
+  { path: 'recuperar-contrasena', loadComponent: recoveryPage },
+  { path: 'restablecer-contrasena', loadComponent: recoveryPage, data: { reset: true } },
   {
     path: '',
     redirectTo: 'login',
@@ -57,12 +60,12 @@ export const routes: Routes = [
   { path: 'user-home', canActivate: [rolGuard], data: { role: 'member' }, component: UserHomeComponent },
   { path: 'user-perfil', canActivate: [rolGuard], data: { role: 'member' }, component: UserPerfil },
   { path: 'user-qrunico', canActivate: [rolGuard], data: { role: 'member' }, component: UserQrunico },
-  { path: 'user-escaner', canActivate: [rolGuard], data: { role: 'member' }, component: UserEscanerComponent },
+  { path: 'user-escaner', canActivate: [rolGuard], data: { role: 'member' }, loadComponent: () => import('./components/user-escaner/user-escaner').then(m => m.UserEscanerComponent) },
   { path: 'user-maquinadet', canActivate: [rolGuard], data: { role: 'member' }, component: UserMaquinadetComponent },
 
   // Módulo de admin Sofia
   { path: 'admin/dashboard', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminPanel },
   { path: 'admin/clientes', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminListaClientes },
   { path: 'admin/clientes/:id/editar', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminFormularioCliente },
-  { path: 'admin/escaner', canActivate: [rolGuard], data: { role: 'admin' }, component: AdminEscanerAcceso }
+  { path: 'admin/escaner', canActivate: [rolGuard], data: { role: 'admin' }, loadComponent: () => import('./components/admin-escaner-acceso/admin-escaner-acceso').then(m => m.AdminEscanerAcceso) }
 ];

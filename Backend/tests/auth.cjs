@@ -13,9 +13,17 @@ async function main() {
       create: async ({data,select})=>{const u={...data,id:crypto.randomUUID(),memberships:[]};rows.push(u);return Object.fromEntries(Object.keys(select).map(k=>[k,u[k]]))},
       findUnique: async ({where,select})=>{const u=rows.find(u=>u.id===where.id);return u && Object.fromEntries(Object.keys(select).map(k=>[k,u[k]]))}
     }};
+    const plan = { id: "mensual", active: true, price: 250, durationDays: 30 };
+    const memberships = [];
     config.prisma.$transaction = callback => callback({
       user: config.prisma.user,
-      membershipPlan: { findFirst: async () => ({ id: 'mensual', price: 250, durationDays: 30 }) }
+      membershipPlan: { findFirst: async () => plan, findUnique: async ({where}) => where.id === plan.id ? plan : null },
+      $queryRaw: async () => [],
+      membership: {
+        updateMany: async () => ({count: 0}),
+        findFirst: async ({where}) => memberships.find(m => m.userId === where.userId && where.status.in.includes(m.status)),
+        create: async ({data}) => { memberships.push(data); return data; }
+      }
     });
     const session=require('express-session');
     const sessionPath=require.resolve('../dist/config/session');
@@ -44,6 +52,7 @@ async function main() {
     await call('auth/google',302);
     const {user}=await call('auth/register',201,{name:'Prueba de sesión',email,password,plan:'mensual',role:'admin'});
     assert.equal(user.role,'member');
+    assert.deepEqual(memberships, [{userId:user.id, planId:plan.id, status:'pending'}]);
     await call('auth/login',401,{email,password:'incorrecta'});
     const login=await call('auth/login',200,{email:' '+email.toUpperCase()+' ',password,role:'admin'});
     assert.equal(login.user.role,'member');

@@ -40,6 +40,15 @@ export class AuthService {
     if (m.status === 'expired' || !m.endDate || Date.parse(m.endDate) < Date.now()) return 'Vencida';
     return m.startDate && Date.parse(m.startDate) > Date.now() ? 'Próxima' : 'Activa';
   });
+  requestRecovery(email: string) {
+    return this.http.post<{message: string}>(this.api + '/auth/forgot-password', { email });
+  }
+  validateReset(token: string) {
+    return this.http.post(this.api + '/auth/reset-password/validate', { token });
+  }
+  resetPassword(token: string, password: string) {
+    return this.http.post<{message: string}>(this.api + '/auth/reset-password', { token, password });
+  }
   login(email: string, password: string) {
     return this.http.post<{user: Account}>(this.api + '/auth/login', { email, password }, this.options);
   }

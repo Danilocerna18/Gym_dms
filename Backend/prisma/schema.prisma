@@ -54,6 +54,7 @@ enum AnnouncementStatusFilter {
 }
 
 model User {
+  passwordReset PasswordReset?
   id           String   @id @default(uuid())
   name         String
   email        String   @unique
@@ -183,4 +184,11 @@ model Session {
 
   @@index([expire], map: "IDX_session_expire")
   @@map("session")
+}
+
+model PasswordReset {
+  userId    String   @id
+  tokenHash String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

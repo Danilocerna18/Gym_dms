@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./config/environment";
 
 console.log(
   "ENV CHECK: DATABASE_URL",
