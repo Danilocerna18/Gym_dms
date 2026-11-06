@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { transport } from "../config/mail";
 import rateLimit from "express-rate-limit";
 import { createHash, randomBytes } from "node:crypto";
 import { prisma } from "../config/prisma";
@@ -37,16 +38,21 @@ async function deliver(email: string) {
   try {
     const link = new URL("/restablecer-contrasena", process.env.FRONTEND_URL ?? "http://localhost:4200");
     link.hash = token; // El fragmento no viaja al servidor web ni en Referer.
-    const result = await fetch("https://api.resend.com/emails", {
-      method: "POST", signal: AbortSignal.timeout(10000),
-      headers: { Authorization: "Bearer " + process.env.RESEND_API_KEY, "Content-Type": "application/json" },
-      body: JSON.stringify({ from: process.env.RESET_MAIL_FROM, to: [user.email],
-        subject: "Restablece tu contraseña de GymSync",
-        text: "Abre este enlace en los próximos 15 minutos para cambiar tu contraseña:\n" + link.href +
-          "\nSi no solicitaste este cambio, puedes ignorar este correo." }),
+    if (!transport) throw new Error("SMTP no configurado");
+    await transport.sendMail({
+      from: process.env.RESET_MAIL_FROM, to: { name: "", address: user.email },
+      subject: "Restablece tu contraseña de GymSync",
+      text: "Abre este enlace en los próximos 15 minutos para cambiar tu contraseña:\n" + link.href +
+        "\nSi no solicitaste este cambio, puedes ignorar este correo.",
+      html: `<h2>GymSync</h2><p>Abre este enlace en los próximos 15 minutos para cambiar tu contraseña.</p>
+        <p><a href="${link.href}">Restablecer contraseña</a></p>
+        <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>`,
     });
-    if (!result.ok) throw new Error("Entrega rechazada");
-  } catch {
+  } catch (err) {
+    const { code, responseCode } = err as { code?: string; responseCode?: number };
+    const knownCodes = ["EAUTH", "ECONNECTION", "ESOCKET", "ETIMEDOUT", "EENVELOPE", "EMESSAGE", "EDNS", "ETLS"];
+    console.error("GymSync: fallo SMTP", knownCodes.includes(code ?? "") ? code : "ENVIO",
+      Number.isInteger(responseCode) ? responseCode : "");
     await prisma.passwordReset.deleteMany({ where: { tokenHash } });
     throw new Error("Error de entrega");
   }
@@ -56,10 +62,10 @@ recoveryRouter.post("/forgot-password", (req, res) => {
   const email = req.body?.email;
   if (typeof email !== "string" || email.trim().length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
     return res.status(400).json({ message: "Ingresa un correo válido." });
-  if (!process.env.RESEND_API_KEY || !process.env.RESET_MAIL_FROM)
+  if (!transport)
     return res.status(503).json({ message: "La recuperación por correo aún no está disponible." });
   void deliver(email.trim().toLowerCase()).catch(() => console.error("GymSync: fallo al procesar el correo de recuperación."));
-  res.status(202).json({ message: "Si tienes una cuenta con contraseña, recibirás un enlace de recuperación." });
+  res.status(202).json({ message: "Solicitud recibida. Si tienes una cuenta con contraseña, revisa tu correo." });
 });
 
 recoveryRouter.post("/reset-password/validate", async (req, res) => {
