@@ -1,0 +1,32 @@
+<header class="header"><div class="header-content"><span class="logo-text">GymSync</span></div></header>
+<main class="main"><div class="contenido">
+  <section class="header-card"><div class="header-card-content">
+    <h1>{{ reset ? 'Restablecer contraseña' : 'Recuperar contraseña' }}</h1>
+    <p>{{ reset ? 'Elige una contraseña de entre 8 y 128 caracteres.' : 'Introduce el correo con el que te registraste.' }}</p>
+  </div></section>
+  <section class="login-card">
+    @if (!done() && !invalid()) {
+      <form class="login-form" #form="ngForm" (ngSubmit)="form.valid && submit()">
+        @if (reset) {
+          <div class="campo"><label for="password">Nueva contraseña</label><div class="input-container">
+            <input id="password" name="password" [(ngModel)]="password" [type]="visible ? 'text' : 'password'" autocomplete="new-password" required minlength="8" maxlength="128">
+          </div></div>
+          <div class="campo"><label for="confirm">Confirmar contraseña</label><div class="input-container">
+            <input id="confirm" name="confirm" [(ngModel)]="confirm" [type]="visible ? 'text' : 'password'" autocomplete="new-password" required maxlength="128">
+          </div></div>
+          <button type="button" (click)="visible = !visible">{{ visible ? 'Ocultar contraseñas' : 'Mostrar contraseñas' }}</button>
+        } @else {
+          <div class="campo"><label for="email">Correo electrónico</label><div class="input-container">
+            <input id="email" name="email" type="email" email autocomplete="email" [(ngModel)]="email" required maxlength="254">
+          </div></div>
+        }
+        <button type="submit" class="submit-button" [disabled]="form.invalid || busy()">
+          {{ busy() ? 'Procesando…' : reset ? 'Guardar contraseña' : 'Solicitar enlace' }}
+        </button>
+      </form>
+    }
+    <p role="status">{{ message() }}</p>
+    @if (invalid()) { <a routerLink="/recuperar-contrasena">Solicitar otro enlace</a> }
+    <a routerLink="/login">Volver al inicio de sesión</a>
+  </section>
+</div></main>

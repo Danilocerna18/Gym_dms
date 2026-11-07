@@ -1,0 +1,22 @@
+version: 1
+applications:
+  - appRoot: Frontend
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - nvm install 20.20.0
+            - nvm use 20.20.0
+            - node --version
+            - npm --version
+            - npm ci
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: dist/cliente/browser
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*

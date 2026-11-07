@@ -18,3 +18,19 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+/* Respeta la preferencia de menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Anillo de aforo: se anima al cambiar el porcentaje (design guide §8).
+   La regla de prefers-reduced-motion de arriba lo deja sin transición. */
+.anillo-trazo {
+  transition: stroke-dasharray 300ms ease-out;
+}

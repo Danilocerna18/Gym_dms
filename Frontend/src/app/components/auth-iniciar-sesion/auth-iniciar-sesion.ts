@@ -1,4 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { AuthService, homeFor } from '../../services/auth';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -21,16 +23,26 @@ export class AuthIniciarSesionComponent {
     window.history.back();
   }
 
+  private auth = inject(AuthService);
+  cargando = signal(false);
+  error = signal('');
+
   iniciarSesion(): void {
-    console.log('Email:', this.email);
-    console.log('Contraseña:', this.password);
-
-    this.router.navigate(['/user-home']);
+    if (this.cargando()) return;
+    this.cargando.set(true);
+    this.error.set('');
+    this.auth.login(this.email, this.password).subscribe({
+      next: ({ user }) => {
+        this.password = '';
+        this.cargando.set(false);
+        void this.router.navigateByUrl(homeFor(user.role));
+      },
+      error: err => {
+        this.cargando.set(false);
+        this.error.set(err.error?.message ?? 'No se pudo conectar con GymSync. Intenta nuevamente.');
+      }
+    });
   }
 
-  // TODO: quitar este botón cuando exista login real
-  // Botón temporal solo para que el profesor revise el avance del frontend de admin (Sprint 2)
-  verDemoAdmin(): void {
-    this.router.navigate(['/admin/dashboard']);
-  }
+  readonly googleUrl = environment.apiUrl + '/api/auth/google';
 }

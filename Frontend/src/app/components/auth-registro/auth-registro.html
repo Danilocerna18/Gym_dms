@@ -11,7 +11,6 @@
       </button>
 
       <div class="logo">
-        <span class="material-symbols-outlined logo-icon">fitness_center</span>
         <span class="logo-text">GymSync</span>
       </div>
     </div>
@@ -32,7 +31,7 @@
     <div class="titulo">
       <div class="nuevo-ingreso">
         <span class="punto-rojo"></span>
-        <span>NUEVO INGRESO // ACCESO 2024</span>
+        <span>NUEVO INGRESO</span>
       </div>
 
       <h1>ÚNETE AL GIMNASIO</h1>
@@ -44,7 +43,11 @@
 
     <div class="registro-card">
 
-      <button class="google-button" type="button">
+      <button
+        class="google-button"
+        type="button"
+        (click)="registrarseConGoogle()"
+      >
         <svg class="google-icon" viewBox="0 0 24 24">
           <path
             d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
@@ -77,7 +80,7 @@
 
       <form
         class="registro-form"
-        (ngSubmit)="crearCuenta()"
+        (ngSubmit)="formulario.valid && crearCuenta()"
         #formulario="ngForm"
       >
 
@@ -98,6 +101,7 @@
               type="text"
               placeholder="Ej. Carlos Rivera"
               [(ngModel)]="nombre"
+              minlength="2" maxlength="100" autocomplete="name"
               required
             />
           </div>
@@ -120,28 +124,8 @@
               type="email"
               placeholder="carlos@ejemplo.com"
               [(ngModel)]="email"
+              email maxlength="254" autocomplete="email"
               required
-            />
-          </div>
-        </div>
-
-        <div class="campo">
-          <label for="telefono">
-            <span>Teléfono celular</span>
-            <span>ACCESO SMS</span>
-          </label>
-
-          <div class="input-container">
-            <span class="material-symbols-outlined input-icon">
-              smartphone
-            </span>
-
-            <input
-              id="telefono"
-              name="telefono"
-              type="tel"
-              placeholder="+502 0000 0000"
-              [(ngModel)]="telefono"
             />
           </div>
         </div>
@@ -163,7 +147,7 @@
               [type]="mostrarPassword ? 'text' : 'password'"
               placeholder="••••••••"
               [(ngModel)]="password"
-              minlength="8"
+              minlength="8" maxlength="128" autocomplete="new-password"
               required
             />
 
@@ -260,31 +244,51 @@
           </div>
         </div>
 
-        <div class="informacion">
-          <span class="material-symbols-outlined">
-            verified_user
-          </span>
-
-          <p>
-            Sin permanencia obligatoria. Cancela o cambia de plan en
-            cualquier instante desde tu perfil.
-          </p>
-        </div>
-
         <button
           class="crear-button"
-          type="submit"
-          [disabled]="formulario.invalid"
           [class.exito]="cuentaCreada"
+          [attr.aria-busy]="registrando"
+          type="submit"
+          [disabled]="formulario.invalid || registrando || cuentaCreada"
         >
-          <span>{{ cuentaCreada ? '¡BIENVENIDO A GYMSYNC!' : 'CREAR MI CUENTA' }}</span>
+          <span>
+            {{
+              registrando
+                ? 'Creando cuenta...'
+                : cuentaCreada
+                  ? '¡BIENVENIDO A GYMSYNC!'
+                  : 'Crear mi cuenta'
+            }}
+          </span>
 
           <span class="material-symbols-outlined">
-            {{ cuentaCreada ? 'done' : 'arrow_forward' }}
+            {{
+              registrando
+                ? 'hourglass_top'
+                : cuentaCreada
+                  ? 'done'
+                  : 'arrow_forward'
+            }}
           </span>
         </button>
 
       </form>
+
+      <p
+        *ngIf="mensajeExito"
+        class="mensaje-exito"
+        role="status"
+      >
+        {{ mensajeExito }}
+      </p>
+
+      <p
+        *ngIf="mensajeError"
+        class="mensaje-error"
+        role="alert"
+      >
+        {{ mensajeError }}
+      </p>
 
       <div class="iniciar-sesion">
         <span>¿Ya tienes una cuenta?</span>
@@ -294,7 +298,7 @@
         </a>
       </div>
 
-    </div>
+    </div> <!-- cierra registro-card -->
 
-  </div>
+  </div> <!-- cierra contenido -->
 </main>

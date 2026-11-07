@@ -49,13 +49,13 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 | US-03 | Como miembro, quiero iniciar sesión de forma segura para acceder a mi perfil. | Las contraseñas se almacenan hasheadas; las sesiones expiran tras un periodo de inactividad definido. |
 | US-04 | Como miembro, quiero ver mi membresía digital con código QR para usarla como método de acceso. | El QR es único por usuario, se regenera si se reporta comprometido, y es escaneable desde el lector de recepción. |
 | US-05 | Como miembro, quiero consultar el estado de mi membresía (activa/vencida) y mi plan actual. | La pantalla de perfil refleja el estado real en tiempo real, sin caché desactualizado. |
-| US-06 | Como miembro, quiero ver mi historial de pagos y próxima fecha de vencimiento. | Se listan los pagos procesados con fecha, monto y plan; la fecha de vencimiento es visible de forma destacada. |
+| US-06 | Como miembro, quiero ver mi historial de pagos y próxima fecha de vencimiento. | Se listan los pagos procesados con fecha, monto y plan; la fecha de vencimiento es visible de forma destacada. **MVP:** se muestra el historial de membresías (solicitud, activación y vigencia) en lugar del historial de pagos, porque los pagos se manejan en recepción fuera del sistema (decisión 11). |
 | US-07 | Como miembro, quiero recibir un aviso antes de que venza mi membresía para poder renovarla a tiempo. | El sistema notifica in-app y por correo (vía Resend) 5 días antes del vencimiento, y un segundo aviso el día del vencimiento. |
 | US-08 | Como miembro, quiero pagar mi membresía mensual o anual dentro de la plataforma. | El pago se procesa vía Recurrente; el sistema confirma el pago y actualiza el estado de la membresía automáticamente. |
 | US-09 | Como miembro con membresía vencida, quiero que se me niegue el acceso hasta renovar. | Al escanear el QR con membresía vencida, el sistema bloquea el acceso y muestra el motivo en la pantalla de recepción. |
 | US-10 | Como miembro, quiero escanear el QR de una máquina para ver su video instructivo. | El escaneo abre directamente el video asociado a esa máquina sin pasos intermedios. |
 | US-10b | Como miembro, quiero usar un único escáner dentro de la app para ver los videos de las máquinas. | La app detecta el QR de máquina desde una sola pantalla de escaneo y dirige al video correspondiente. |
-| US-11 | Como administrador, quiero registrar y editar clientes manualmente. | Puedo crear, editar y dar de baja un cliente, y el cambio se refleja de inmediato en su estado de acceso. |
+| US-11 | Como administrador, quiero editar clientes, activar su membresía y darlos de baja. | Puedo editar, activar la membresía y dar de baja un cliente, y el cambio se refleja de inmediato en su estado de acceso. |
 | US-12 | Como administrador, quiero asignar un plan (mensual/anual) a cada cliente. | El sistema calcula automáticamente la fecha de vencimiento según el plan asignado. |
 | US-13 | Como administrador, quiero subir videos instructivos y asociarlos a una máquina específica. | El video sube a un canal privado de YouTube y queda vinculado al QR de esa máquina. |
 | US-14 | Como administrador, quiero generar un código QR nuevo para una máquina recién adquirida. | El sistema genera un QR único, descargable/imprimible, vinculado al registro de esa máquina. |
@@ -93,7 +93,7 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 - Los webhooks de Recurrente actualizan el estado de pago de forma asíncrona respecto al flujo de UI.
 - El envío de correos (avisos de vencimiento y anuncios) se realiza desde el backend vía Resend, nunca desde el cliente.
 
-*(No se incluyen modelos de datos ni schemas — corresponden al documento `data model.md`.)*
+*(No se incluyen modelos de datos ni schemas — corresponden al documento `data_model.md`.)*
 
 ## 6. Requerimientos No Funcionales
 
@@ -131,7 +131,7 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 - Panel administrativo separado con vista de aforo, ingresos, alertas, gestión de clientes, gestión de contenido y escáner de acceso.
 - Modales rápidos para resultado de escaneo (acceso concedido/denegado, video de máquina).
 
-*(No se incluye línea gráfica ni branding — corresponde al documento `design guide.md`.)*
+*(No se incluye línea gráfica ni branding — corresponde al documento `design_guide.md`.)*
 
 ## 8. Reglas de Negocio
 
@@ -153,7 +153,7 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 
 ## 9. Integraciones
 - **Recurrente**: procesamiento de pagos recurrentes (mensual/anual), webhooks de confirmación y reintentos manuales de cobro.
-- **PostgreSQL**: base de datos relacional recomendada dado el volumen de relaciones entre clientes, membresías, pagos y máquinas (ver Decisiones Pendientes).
+- **PostgreSQL**: base de datos relacional recomendada dado el volumen de relaciones entre clientes, membresías, pagos y máquinas (ver sección 12 — Decisiones Tomadas).
 - **Vercel**: hosting y despliegue de la aplicación.
 - **Google Sign-In**: autenticación alternativa para miembros.
 - **YouTube (privado)**: alojamiento y reproducción de videos instructivos.
@@ -194,3 +194,6 @@ El administrador (rol único, incluye funciones de recepción) gestiona clientes
 7. **Librería de generación de QR:** `qrcode` (Node.js), gratuita y ampliamente usada.
 8. **Proveedor de correo: Resend**, para avisos de vencimiento (US-07) y comunicados administrativos (US-20).
 9. **Límite de YouTube privado:** pendiente de validar cuota de subida y restricciones de embebido antes de depender de él como única fuente de video — este punto queda abierto porque depende de una cuenta real de YouTube que aún no existe, no de una decisión de diseño.
+10. **Registro de salidas:** la salida se registra cuando el recepcionista escanea el QR del miembro con el modo "Salida" seleccionado en el escáner. Una salida sin entrada abierta no se guarda: solo responde un aviso. Mejora futura: registrarla con un valor `denied_no_entry` en el enum `AccessResult`, junto con el filtro `result: "granted"` en la query de duplicado.
+11. **Flujo de membresías del MVP:** el miembro se registra solo y escoge su plan; la membresía nace en estado `pending`, sin fechas. El miembro paga en recepción y el administrador la activa; las fechas de inicio y vencimiento se calculan al activar, y la activación queda auditada con quién y cuándo la activó. El administrador ya no crea cuentas de miembros. La integración con Recurrente (US-08 y el cobro desde la plataforma) queda fuera del MVP; el webhook existente se conserva para integrarlo después. US-12 cambia en consecuencia: el plan lo escoge el miembro y el administrador solo lo activa.
+12. **Vencimiento sin cron:** mientras no exista el job programado de vencimiento (US-17), al escoger plan o al activar una membresía se marcan como `expired` las membresías de ese usuario cuya `endDate` ya pasó. Sin esto, una membresía vencida por fecha seguiría con estado `active` y bloquearía la renovación, porque solo se permite una membresía `active` o `pending` a la vez. Cuando exista el cron, este paso se vuelve redundante pero inofensivo.

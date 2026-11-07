@@ -32,7 +32,8 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 
 - Un `User` puede tener múltiples `Membership` a lo largo del tiempo (histórico), pero solo una con estado `active` a la vez — regla de negocio validada en aplicación, no solo en base de datos.
 - Un `Payment` siempre pertenece a una `Membership` (nunca a un `User` directamente), para mantener trazabilidad de qué pago corresponde a qué periodo. Los reintentos manuales de cobro (US-21) crean un nuevo `Payment` sobre la misma `Membership`, no editan el fallido anterior.
-- `AccessLog` es genérico: registra tanto escaneos de acceso físico (membresía) como escaneos de máquina, diferenciados por el campo `type`. Esto evita duplicar lógica de escaneo y es la tabla que alimenta el conteo de aforo en tiempo real (se calcula como `entries - exits` sobre los logs del día).
+- `AccessLog` es genérico: registra tanto escaneos de acceso físico (membresía) como escaneos de máquina, diferenciados por el campo `type`. Esto evita duplicar lógica de escaneo y es la tabla que alimenta el conteo de aforo en tiempo real; no existe un contador aparte.
+- Cálculo del aforo: personas adentro = usuarios cuyo último registro de hoy (día en hora de Guatemala, UTC-6) con `result = granted` y `type` `entry` o `exit` es un `entry`. Se ignoran `machine_scan` y los registros rechazados. A diferencia de restar `entries - exits`, este cálculo nunca da negativos (por ejemplo, si alguien sale hoy con una entrada de ayer). La capacidad es fija, 55 personas (`CAPACIDAD_GIMNASIO` en el backend); el porcentaje se redondea y define el estado: `optimo` por debajo de 70 %, `concurrido` de 70 % a menos de 90 %, `lleno` desde 90 %.
 - `AccessLog.scanned_by` identifica al administrador que operó el escaneo de acceso físico (entry/exit). Es `null` en eventos `machine_scan`, porque esos los realiza el propio miembro desde su teléfono.
 - `Announcement` registra cada envío de comunicado: quién lo envió, con qué filtro y a cuántos destinatarios llegó. No almacena la lista individual de destinatarios (se recalcula del filtro al momento del envío); si se necesita auditoría por destinatario individual, es una extensión futura.
 
@@ -65,9 +66,11 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 | id | UUID (PK) | |
 | user_id | UUID (FK → User) | |
 | plan_id | UUID (FK → MembershipPlan) | |
-| status | Enum: `active`, `expired`, `cancelled` | |
-| start_date | Date | |
-| end_date | Date | calculada al crear/renovar según `duration_days` |
+| status | Enum: `pending`, `active`, `expired`, `cancelled` | nace en `pending` cuando el miembro escoge su plan; pasa a `active` cuando el admin la activa tras el pago en recepción |
+| start_date | Date, nullable | null mientras está `pending`; se fija al activar |
+| end_date | Date, nullable | null mientras está `pending`; calculada al activar/renovar según `duration_days` |
+| activated_at | Timestamp, nullable | momento en que el admin activó la membresía |
+| activated_by_id | UUID (FK → User), nullable | admin que activó la membresía (auditoría del pago en recepción) |
 | notified_before_expiration | Boolean | evita reenviar el aviso de los 5 días |
 | created_at | Timestamp | |
 
@@ -108,7 +111,7 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 | type | Enum: `entry`, `exit`, `machine_scan` | |
 | machine_id | UUID (FK → Machine), nullable | solo aplica si `type = machine_scan` |
 | scanned_by | UUID (FK → User), nullable | admin que operó el escaneo; null en `machine_scan` (lo hace el propio miembro) |
-| result | Enum: `granted`, `denied_expired`, `denied_duplicate`, `denied_offline` | soporta las reglas de negocio del PRD (bloqueo por vencimiento, QR duplicado, sin conexión) |
+| result | Enum: `granted`, `denied_expired`, `denied_duplicate`, `denied_offline`, `denied_pending` | soporta las reglas de negocio del PRD (bloqueo por vencimiento, QR duplicado, sin conexión, membresía aún no activada) |
 | created_at | Timestamp | |
 
 ### Announcement
@@ -137,10 +140,13 @@ MembershipPlan (1) ───── (N) Announcement [filtro opcional por plan]
 ## 5. Reglas de Integridad
 
 - Un `Membership` con `status = active` no puede coexistir con otro `active` del mismo `user_id` (constraint a nivel aplicación + verificación antes de crear uno nuevo).
+- Un usuario no puede escoger un plan nuevo si ya tiene una membresía `active` o `pending`; la verificación y la creación ocurren dentro de una misma transacción.
+- Solo una membresía `pending` puede activarse. Al activarla, `start_date`, `end_date`, `activated_at` y `activated_by_id` se llenan en la misma operación; la activación no crea un `Payment` (el pago en recepción queda auditado por `activated_at` y `activated_by_id`).
 - `Payment.membership_id` es obligatorio — no se permiten pagos huérfanos.
 - Al vencer `Membership.end_date`, un job programado (cron) cambia `status` a `expired` automáticamente; no depende de que el usuario intente entrar.
 - `AccessLog` nunca se edita ni se borra — es un log de auditoría append-only, útil también para detectar el caso de QR duplicado (buscar el último `entry` sin `exit` correspondiente antes de conceder uno nuevo).
 - `AccessLog.scanned_by` es obligatorio cuando `type` es `entry` o `exit` (el escaneo físico siempre lo opera un admin); debe ser `null` cuando `type = machine_scan`.
+  - **Nota pendiente (US-09 / US-18):** en `POST /api/access/validate`, `scanned_by` se recibe hoy directamente en el body de la request como solución temporal, porque todavía no existe login de admin ni sesión autenticada. Es falsificable por el cliente y no sirve como auditoría real. Cuando se implemente la autenticación de admin, este endpoint debe cambiarse para leer `scanned_by` de `req.session.user.id` (o equivalente) en vez de confiar en el body.
 - `Announcement` no se edita después de `sent_at` — es un registro histórico del envío, no un borrador editable.
 - Un reintento de cobro (US-21) solo puede dispararse si existe un `Payment` con `status = failed` más reciente, o si `Membership.status = expired`; no se permite sobre membresías `active` al día.
 
@@ -163,6 +169,7 @@ enum Role {
 }
 
 enum MembershipStatus {
+  pending
   active
   expired
   cancelled
@@ -190,6 +197,7 @@ enum AccessResult {
   denied_expired
   denied_duplicate
   denied_offline
+  denied_pending
 }
 
 enum AnnouncementStatusFilter {
@@ -208,10 +216,11 @@ model User {
   qrCode       String   @unique
   createdAt    DateTime @default(now())
 
-  memberships       Membership[]
-  accessLogs        AccessLog[]     @relation("MemberAccessLogs")
-  scannedAccessLogs AccessLog[]     @relation("AdminScannedLogs")
-  announcements     Announcement[]
+  memberships          Membership[]    @relation("MembershipOwner")
+  activatedMemberships Membership[]    @relation("MembershipActivatedBy")
+  accessLogs           AccessLog[]     @relation("MemberAccessLogs")
+  scannedAccessLogs    AccessLog[]     @relation("AdminScannedLogs")
+  announcements        Announcement[]
 }
 
 model MembershipPlan {
@@ -230,14 +239,17 @@ model Membership {
   userId                    String
   planId                    String
   status                    MembershipStatus
-  startDate                 DateTime
-  endDate                   DateTime
+  startDate                 DateTime?
+  endDate                   DateTime?
+  activatedAt               DateTime?
+  activatedById             String?
   notifiedBeforeExpiration  Boolean           @default(false)
   createdAt                 DateTime          @default(now())
 
-  user     User            @relation(fields: [userId], references: [id])
-  plan     MembershipPlan  @relation(fields: [planId], references: [id])
-  payments Payment[]
+  user        User            @relation("MembershipOwner", fields: [userId], references: [id])
+  activatedBy User?           @relation("MembershipActivatedBy", fields: [activatedById], references: [id])
+  plan        MembershipPlan  @relation(fields: [planId], references: [id])
+  payments    Payment[]
 
   @@index([userId, status])
 }
@@ -247,7 +259,7 @@ model Payment {
   membershipId         String
   amount               Decimal
   status               PaymentStatus
-  recurrentePaymentId  String
+  recurrentePaymentId  String?
   triggeredBy          PaymentTrigger @default(member)
   paidAt               DateTime?
   createdAt            DateTime       @default(now())
@@ -310,4 +322,31 @@ model Announcement {
 
   @@index([sentAt])
 }
+
+// Tabla de sesiones de express-session. La crea connect-pg-simple
+// (createTableIfMissing) con node_modules/connect-pg-simple/table.sql; se
+// declara aquí con los mismos tipos y nombres para que Prisma no la detecte
+// como drift. No es una entidad del dominio y el código no la usa con Prisma.
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+  @@map("session")
+}
 ```
+
+## 8. Seguridad de la Conexión a la Base de Datos
+
+La base corre en AWS RDS PostgreSQL. `DATABASE_URL` termina en `?sslmode=require` y la comparten Prisma y el session store (`connect-pg-simple` sobre `pg`), pero cada uno verifica el certificado de forma distinta:
+
+- **`pg` (session store, `Backend/src/config/session.ts`):** cifra la conexión y **verifica** el certificado del servidor contra el bundle público de CAs de RDS (`Backend/certs/global-bundle.pem`, descargado de `truststore.pki.rds.amazonaws.com`), con `rejectUnauthorized: true`. Solo aplica cuando el host termina en `.rds.amazonaws.com`. Para eso se quitan los parámetros SSL de la URL antes de crear la `Pool`, porque `pg` les da prioridad sobre la opción `ssl`. Con una base local sin `sslmode`, la conexión sigue sin SSL.
+- **Prisma:** cifra la conexión pero **no verifica** el certificado del servidor. Con `sslmode=require`, el engine de Prisma acepta cualquier certificado.
+  - **Decisión técnica (Sprint 3):** Prisma se queda con `sslmode=require` por una limitación del engine en macOS:
+    - Prisma ignora `sslrootcert`: con una CA equivocada también conecta.
+    - Con `sslcert` + `sslaccept=strict`, el bundle completo no carga (`P1011 ... parameters invalid`).
+    - Con la raíz exacta de la instancia (`Amazon RDS us-east-2 Root CA RSA2048 G1`) o con la intermedia, el engine responde "The certificate was not trusted", aunque `openssl` y Node validan esa cadena sin problema.
+
+    Como el equipo desarrolla en macOS, activarlo rompería la conexión local. No se usa `sslmode=no-verify` ni `rejectUnauthorized: false` en ningún lado.
+  - **Pendiente (Sprint 5, INFRA-01):** en el contenedor Linux (Docker `node:20-alpine`, TLS con OpenSSL), probar `sslcert` con la raíz de la región de la instancia (un solo certificado, no el bundle) y `sslaccept=strict`. La prueba también debe ser negativa: con una CA de otra región, la conexión tiene que fallar. Si funciona, activarlo en la `DATABASE_URL` de producción y dejar la de desarrollo con `sslmode=require`.

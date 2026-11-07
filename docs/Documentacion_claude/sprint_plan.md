@@ -23,9 +23,9 @@ Supuesto de fecha de inicio: **lunes 27 de julio de 2026** (última semana de ju
 | 15 | 2 – 8 nov | Sprint 7 | Cierre | Planning (hardening) |
 | 16 | 9 – 15 nov | Sprint 7 | Cierre | Demo Day + Retro global |
 
-**Estás cerrando Sprint 1 justo ahora.** Tiene sentido: Release 1 pide stack elegido y justificado, documento de arquitectura, repo, tablero y mockups, que es exactamente lo que resolvimos (backend en Node/Express, frontend en React). Ya tienes el `design guide.md` con los mockups conceptuales y el `PRD.md` y `CLAUDE.md` actualizados con el stack definitivo, así que Release 1 queda completo.
+**Estás cerrando Sprint 1 justo ahora.** Tiene sentido: Release 1 pide stack elegido y justificado, documento de arquitectura, repo, tablero y mockups, que es exactamente lo que resolvimos (backend en Node/Express, frontend en Angular). Ya tienes el `design_guide.md` con los mockups conceptuales y el `PRD.md` y `CLAUDE.md` actualizados con el stack definitivo, así que Release 1 queda completo.
 
-## Qué construye cada sprint (con tus 18 user stories, 56 puntos)
+## Qué construye cada sprint (con tus 21 user stories, 66 puntos)
 
 Sprint 0 y Sprint 1 **no llevan historias de tu backlog de features** — son de negocio (Release 0, ya lo hiciste con el backlog+PERT) y de arquitectura (Release 1, en proceso). Las historias reales empiezan a construirse en Sprint 2.
 
