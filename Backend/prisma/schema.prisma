@@ -1,0 +1,194 @@
+// Schema tomado tal cual de /Docs/Documentacion_claude/data_model.md sección 7.
+// No modificar sin actualizar primero ese documento.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  member
+}
+
+enum MembershipStatus {
+  pending
+  active
+  expired
+  cancelled
+}
+
+enum PaymentStatus {
+  pending
+  completed
+  failed
+}
+
+enum PaymentTrigger {
+  member
+  admin_retry
+}
+
+enum AccessType {
+  entry
+  exit
+  machine_scan
+}
+
+enum AccessResult {
+  granted
+  denied_expired
+  denied_duplicate
+  denied_offline
+  denied_pending
+}
+
+enum AnnouncementStatusFilter {
+  all
+  active
+  expired
+}
+
+model User {
+  passwordReset PasswordReset?
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String?
+  googleId     String?  @unique
+  role         Role
+  qrCode       String   @unique
+  createdAt    DateTime @default(now())
+
+  memberships          Membership[]    @relation("MembershipOwner")
+  activatedMemberships Membership[]    @relation("MembershipActivatedBy")
+  accessLogs           AccessLog[]     @relation("MemberAccessLogs")
+  scannedAccessLogs    AccessLog[]     @relation("AdminScannedLogs")
+  announcements        Announcement[]
+}
+
+model MembershipPlan {
+  id           String   @id @default(uuid())
+  name         String
+  durationDays Int
+  price        Decimal
+  active       Boolean  @default(true)
+
+  memberships   Membership[]
+  announcements Announcement[]
+}
+
+model Membership {
+  id                        String            @id @default(uuid())
+  userId                    String
+  planId                    String
+  status                    MembershipStatus
+  startDate                 DateTime?
+  endDate                   DateTime?
+  activatedAt               DateTime?
+  activatedById             String?
+  notifiedBeforeExpiration  Boolean           @default(false)
+  createdAt                 DateTime          @default(now())
+
+  user        User            @relation("MembershipOwner", fields: [userId], references: [id])
+  activatedBy User?           @relation("MembershipActivatedBy", fields: [activatedById], references: [id])
+  plan        MembershipPlan  @relation(fields: [planId], references: [id])
+  payments    Payment[]
+
+  @@index([userId, status])
+}
+
+model Payment {
+  id                   String         @id @default(uuid())
+  membershipId         String
+  amount               Decimal
+  status               PaymentStatus
+  recurrentePaymentId  String?
+  triggeredBy          PaymentTrigger @default(member)
+  paidAt               DateTime?
+  createdAt            DateTime       @default(now())
+
+  membership Membership @relation(fields: [membershipId], references: [id])
+
+  @@index([membershipId, status])
+}
+
+model Machine {
+  id           String             @id @default(uuid())
+  name         String
+  qrCode       String             @unique
+  group        String?
+  instructions String?            
+  createdAt    DateTime           @default(now())
+
+  videos       InstructionVideo[]
+  accessLogs   AccessLog[]
+}
+
+model InstructionVideo {
+  id         String   @id @default(uuid())
+  machineId  String
+  youtubeUrl String
+  title      String
+  createdAt  DateTime @default(now())
+
+  machine Machine @relation(fields: [machineId], references: [id])
+}
+
+model AccessLog {
+  id        String       @id @default(uuid())
+  userId    String
+  type      AccessType
+  machineId String?
+  scannedBy String?
+  result    AccessResult
+  createdAt DateTime     @default(now())
+
+  user      User     @relation("MemberAccessLogs", fields: [userId], references: [id])
+  admin     User?    @relation("AdminScannedLogs", fields: [scannedBy], references: [id])
+  machine   Machine? @relation(fields: [machineId], references: [id])
+
+  @@index([createdAt, type])
+  @@index([scannedBy])
+}
+
+model Announcement {
+  id              String                    @id @default(uuid())
+  adminId         String
+  subject         String
+  body            String
+  statusFilter    AnnouncementStatusFilter?
+  planIdFilter    String?
+  recipientCount  Int
+  sentAt          DateTime
+  createdAt       DateTime                  @default(now())
+
+  admin User            @relation(fields: [adminId], references: [id])
+  plan  MembershipPlan? @relation(fields: [planIdFilter], references: [id])
+
+  @@index([sentAt])
+}
+
+// Tabla de sesiones de express-session. La crea connect-pg-simple
+// (createTableIfMissing) con node_modules/connect-pg-simple/table.sql; se
+// declara aquí con los mismos tipos y nombres para que Prisma no la detecte
+// como drift. No es una entidad del dominio y el código no la usa con Prisma.
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+  @@map("session")
+}
+
+model PasswordReset {
+  userId    String   @id
+  tokenHash String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

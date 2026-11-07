@@ -1,21 +1,25 @@
 # Dependencies
-/node_modules
-/.pnp
+**/node_modules
+**/.pnp
 .pnp.js
 
+# Environment variables
+**/.env
+!**/.env.example
+
 # Production output
-/dist
-/tmp
-/out-tsc
+**/dist
+**/tmp
+**/out-tsc
 
 # Angular / CLI cache
-/.angular
+**/.angular
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/.pnpm-debug.log*
+**/.pnpm-debug.log*
 
 # Editor directories and files (Visual Studio & VS Code)
 .vscode/*

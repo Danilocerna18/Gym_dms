@@ -1,0 +1,104 @@
+<header class="fixed top-0 w-full z-50 bg-cream border-b border-cream-dark shadow-sm pt-safe">
+  <div class="h-16 w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop flex items-center justify-between">
+    <div class="flex items-center gap-gutter">
+      <button aria-label="Volver" class="min-w-[48px] min-h-[48px] flex items-center justify-center text-ink hover:text-accent transition-colors" (click)="goBack()">
+        <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+      </button>
+      <div class="flex flex-col">
+        <span class="font-body text-body-sm uppercase tracking-wider text-ink-soft">GYMSYNC ACCESS</span>
+        <h1 class="font-display text-display-lg text-ink uppercase leading-none">Access Pass</h1>
+      </div>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-ink-soft inner-glow border border-cream-dark flex items-center justify-center">
+      <span class="material-symbols-outlined text-cream text-[18px]">person</span>
+    </div>
+  </div>
+</header>
+
+<main class="flex-1 flex flex-col relative w-full pt-[calc(4rem_+_env(safe-area-inset-top))] pb-safe bg-cream text-ink font-body min-h-screen min-h-dvh">
+  <div class="flex flex-col w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop py-8">
+    <div class="w-full max-w-xl mx-auto space-y-4">
+      
+      <!-- Tarjeta Principal del Pase -->
+      <div class="w-full bg-ink text-cream rounded-lg p-4 sm:p-6 sharp-shadow flex flex-col items-center relative overflow-hidden">
+        
+        <!-- Header de Miembro -->
+        <div class="w-full flex items-center justify-between gap-3 pb-4 border-b border-cream/10 mb-4">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-12 h-12 rounded-lg overflow-hidden bg-cream/10 flex-shrink-0 flex items-center justify-center font-bold text-cream text-lg">
+              {{ auth.initials() }}
+            </div>
+            <div class="flex flex-col min-w-0">
+              <span class="font-display text-display-lg uppercase text-cream leading-none break-words">{{ auth.profile()?.name || 'Socio GymSync' }}</span>
+              <span class="font-mono text-mono-sm text-cream-dark mt-1 opacity-80 truncate">ID: {{ auth.profile()?.id }}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 px-3 py-1.5 bg-track-green/20 rounded-full">
+            <span class="w-2 h-2 rounded-full bg-track-green"></span>
+            <span class="font-body text-body-sm text-[11px] font-bold text-cream uppercase tracking-wider"> {{ auth.profile()?.role === 'admin' ? 'ADMINISTRADOR' : 'Usuario' }} </span>
+          </div>
+        </div>
+
+        <!-- Contenedor del Código QR Único -->
+        <div class="w-full aspect-square max-w-[260px] bg-cream rounded-lg p-3 sm:p-4 flex flex-col items-center justify-center relative shadow-md">
+          <img [src]="qrImage" alt="Código QR de tu cuenta" class="w-full h-full object-contain">
+        </div>
+
+        <!-- Código Manual y Copia -->
+        <div class="w-full mt-4 flex items-center justify-between gap-3 bg-cream/10 rounded-lg px-4 py-2.5">
+          <div class="flex flex-col min-w-0">
+            <span class="font-body text-body-sm text-cream-dark tracking-wider uppercase">CÓDIGO MANUAL</span>
+            <span class="truncate font-mono text-display-lg tracking-wider font-bold text-cream leading-tight">
+              {{ auth.profile()?.qrCode || auth.profile()?.id }}
+            </span>
+          </div>
+          <button #copyBtn aria-label="Copiar código de acceso" class="min-h-11 px-3 py-2 bg-cream text-ink font-body text-body-sm rounded-custom flex items-center gap-1.5 active:bg-cream-dark transition-colors flex-shrink-0" (click)="copyAccessCode(copyBtn, copyIcon, copyText)">
+            <span #copyIcon class="material-symbols-outlined text-[18px]">content_copy</span>
+            <span #copyText class="font-bold">COPIAR</span>
+          </button>
+        </div>
+
+        <!-- Indicaciones -->
+        <div class="w-full mt-3 flex items-start gap-2.5 px-3 py-2 bg-cream/5 rounded-lg">
+          <span class="material-symbols-outlined text-cream text-[20px] flex-shrink-0 mt-0.5">sensors</span>
+          <p class="font-body text-body-sm text-cream-dark text-left leading-snug">
+            Presenta este código frente al escáner óptico en recepción o en el torniquete de acceso.
+          </p>
+        </div>
+      </div>
+
+      <!-- Widget de Aforo en Tiempo Real -->
+      <div class="w-full bg-cream inner-glow sharp-shadow rounded-lg p-4 sm:p-6 border border-cream-dark flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="relative w-12 h-12 flex items-center justify-center flex-shrink-0">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36" aria-hidden="true">
+              <path class="text-cream-dark" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+              @if (aforo()) {
+                <path class="anillo-trazo" [ngClass]="estiloAforo().texto" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" [attr.stroke-dasharray]="trazoAnillo()" stroke-linecap="round" stroke-width="3.5"></path>
+              }
+            </svg>
+            @if (aforo(); as a) {
+              <span class="absolute font-mono text-mono-sm text-[11px] font-bold text-ink">{{ a.porcentaje }}%</span>
+            }
+          </div>
+          <div class="flex flex-col" aria-live="polite">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="font-display text-display-lg text-ink uppercase leading-none">SALA PRINCIPAL</span>
+              @if (aforo()) {
+                <span class="px-1.5 py-0.5 rounded font-body text-[10px] font-bold" [ngClass]="[estiloAforo().fondo, estiloAforo().texto]">{{ estiloAforo().etiqueta }}</span>
+              }
+            </div>
+            @if (aforo(); as a) {
+              <span class="font-body text-body-sm text-ink-soft mt-0.5">Aforo en vivo: {{ a.personasAdentro }} / {{ a.capacidad }} personas</span>
+            } @else if (aforoNoDisponible()) {
+              <span class="font-body text-body-sm text-ink-soft mt-0.5">Aforo no disponible</span>
+            } @else {
+              <span class="font-body text-body-sm text-ink-soft mt-0.5">Cargando aforo...</span>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>

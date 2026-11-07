@@ -1,0 +1,159 @@
+<!-- TopAppBar Desktop -->
+<header class="w-full top-0 sticky bg-cream border-b border-cream-dark shadow-sm z-40 hidden md:block">
+  <div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-7xl mx-auto">
+    <div class="flex items-center gap-4">
+      <h1 class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</h1>
+    </div>
+    <nav class="hidden md:flex gap-8">
+      <a routerLink="/admin/dashboard" routerLinkActive #rlaDashboardDesktop="routerLinkActive" [class.text-accent]="rlaDashboardDesktop.isActive" [class.text-ink-soft]="!rlaDashboardDesktop.isActive" class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+      </a>
+      <a routerLink="/admin/clientes" routerLinkActive #rlaClientesDesktop="routerLinkActive" [class.text-accent]="rlaClientesDesktop.isActive" [class.text-ink-soft]="!rlaClientesDesktop.isActive" class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-xl">group</span> Clientes
+      </a>
+      <a routerLink="/admin/maquinas" routerLinkActive #rlaMaquinasDesktop="routerLinkActive" [class.text-accent]="rlaMaquinasDesktop.isActive" [class.text-ink-soft]="!rlaMaquinasDesktop.isActive" class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-xl">fitness_center</span> Máquinas
+      </a>
+      <a class="font-body text-body-sm text-ink-soft hover:text-accent transition-colors flex items-center gap-2" href="#">
+        <span class="material-symbols-outlined text-xl">notifications</span> Alertas
+      </a>
+      <a routerLink="/admin/escaner" routerLinkActive #rlaEscanerDesktop="routerLinkActive" [class.text-accent]="rlaEscanerDesktop.isActive" [class.text-ink-soft]="!rlaEscanerDesktop.isActive" class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-xl">qr_code_scanner</span> Escáner
+      </a>
+    </nav>
+    <app-admin-menu-perfil tamano="md"></app-admin-menu-perfil>
+  </div>
+</header>
+
+<!-- Mobile Header -->
+<header class="w-full top-0 sticky bg-cream border-b border-cream-dark shadow-sm z-40 md:hidden flex justify-between items-center px-margin-mobile py-4">
+  <div class="flex items-center gap-3">
+    <h1 class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</h1>
+  </div>
+  <app-admin-menu-perfil tamano="sm"></app-admin-menu-perfil>
+</header>
+
+<main class="w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop pt-8 pb-24 md:pb-8">
+
+  <!-- Header Section -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+    <div>
+      <h2 class="font-display md:font-display text-display-lg md:text-display-xl text-ink mb-2 uppercase">Gestión de máquinas</h2>
+      <p class="font-body text-body-md text-ink-soft">Administra las máquinas del gimnasio y sus accesos QR.</p>
+    </div>
+    <div class="flex gap-4 w-full md:w-auto">
+      <button type="button" (click)="nuevaMaquina()" class="bg-accent text-cream font-body text-body-sm px-6 py-2 rounded font-bold hover:bg-accent/90 transition-colors whitespace-nowrap flex items-center gap-2 shadow-sm">
+        <span class="material-symbols-outlined text-lg">add</span> Nueva máquina
+      </button>
+    </div>
+  </div>
+
+  <!-- BUSCADOR -->
+  <div class="buscador">
+    <span class="material-symbols-outlined icono-buscar">search</span>
+    <input
+      type="text"
+      placeholder="Buscar por nombre, ID o zona..."
+      [ngModel]="busqueda()"
+      (ngModelChange)="busqueda.set($event)"
+    />
+  </div>
+
+  <!-- FILTROS POR GRUPO/ZONA DINÁMICOS -->
+  <div class="filtros" *ngIf="gruposUnicos().length > 0">
+    <button
+      class="filtro"
+      [class.activo]="filtroGrupo() === 'todas'"
+      (click)="seleccionarFiltro('todas')">
+      Todas ({{ maquinas().length }})
+    </button>
+
+    <button
+      *ngFor="let grupo of gruposUnicos()"
+      class="filtro"
+      [class.activo]="filtroGrupo() === grupo"
+      (click)="seleccionarFiltro(grupo)">
+      {{ grupo }}
+    </button>
+  </div>
+
+  <!-- ESTADOS DE CARGA Y VACÍO -->
+  <div *ngIf="cargando()" class="text-center py-12 text-ink-soft">
+    <p>Cargando máquinas registradas...</p>
+  </div>
+
+  <div *ngIf="errorMensaje()" class="text-center py-12 text-alert-red">
+    <p>{{ errorMensaje() }}</p>
+  </div>
+
+  <div *ngIf="!cargando() && !errorMensaje() && maquinasFiltradas().length === 0" class="text-center py-12 text-ink-soft">
+    <p>No hay máquinas encontradas.</p>
+  </div>
+
+  <!-- LISTADO REAL -->
+  <div class="lista-maquinas" *ngIf="!cargando() && !errorMensaje()">
+    <div *ngFor="let m of maquinasFiltradas()" class="maquina-card">
+
+      <div class="datos-maquina">
+        <div class="informacion-maquina">
+          <div class="zona" *ngIf="m.group">
+            <span class="punto-verde"></span>
+            <span>{{ m.group }}</span>
+          </div>
+
+          <h2>{{ m.name }}</h2>
+
+          <div class="detalles">
+            <span class="id-maquina">QR/ID: {{ m.qrCode || m.id }}</span>
+          </div>
+        </div>
+
+        <div class="qr">
+          <span class="material-symbols-outlined">qr_code_2</span>
+          <span class="qr-check">
+            <span class="material-symbols-outlined">check</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- VIDEO / INSTRUCCIONES SI TIENE -->
+      <div class="video" *ngIf="m.youtubeUrl || (m.videos && m.videos.length > 0)">
+        <div class="video-info">
+          <div class="video-detalles">
+            <span>VIDEO INSTRUCTIVO</span>
+          </div>
+          <p>{{ m.videoTitle || (m.videos ? m.videos[0]?.title : 'Guía de uso') }}</p>
+        </div>
+      </div>
+
+      <!-- ACCIONES -->
+      <div class="acciones">
+        <button type="button" class="btn-eliminar" (click)="eliminarMaquina(m.id, m.name)">
+          <span class="material-symbols-outlined">delete</span>
+          Eliminar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-cream border-t border-cream-dark shadow-lg md:hidden z-50">
+  <a routerLink="/admin/dashboard" routerLinkActive #rlaDashboardMobile="routerLinkActive" [class.text-accent]="rlaDashboardMobile.isActive" [class.text-ink-soft]="!rlaDashboardMobile.isActive" class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200">
+    <span class="material-symbols-outlined text-2xl mb-1">dashboard</span><span class="font-body text-[10px] uppercase tracking-wider">Dashboard</span>
+  </a>
+  <a routerLink="/admin/clientes" routerLinkActive #rlaClientesMobile="routerLinkActive" [class.text-accent]="rlaClientesMobile.isActive" [class.text-ink-soft]="!rlaClientesMobile.isActive" class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200">
+    <span class="material-symbols-outlined text-2xl mb-1">group</span><span class="font-body text-[10px] uppercase tracking-wider">Clientes</span>
+  </a>
+  <a routerLink="/admin/maquinas" routerLinkActive #rlaMaquinasMobile="routerLinkActive" [class.text-accent]="rlaMaquinasMobile.isActive" [class.text-ink-soft]="!rlaMaquinasMobile.isActive" class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200">
+    <span class="material-symbols-outlined text-2xl mb-1">fitness_center</span><span class="font-body text-[10px] uppercase tracking-wider">Máquinas</span>
+  </a>
+  <a class="flex flex-col items-center justify-center text-ink-soft p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200" href="#">
+    <span class="material-symbols-outlined text-2xl mb-1">notifications</span><span class="font-body text-[10px] uppercase tracking-wider">Alertas</span>
+  </a>
+  <a routerLink="/admin/escaner" routerLinkActive #rlaEscanerMobile="routerLinkActive" [class.text-accent]="rlaEscanerMobile.isActive" [class.text-ink-soft]="!rlaEscanerMobile.isActive" class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200">
+    <span class="material-symbols-outlined text-2xl mb-1">qr_code_scanner</span><span class="font-body text-[10px] uppercase tracking-wider">Escáner</span>
+  </a>
+</nav>

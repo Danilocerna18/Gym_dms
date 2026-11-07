@@ -1,0 +1,168 @@
+<div class="bg-ink text-cream h-screen flex flex-col overflow-hidden font-body text-body-md">
+  <!-- TopAppBar -->
+  <header class="w-full top-0 sticky border-b border-cream/10 bg-ink/90 backdrop-blur shadow-none z-50">
+    <div class="flex justify-between items-center px-margin-mobile py-unit w-full h-16">
+      <div class="flex items-center gap-3">
+        <a routerLink="/admin/dashboard" class="text-cream-dark hover:text-cream transition-colors">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <h1 class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-cream">GymSync</h1>
+      </div>
+      <app-admin-menu-perfil tamano="sm" [oscuro]="true"></app-admin-menu-perfil>
+    </div>
+  </header>
+
+  <!-- Main Scanner Area -->
+  <main class="flex-grow relative flex flex-col">
+    <div class="relative w-full h-[55vh] bg-ink overflow-hidden">
+
+      <!-- Instruction Text -->
+      <div class="absolute top-8 left-0 w-full text-center px-gutter z-10">
+        <p class="font-body text-body-md text-cream bg-ink/80 inline-block px-4 py-2 rounded-full backdrop-blur-sm border border-cream/10 glass-panel">
+          Escanee el QR del cliente para registrar entrada/salida
+        </p>
+      </div>
+
+      <!-- Scanner Reticle -->
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 z-10 rounded-2xl overflow-hidden">
+        
+        <!-- ZXing Scanner Camera Viewfinder -->
+        <zxing-scanner
+          *ngIf="scannerHabilitado()"
+          [formats]="allowedFormats"
+          (scanSuccess)="onScanSuccess($event)">
+        </zxing-scanner>
+
+        <div class="absolute top-0 left-0 w-8 h-8 corner-tl pointer-events-none"></div>
+        <div class="absolute top-0 right-0 w-8 h-8 corner-tr pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-8 h-8 corner-bl pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-8 h-8 corner-br pointer-events-none"></div>
+
+        <div *ngIf="!resultadoVisible()" class="absolute left-0 w-full h-0.5 bg-cream shadow-[0_0_8px_var(--color-cream)] scanner-line pointer-events-none"></div>
+
+        <!-- Overlay de Resultado -->
+        <div
+          *ngIf="resultadoVisible()"
+          (click)="cerrarResultado()"
+          role="status"
+          class="absolute top-1/2 left-1/2 resultado-overlay w-56 backdrop-blur-md rounded-lg p-4 flex flex-col items-center justify-center gap-2 z-20 cursor-pointer"
+          [class.bg-track-green]="resultadoTipo() === 'concedido'"
+          [class.border-track-green]="resultadoTipo() === 'concedido'"
+          [class.shadow-[0_0_20px_rgba(7,93,54,0.5)]]="resultadoTipo() === 'concedido'"
+          [class.bg-alert-red]="resultadoTipo() === 'denegado'"
+          [class.border-alert-red]="resultadoTipo() === 'denegado'"
+          [class.shadow-[0_0_20px_rgba(179,38,30,0.5)]]="resultadoTipo() === 'denegado'"
+          [class.bg-ink-soft]="resultadoTipo() === 'error'"
+          [class.border-ink-soft]="resultadoTipo() === 'error'"
+          style="border-width: 1px;">
+          <span class="material-symbols-outlined text-cream text-4xl" style="font-variation-settings: 'FILL' 1;">
+            {{ resultadoTipo() === 'concedido' ? 'check_circle' : resultadoTipo() === 'denegado' ? 'cancel' : 'error' }}
+          </span>
+          <span class="font-display text-display-lg text-cream text-center uppercase leading-tight">
+            {{ resultadoTipo() === 'concedido' ? (resultadoEsSalida() ? 'Salida Registrada' : 'Acceso Concedido') : resultadoTipo() === 'denegado' ? 'Acceso Denegado' : 'No se pudo verificar' }}
+          </span>
+          <span *ngIf="resultadoMensaje()" class="font-body text-body-sm text-cream/90 text-center leading-snug">
+            {{ resultadoMensaje() }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Manual Entry Action -->
+      <div class="absolute bottom-6 left-0 w-full flex flex-col items-center gap-2 z-10 px-gutter">
+        <div class="w-full max-w-sm flex flex-col gap-1">
+          <p class="font-body text-body-sm text-cream text-center uppercase tracking-widest">
+            Modo: {{ modo() === 'entry' ? 'Entrada' : 'Salida' }}
+          </p>
+          <div role="radiogroup" aria-label="Modo de registro" class="flex gap-2">
+            <button
+              type="button"
+              role="radio"
+              [attr.aria-checked]="modo() === 'entry'"
+              (click)="cambiarModo('entry')"
+              [class.bg-cream/10]="modo() === 'entry'"
+              [class.border-cream]="modo() === 'entry'"
+              [class.bg-ink/90]="modo() !== 'entry'"
+              [class.border-cream/10]="modo() !== 'entry'"
+              class="flex-1 min-h-12 text-cream border rounded flex items-center justify-center gap-1 font-body text-body-md">
+              <span *ngIf="modo() === 'entry'" class="material-symbols-outlined text-base">check</span>
+              Entrada
+            </button>
+            <button
+              type="button"
+              role="radio"
+              [attr.aria-checked]="modo() === 'exit'"
+              (click)="cambiarModo('exit')"
+              [class.bg-cream/10]="modo() === 'exit'"
+              [class.border-cream]="modo() === 'exit'"
+              [class.bg-ink/90]="modo() !== 'exit'"
+              [class.border-cream/10]="modo() !== 'exit'"
+              class="flex-1 min-h-12 text-cream border rounded flex items-center justify-center gap-1 font-body text-body-md">
+              <span *ngIf="modo() === 'exit'" class="material-symbols-outlined text-base">check</span>
+              Salida
+            </button>
+          </div>
+        </div>
+
+        <form
+          *ngIf="ingresoManualVisible()"
+          (submit)="$event.preventDefault(); enviarIngresoManual(codigoInput)"
+          class="w-full max-w-sm flex gap-2">
+          <input
+            #codigoInput
+            type="text"
+            autocomplete="off"
+            placeholder="Código QR o ID del cliente"
+            aria-label="Código QR del cliente"
+            [disabled]="procesando()"
+            class="flex-grow min-h-12 bg-ink/90 text-cream placeholder:text-cream-dark border border-cream/10 rounded px-3 font-mono text-mono-sm focus:outline-none focus:border-cream" />
+          <button
+            type="submit"
+            [disabled]="procesando()"
+            aria-label="Verificar código"
+            class="min-w-12 min-h-12 bg-cream/10 text-cream rounded flex items-center justify-center border border-cream/10 disabled:opacity-50">
+            <span class="material-symbols-outlined">{{ procesando() ? 'hourglass_top' : 'arrow_forward' }}</span>
+          </button>
+        </form>
+        <button
+          (click)="ingresoManual()"
+          class="w-full max-w-sm bg-cream text-ink font-body text-body-md font-semibold uppercase tracking-wide py-3 rounded flex items-center justify-center gap-2 hover:bg-cream/90 transition-colors active:scale-95 duration-100 shadow-lg">
+          <span class="material-symbols-outlined">keyboard</span>
+          Ingreso Manual
+        </button>
+      </div>
+    </div>
+
+    <!-- Recent History Section -->
+    <div class="flex-grow bg-ink p-gutter flex flex-col gap-unit z-20 shadow-[0_-4px_24px_rgba(27,52,92,0.8)] relative rounded-t-xl -mt-4 border-t border-cream/10">
+      <div class="w-12 h-1 bg-cream/10 mx-auto rounded-full mb-2"></div>
+      <h2 class="font-body text-body-sm text-cream-dark uppercase tracking-widest flex items-center gap-2 mb-2">
+        <span class="material-symbols-outlined text-base">history</span>
+        Últimos Accesos
+      </h2>
+
+      <div class="flex flex-col gap-2 overflow-y-auto pb-6">
+        <div *ngFor="let item of ultimosAccesos()" class="bg-cream/10 p-3 rounded border border-cream/5 flex items-center justify-between glass-panel">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center flex-shrink-0">
+              <span class="font-body text-body-sm text-cream font-semibold text-xs">{{ item.iniciales }}</span>
+            </div>
+            <div>
+              <p class="font-body text-body-md text-cream leading-tight">{{ item.nombre }}</p>
+              <p class="font-body text-body-sm text-cream-dark">{{ item.detalle }}</p>
+            </div>
+          </div>
+          <div class="flex flex-col items-end">
+            <span class="material-symbols-outlined" [ngClass]="item.exito ? 'text-track-green' : 'text-alert-red'" style="font-variation-settings: 'FILL' 1;">
+              {{ item.exito ? 'check_circle' : 'cancel' }}
+            </span>
+            <p class="font-mono text-mono-sm text-cream-dark mt-1">{{ item.hora }}</p>
+          </div>
+        </div>
+
+        <p *ngIf="ultimosAccesos().length === 0" class="text-center text-xs text-cream-dark py-4 opacity-60">
+          No hay accesos registrados en esta sesión.
+        </p>
+      </div>
+    </div>
+  </main>
+</div>

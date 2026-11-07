@@ -1,0 +1,194 @@
+<div class="bg-cream text-ink font-body min-h-screen pb-24 md:pb-0">
+  <!-- TopAppBar Desktop -->
+  <header class="w-full top-0 sticky bg-cream border-b border-cream-dark shadow-sm z-40 hidden md:block">
+    <div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-7xl mx-auto">
+      <div class="flex items-center gap-4">
+        <h1 class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</h1>
+      </div>
+      <nav class="hidden md:flex gap-8">
+        <a
+          routerLink="/admin/dashboard"
+          routerLinkActive
+          #rlaDashboardDesktop="routerLinkActive"
+          [class.text-accent]="rlaDashboardDesktop.isActive"
+          [class.text-ink-soft]="!rlaDashboardDesktop.isActive"
+          class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+        </a>
+        <a
+          routerLink="/admin/clientes"
+          routerLinkActive
+          #rlaClientesDesktop="routerLinkActive"
+          [class.text-accent]="rlaClientesDesktop.isActive"
+          [class.text-ink-soft]="!rlaClientesDesktop.isActive"
+          class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">group</span> Clientes
+        </a>
+        <a
+          routerLink="/admin/maquinas"
+          routerLinkActive
+          #rlaMaquinasDesktop="routerLinkActive"
+          [class.text-accent]="rlaMaquinasDesktop.isActive"
+          [class.text-ink-soft]="!rlaMaquinasDesktop.isActive"
+          class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">fitness_center</span> Máquinas
+        </a>
+        <a class="font-body text-body-sm text-ink-soft hover:text-accent transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">notifications</span> Alertas
+        </a>
+        <a
+          routerLink="/admin/escaner"
+          routerLinkActive
+          #rlaEscanerDesktop="routerLinkActive"
+          [class.text-accent]="rlaEscanerDesktop.isActive"
+          [class.text-ink-soft]="!rlaEscanerDesktop.isActive"
+          class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">qr_code_scanner</span> Escáner
+        </a>
+      </nav>
+      <app-admin-menu-perfil tamano="md"></app-admin-menu-perfil>
+    </div>
+  </header>
+
+  <!-- Mobile Header -->
+  <header class="w-full top-0 sticky bg-cream border-b border-cream-dark shadow-sm z-40 md:hidden flex justify-between items-center px-margin-mobile py-4">
+    <div class="flex items-center gap-3">
+      <h1 class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</h1>
+    </div>
+    <app-admin-menu-perfil tamano="sm"></app-admin-menu-perfil>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop py-8">
+    <div class="space-y-8">
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div>
+            <h2 class="font-display md:font-display text-display-lg md:text-display-xl text-ink mb-2 uppercase">Resumen General</h2>
+            <p class="font-body text-body-md text-ink-soft">Rendimiento actual del gimnasio y alertas activas.</p>
+          </div>
+        </div>
+
+        <!-- Metrics Grid  -->
+        <!-- La tarjeta de ingresos (US-16) se retiró del MVP por decisión del equipo. -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+          <!-- Total Members -->
+          <div class="bg-cream inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start">
+              <h2 class="font-body text-body-sm text-ink-soft uppercase tracking-wider">Total de Miembros</h2>
+              <span class="material-symbols-outlined text-ink-soft">group</span>
+            </div>
+            <div>
+              <p class="font-display text-display-lg text-ink uppercase">{{ resumen().totalMiembros }}</p>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="material-symbols-outlined text-track-green text-[16px]">arrow_upward</span>
+                <span class="font-body text-body-sm text-track-green">+{{ resumen().nuevosEsteMes }} este mes</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Members -->
+          <!-- El anillo de aforo (design guide §5) se reincorporará con datos reales cuando se haga US-15. -->
+          <div class="bg-cream inner-glow sharp-shadow rounded-lg p-margin-mobile relative overflow-hidden data-card performance flex flex-col justify-between h-40">
+            <div class="flex justify-between items-start">
+              <h2 class="font-body text-body-sm text-ink-soft uppercase tracking-wider">Activos Hoy</h2>
+              <span class="material-symbols-outlined text-ink-soft">how_to_reg</span>
+            </div>
+            <div>
+              <p class="font-display text-display-lg text-ink uppercase">{{ resumen().activosHoy }}</p>
+              <p class="font-body text-body-sm text-ink-soft mt-1">Han entrado hoy</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Alerts -->
+        <div>
+          <h2 class="font-display text-display-lg text-ink mb-4 flex items-center gap-2 uppercase">
+            <span class="material-symbols-outlined text-alert-red">warning</span>
+            Alertas Recientes
+          </h2>
+          <div class="bg-cream inner-glow sharp-shadow rounded-lg overflow-hidden border border-cream-dark">
+            <!-- Estados: cargando, error y sin alertas -->
+            <div *ngIf="cargando()" class="p-4 text-center font-body text-body-md text-ink-soft">Cargando alertas...</div>
+            <div *ngIf="!cargando() && error()" class="p-4 text-center flex flex-col items-center gap-3">
+              <p class="font-body text-body-md text-ink-soft">{{ error() }}</p>
+              <button (click)="cargar()" class="px-3 py-1 bg-transparent border border-ink-soft text-ink-soft font-body text-body-sm rounded hover:bg-cream-dark/50 transition-colors uppercase">Reintentar</button>
+            </div>
+            <div *ngIf="!cargando() && !error() && alertas().length === 0" class="p-4 text-center font-body text-body-md text-ink-soft">Sin alertas por ahora.</div>
+
+            <div class="divide-y divide-cream-dark" *ngIf="!cargando() && !error()">
+              <div *ngFor="let alerta of alertas()" class="p-4 flex items-center justify-between hover:bg-cream-dark/50 transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-cream-dark flex items-center justify-center"
+                       [class.text-alert-red]="alerta.tipo !== 'por_caducar'"
+                       [class.text-ink-soft]="alerta.tipo === 'por_caducar'">
+                    <span class="material-symbols-outlined">{{ alerta.tipo === 'fallido' ? 'credit_card_off' : 'event_busy' }}</span>
+                  </div>
+                  <div>
+                    <p class="font-body text-body-md text-ink font-semibold">{{ alerta.miembro.name }}</p>
+                    <p class="font-body text-body-sm text-ink-soft">{{ alerta.detalle }} - {{ alerta.plan }}</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span *ngIf="alerta.tipo === 'vencido'" class="px-2 py-1 rounded bg-ink-soft text-cream font-body text-body-sm border border-ink-soft uppercase">Vencido</span>
+                  <span *ngIf="alerta.tipo === 'fallido'" class="px-2 py-1 rounded bg-alert-red/10 text-alert-red font-body text-body-sm border border-alert-red/20 uppercase">Fallido</span>
+                  <span *ngIf="alerta.tipo === 'por_caducar'" class="px-2 py-1 rounded text-ink-soft font-body text-body-sm uppercase border border-ink-soft">Por Caducar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </main>
+
+  <!-- BottomNavBar (Mobile Only) -->
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-cream border-t border-cream-dark shadow-lg md:hidden z-50">
+    <a
+      routerLink="/admin/dashboard"
+      routerLinkActive
+      #rlaDashboardMobile="routerLinkActive"
+      [class.text-accent]="rlaDashboardMobile.isActive"
+      [class.text-ink-soft]="!rlaDashboardMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">dashboard</span><span class="font-body text-[10px] uppercase tracking-wider">Dashboard</span>
+    </a>
+    <a
+      routerLink="/admin/clientes"
+      routerLinkActive
+      #rlaClientesMobile="routerLinkActive"
+      [class.text-accent]="rlaClientesMobile.isActive"
+      [class.text-ink-soft]="!rlaClientesMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">group</span><span class="font-body text-[10px] uppercase tracking-wider">Clientes</span>
+    </a>
+    <a
+      routerLink="/admin/maquinas"
+      routerLinkActive
+      #rlaMaquinasMobile="routerLinkActive"
+      [class.text-accent]="rlaMaquinasMobile.isActive"
+      [class.text-ink-soft]="!rlaMaquinasMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">fitness_center</span><span class="font-body text-[10px] uppercase tracking-wider">Máquinas</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-ink-soft p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">notifications</span><span class="font-body text-[10px] uppercase tracking-wider">Alertas</span>
+    </a>
+    <a
+      routerLink="/admin/escaner"
+      routerLinkActive
+      #rlaEscanerMobile="routerLinkActive"
+      [class.text-accent]="rlaEscanerMobile.isActive"
+      [class.text-ink-soft]="!rlaEscanerMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">qr_code_scanner</span><span class="font-body text-[10px] uppercase tracking-wider">Escáner</span>
+    </a>
+  </nav>
+</div>

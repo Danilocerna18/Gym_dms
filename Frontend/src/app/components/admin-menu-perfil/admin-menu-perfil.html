@@ -1,0 +1,36 @@
+<div class="relative">
+  <!-- El botón mide 48px para el área táctil; el margen negativo evita que el encabezado crezca -->
+  <button #boton type="button" (click)="alternar()"
+    aria-label="Abrir menú de perfil" aria-haspopup="true" [attr.aria-expanded]="abierto()" aria-controls="menu-perfil-admin"
+    class="w-12 h-12 flex items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
+    [class.-m-2]="tamano() === 'sm'" [class.-m-1]="tamano() === 'md'"
+    [class.focus-visible:outline-accent]="!oscuro()" [class.focus-visible:outline-cream]="oscuro()">
+    <span class="rounded-full overflow-hidden border flex items-center justify-center font-body font-semibold text-cream"
+      [class.w-8]="tamano() === 'sm'" [class.h-8]="tamano() === 'sm'" [class.text-sm]="tamano() === 'sm'"
+      [class.w-10]="tamano() === 'md'" [class.h-10]="tamano() === 'md'" [class.text-body-sm]="tamano() === 'md'"
+      [class.bg-ink-soft]="!oscuro()" [class.inner-glow]="!oscuro()"
+      [class.border-cream-dark]="!oscuro()" [class.bg-cream/10]="oscuro()" [class.border-cream/10]="oscuro()">
+      {{ auth.initials() }}
+    </span>
+  </button>
+
+  @if (abierto()) {
+    <!-- En móvil casi todo el ancho de la pantalla; desde sm, 288px alineado a la derecha -->
+    <div id="menu-perfil-admin"
+      class="absolute right-0 top-full mt-3 z-[60] w-[calc(100vw-2.5rem)] sm:w-72 bg-cream text-ink border border-cream-dark rounded-custom sharp-shadow shadow-lg p-4 flex flex-col gap-3 font-body text-left">
+      <div class="flex flex-col gap-1 min-w-0">
+        <span class="text-body-md font-semibold text-ink break-words">{{ auth.profile()?.name }}</span>
+        <span class="text-body-sm text-ink-soft break-all">{{ auth.profile()?.email }}</span>
+        <span class="self-start mt-1 px-2.5 py-0.5 rounded-full border border-ink-soft/30 bg-ink-soft/10 text-ink-soft text-[12px] font-semibold uppercase tracking-wider">
+          Administrador
+        </span>
+      </div>
+      <hr class="border-0 border-t border-cream-dark">
+      <button type="button" (click)="cerrarSesion()"
+        class="w-full min-h-12 px-4 rounded-custom bg-transparent border border-ink text-ink text-body-sm font-bold flex items-center justify-center gap-2 hover:bg-cream-dark/50 transition-colors active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+        <span class="material-symbols-outlined text-[18px]">logout</span>
+        <span>CERRAR SESIÓN</span>
+      </button>
+    </div>
+  }
+</div>

@@ -1,0 +1,282 @@
+<div class="bg-cream text-ink font-body min-h-screen pb-24 md:pb-0">
+  <!-- TopAppBar Desktop -->
+  <header class="w-full top-0 sticky bg-cream border-b border-cream-dark shadow-sm z-40 hidden md:block">
+    <div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-7xl mx-auto">
+      <div class="flex items-center gap-4">
+        <h1 class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</h1>
+      </div>
+      <nav class="hidden md:flex gap-8">
+        <a
+          routerLink="/admin/dashboard"
+          routerLinkActive
+          #rlaDashboardDesktop="routerLinkActive"
+          [class.text-accent]="rlaDashboardDesktop.isActive"
+          [class.text-ink-soft]="!rlaDashboardDesktop.isActive"
+          class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">dashboard</span> Dashboard
+        </a>
+        <a
+          routerLink="/admin/clientes"
+          routerLinkActive
+          #rlaClientesDesktop="routerLinkActive"
+          [class.text-accent]="rlaClientesDesktop.isActive"
+          [class.text-ink-soft]="!rlaClientesDesktop.isActive"
+          class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">group</span> Clientes
+        </a>
+        <a
+          routerLink="/admin/maquinas"
+          routerLinkActive
+          #rlaMaquinasDesktop="routerLinkActive"
+          [class.text-accent]="rlaMaquinasDesktop.isActive"
+          [class.text-ink-soft]="!rlaMaquinasDesktop.isActive"
+          class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">fitness_center</span> Máquinas
+        </a>
+        <a class="font-body text-body-sm text-ink-soft hover:text-accent transition-colors flex items-center gap-2" href="#">
+          <span class="material-symbols-outlined text-xl">notifications</span> Alertas
+        </a>
+        <a
+          routerLink="/admin/escaner"
+          routerLinkActive
+          #rlaEscanerDesktop="routerLinkActive"
+          [class.text-accent]="rlaEscanerDesktop.isActive"
+          [class.text-ink-soft]="!rlaEscanerDesktop.isActive"
+          class="font-body text-body-sm hover:text-accent transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-xl">qr_code_scanner</span> Escáner
+        </a>
+      </nav>
+      <app-admin-menu-perfil tamano="md"></app-admin-menu-perfil>
+    </div>
+  </header>
+
+  <!-- Mobile Header -->
+  <header class="w-full top-0 sticky bg-cream border-b border-cream-dark shadow-sm z-40 md:hidden flex justify-between items-center px-margin-mobile py-4">
+    <div class="flex items-center gap-3">
+      <h1 class="font-display text-[24px] leading-none tracking-[0.04em] uppercase text-accent">GymSync</h1>
+    </div>
+    <app-admin-menu-perfil tamano="sm"></app-admin-menu-perfil>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main class="w-full max-w-7xl mx-auto px-gutter md:px-margin-desktop py-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+      <div>
+        <h2 class="font-display md:font-display text-display-lg md:text-display-xl text-ink mb-2 uppercase">Gestión de Miembros</h2>
+        <p class="font-body text-body-md text-ink-soft">Administra el acceso y visualiza la actividad en tiempo real.</p>
+      </div>
+      <div class="flex gap-4 w-full md:w-auto">
+        <div class="relative flex-1 md:flex-none md:w-64">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-ink-soft text-xl">search</span>
+          <input #buscador (input)="buscar(buscador)" aria-label="Buscar miembro" class="w-full bg-cream-dark text-ink-soft font-body text-body-md rounded border border-cream-dark focus:border-accent focus:ring-1 focus:ring-accent pl-10 pr-4 py-2 transition-colors placeholder-ink-soft/70" placeholder="Buscar miembro..." type="text">
+        </div>
+        <label class="sr-only" for="filtro-estado">Filtrar por estado</label>
+        <select id="filtro-estado" #filtro (change)="filtrarEstado(filtro.value)" class="min-h-12 md:min-h-0 bg-cream-dark text-ink font-body text-body-sm rounded border border-cream-dark focus:border-accent focus:ring-1 focus:ring-accent px-3 py-2 transition-colors">
+          <option value="todos">Todos</option>
+          <option value="activo">Activo</option>
+          <option value="por_vencer">Por vencer</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="vencido">Vencido</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Bento Grid Layout for Dashboard Metrics -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-8">
+      <div class="bg-cream inner-glow rounded-lg p-6 border border-cream-dark data-card alert">
+        <span class="font-body text-body-sm text-ink-soft uppercase tracking-wider block mb-2">Miembros Activos</span>
+        <div class="flex items-end gap-3">
+          <span class="font-display text-display-lg text-ink uppercase">{{ resumen().miembrosActivos }}</span>
+        </div>
+      </div>
+      <div class="bg-cream inner-glow rounded-lg p-6 border border-cream-dark data-card alert">
+        <span class="font-body text-body-sm text-ink-soft uppercase tracking-wider block mb-2">Accesos Hoy</span>
+        <div class="flex items-end gap-3">
+          <span class="font-display text-display-lg text-ink uppercase">{{ resumen().accesosHoy }}</span>
+        </div>
+      </div>
+      <div class="bg-cream inner-glow rounded-lg p-6 border border-cream-dark data-card alert">
+        <span class="font-body text-body-sm text-ink-soft uppercase tracking-wider block mb-2">Membresías por Vencer</span>
+        <div class="flex items-end gap-3">
+          <span class="font-display text-display-lg text-ink-soft uppercase">{{ resumen().porVencer }}</span>
+          <button class="font-body text-body-sm text-ink-soft hover:underline mb-1 ml-auto">Revisar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultado de activar una membresía (error o confirmación) -->
+    <p *ngIf="avisoActivacion()" role="status" class="mb-4 font-body text-body-sm"
+      [class.text-alert-red]="avisoEsError()" [class.text-track-green]="!avisoEsError()">{{ avisoActivacion() }}</p>
+
+    <!-- Member List Container -->
+    <div class="bg-cream inner-glow rounded-lg border border-cream-dark overflow-hidden">
+      <!-- Table Header (Web) -->
+      <div class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-cream-dark bg-cream">
+        <div class="col-span-4 font-body text-body-sm text-ink-soft uppercase">Miembro</div>
+        <div class="col-span-2 font-body text-body-sm text-ink-soft uppercase">Estado</div>
+        <div class="col-span-3 font-body text-body-sm text-ink-soft uppercase">Último Acceso</div>
+        <div class="col-span-3 font-body text-body-sm text-ink-soft uppercase text-right">Acciones</div>
+      </div>
+
+      <!-- Estados de la pantalla: cargando, error y vacío -->
+      <div *ngIf="cargando()" class="px-6 py-8 text-center font-body text-body-md text-ink-soft">Cargando miembros...</div>
+      <div *ngIf="!cargando() && error()" class="px-6 py-8 text-center flex flex-col items-center gap-3">
+        <p class="font-body text-body-md text-ink-soft">{{ error() }}</p>
+        <button (click)="cargar()" class="px-4 py-2 bg-transparent border border-cream-dark rounded text-ink hover:border-accent hover:text-accent font-body text-body-sm transition-all">Reintentar</button>
+      </div>
+      <div *ngIf="!cargando() && !error() && clientes().length === 0" class="px-6 py-8 text-center font-body text-body-md text-ink-soft">Aún no hay miembros registrados.</div>
+      <div *ngIf="!cargando() && !error() && clientes().length > 0 && clientesFiltrados().length === 0" class="px-6 py-8 text-center font-body text-body-md text-ink-soft">No hay miembros que coincidan con tu búsqueda o filtro.</div>
+
+      <div class="flex flex-col" *ngIf="!cargando() && !error()">
+        <div *ngFor="let cliente of clientesFiltrados()" class="group border-b border-cream-dark last:border-0 hover:bg-cream-dark/50 transition-colors">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center px-gutter md:px-6 py-4">
+            <div class="col-span-1 md:col-span-4 flex items-center gap-4 cursor-pointer" (click)="verQr(cliente.name, cliente.qrCode)">
+              <div class="w-12 h-12 rounded bg-ink-soft inner-glow flex items-center justify-center relative border border-cream-dark">
+                <span class="font-body text-body-sm text-cream font-semibold">{{ iniciales(cliente.name) }}</span>
+                <div class="absolute -bottom-1 -right-1 bg-cream rounded-full p-1 border border-cream-dark">
+                  <span class="material-symbols-outlined text-accent text-[14px]">qr_code_2</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-body text-body-md font-bold text-ink group-hover:text-accent transition-colors">{{ cliente.name }}</h3>
+                <p class="font-body text-body-sm text-ink-soft">{{ cliente.email }}</p>
+              </div>
+            </div>
+            <div class="col-span-1 md:col-span-2 flex items-center">
+              <span *ngIf="cliente.estado === 'activo'" class="font-body text-body-sm px-3 py-1 rounded-full bg-track-green/10 text-track-green border border-track-green/30 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-track-green"></span> Activo
+              </span>
+              <span *ngIf="cliente.estado === 'por_vencer'" class="font-body text-body-sm px-3 py-1 rounded-full text-ink-soft border border-ink-soft flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-ink-soft"></span> Por Vencer
+              </span>
+              <span *ngIf="cliente.estado === 'vencido'" class="font-body text-body-sm px-3 py-1 rounded-full bg-ink-soft text-cream border border-ink-soft flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-cream"></span> Vencido
+              </span>
+              <span *ngIf="cliente.estado === 'pendiente'" class="font-body text-body-sm px-3 py-1 rounded-full bg-ink-soft/10 text-ink-soft border border-dashed border-ink-soft flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full border border-ink-soft"></span> Pendiente
+              </span>
+            </div>
+            <div class="col-span-1 md:col-span-3 flex items-center justify-between md:justify-start gap-4">
+              <div class="md:hidden font-body text-body-sm text-ink-soft">Último Acceso:</div>
+              <div class="flex flex-col">
+                <div *ngIf="!cliente.ultimaEntrada && !cliente.ultimaSalida" class="text-ink-soft font-body text-body-sm">Sin accesos</div>
+                <div *ngIf="cliente.ultimaEntrada" class="flex items-center gap-2 text-ink font-mono text-mono-sm">
+                  <span class="material-symbols-outlined text-track-green text-[16px]">login</span> {{ formatearFecha(cliente.ultimaEntrada) }}
+                </div>
+                <div *ngIf="cliente.ultimaSalida" class="flex items-center gap-2 text-ink-soft font-mono text-mono-sm mt-1">
+                  <span class="material-symbols-outlined text-[16px]">logout</span> {{ formatearFecha(cliente.ultimaSalida) }}
+                </div>
+              </div>
+            </div>
+            <div class="col-span-1 md:col-span-3 flex items-center justify-end gap-3 mt-4 md:mt-0 border-t border-cream-dark md:border-0 pt-4 md:pt-0">
+              <button *ngIf="cliente.membresiaPendienteId" type="button" (click)="pedirActivacion(cliente)"
+                class="flex-1 md:flex-none min-h-12 flex items-center justify-center gap-2 px-4 bg-accent text-cream rounded-custom font-body text-body-sm font-semibold hover:bg-accent/90 transition-colors active:scale-95">
+                <span class="material-symbols-outlined text-[18px]">how_to_reg</span> Activar
+              </button>
+              <button class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-transparent border border-cream-dark rounded text-ink hover:border-accent hover:text-accent font-body text-body-sm transition-all" (click)="verQr(cliente.name, cliente.qrCode)">
+                <span class="material-symbols-outlined text-[18px]">qr_code</span> Ver QR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- BottomNavBar (Mobile Only) -->
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-cream border-t border-cream-dark shadow-lg md:hidden z-50">
+    <a
+      routerLink="/admin/dashboard"
+      routerLinkActive
+      #rlaDashboardMobile="routerLinkActive"
+      [class.text-accent]="rlaDashboardMobile.isActive"
+      [class.text-ink-soft]="!rlaDashboardMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">dashboard</span><span class="font-body text-[10px] uppercase tracking-wider">Dashboard</span>
+    </a>
+    <a
+      routerLink="/admin/clientes"
+      routerLinkActive
+      #rlaClientesMobile="routerLinkActive"
+      [class.text-accent]="rlaClientesMobile.isActive"
+      [class.text-ink-soft]="!rlaClientesMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">group</span><span class="font-body text-[10px] uppercase tracking-wider">Clientes</span>
+    </a>
+    <a
+      routerLink="/admin/maquinas"
+      routerLinkActive
+      #rlaMaquinasMobile="routerLinkActive"
+      [class.text-accent]="rlaMaquinasMobile.isActive"
+      [class.text-ink-soft]="!rlaMaquinasMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">fitness_center</span><span class="font-body text-[10px] uppercase tracking-wider">Máquinas</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-ink-soft p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200" href="#">
+      <span class="material-symbols-outlined text-2xl mb-1">notifications</span><span class="font-body text-[10px] uppercase tracking-wider">Alertas</span>
+    </a>
+    <a
+      routerLink="/admin/escaner"
+      routerLinkActive
+      #rlaEscanerMobile="routerLinkActive"
+      [class.text-accent]="rlaEscanerMobile.isActive"
+      [class.text-ink-soft]="!rlaEscanerMobile.isActive"
+      class="flex flex-col items-center justify-center p-2 hover:bg-cream-dark/50 active:scale-90 transition-transform duration-200"
+    >
+      <span class="material-symbols-outlined text-2xl mb-1">qr_code_scanner</span><span class="font-body text-[10px] uppercase tracking-wider">Escáner</span>
+    </a>
+  </nav>
+
+  <!-- Confirmación de pago antes de activar -->
+  <div *ngIf="clientePorActivar() as cliente" class="fixed inset-0 bg-ink/50 backdrop-blur-sm z-[100] flex items-center justify-center p-gutter" (click)="cancelarActivacion()">
+    <div role="dialog" aria-modal="true" aria-labelledby="titulo-activar" (click)="$event.stopPropagation()"
+      class="bg-cream rounded-custom w-full max-w-sm sharp-shadow border border-cream-dark p-6 flex flex-col gap-5">
+      <h3 id="titulo-activar" class="font-display text-display-lg text-ink uppercase">Activar membresía</h3>
+      <p class="font-body text-body-md text-ink">¿Confirmas que {{ cliente.name }} pagó su plan?</p>
+      <div class="flex flex-col-reverse sm:flex-row gap-3">
+        <button type="button" (click)="cancelarActivacion()" [disabled]="activando()"
+          class="flex-1 min-h-12 rounded-custom border border-cream-dark bg-transparent text-ink font-body text-body-sm font-semibold hover:bg-cream-dark/50 transition-colors disabled:opacity-60">
+          Cancelar
+        </button>
+        <button type="button" (click)="confirmarActivacion()" [disabled]="activando()"
+          class="flex-1 min-h-12 rounded-custom bg-accent text-cream font-body text-body-sm font-semibold hover:bg-accent/90 transition-colors disabled:opacity-60">
+          {{ activando() ? 'Activando...' : 'Sí, activar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Modal -->
+  <div *ngIf="qrModalAbierto()" class="fixed inset-0 bg-ink/50 backdrop-blur-sm z-[100] flex items-center justify-center p-gutter">
+    <div class="bg-cream inner-glow rounded-xl w-full max-w-sm sharp-shadow overflow-hidden border border-cream-dark">
+      <div class="p-4 border-b border-cream-dark flex justify-between items-center bg-cream">
+        <h3 class="font-display text-display-lg text-ink uppercase">Acceso QR</h3>
+        <button class="text-ink-soft hover:text-accent transition-colors" (click)="cerrarQr()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="p-6 flex flex-col items-center" *ngIf="miembroSeleccionado() as miembro">
+        <div class="mb-6 text-center">
+          <p class="font-body text-body-md font-bold text-ink">{{ miembro.nombre }}</p>
+          <p class="font-mono text-mono-sm text-ink-soft">ID: {{ miembro.qrCode }}</p>
+        </div>
+        <div class="w-full flex flex-col gap-3">
+          <button class="w-full bg-accent text-cream font-body text-body-sm px-6 py-3 rounded font-bold hover:bg-accent/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+            <span class="material-symbols-outlined">mail</span> Enviar por Email
+          </button>
+          <button class="w-full bg-transparent text-accent font-body text-body-sm px-6 py-3 rounded font-bold border border-accent hover:bg-accent/10 transition-colors flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">share</span> Compartir Enlace
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
