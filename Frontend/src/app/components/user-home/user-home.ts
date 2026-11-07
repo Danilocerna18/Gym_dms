@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MachineService, Machine } from '../../services/machine.service';
@@ -19,14 +19,9 @@ export class UserHomeComponent implements OnInit {
 
   auth = {
     initials: () => 'US',
-    profile: () => ({ name: 'Usuario Gym' }),
-    membership: () => ({
-      plan: { name: 'Mensual VIP' },
-      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-    })
+    profile: () => ({ name: 'Usuario Gym' })
   };
 
-  estadoMembresia = signal<string>('pendiente');
   maquinas: Machine[] = [];
   muscleCategories: MuscleCategory[] = [];
   cargando: boolean = true;
